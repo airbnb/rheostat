@@ -7,9 +7,11 @@
   "scripts": {
     "build": "babel src -d lib",
     "playground": "node devServer.js",
+    "prepublish": "npm run build",
     "lint": "eslint src/Slider.jsx src/utils/*.js",
     "test": "npm run build && npm run lint && npm run test:coverage",
-    "test:coverage": "babel-node node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- -R tap test/*-test.js"
+    "test:coverage": "babel-node node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- -R tap test/*-test.js",
+    "test:quick": "babel-node node_modules/.bin/_mocha -R tap test/*-test.js"
   },
   "repository": {
     "type": "git",
@@ -25,12 +27,16 @@
     "babel-preset-airbnb": "^1.0.1",
     "chai": "^3.4.1",
     "cosmos-js": "^0.7.0",
+    "coveralls": "^2.11.4",
     "eslint": "^1.8.0",
     "eslint-config-airbnb": "^1.0.0",
     "eslint-plugin-react": "^3.7.1",
     "express": "^4.13.3",
     "istanbul": "^0.4.0",
     "mocha": "^2.3.3",
+    "react": "^0.14.3",
+    "react-addons-test-utils": "^0.14.3",
+    "react-dom": "^0.14.3",
     "reagent": "^0.1.0",
     "sinon": "^1.17.2",
     "webpack": "^1.12.8",
