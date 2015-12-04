@@ -1,0 +1,35 @@
+.rheostat-vertical {
+  height: 100%;
+  width: 24px;
+}
+
+.rheostat-vertical .rheostat-background {
+  height: 100%;
+  top: 0px;
+  width: 15px;
+}
+
+.rheostat-vertical .rheostat-progress {
+  left: 2px;
+  width: 13px;
+}
+
+.rheostat-vertical .rheostat-handle {
+  left: -5px;
+  margin-top: -12px;
+}
+
+.rheostat-vertical .rheostat-handle:before,
+.rheostat-vertical .rheostat-handle:after {
+  left: 8px;
+  height: 1px;
+  width: 10px;
+}
+
+.rheostat-vertical .rheostat-handle:before {
+  top: 10px;
+}
+
+.rheostat-vertical .rheostat-handle:after {
+  top: 13px;
+}

@@ -1,0 +1,17 @@
+export default {
+  className: 'foobar',
+  max: 100,
+  min: 1,
+  onClick: () => console.log('Event: click'),
+  onKeyPress: () => console.log('Event: keypress'),
+  onSliderEnd: () => console.log('Event: sliderEnd'),
+  onSliderMove: () => console.log('Event: sliderMove'),
+  onSliderStart: () => console.log('Event: sliderStart'),
+  onValuesChanged: () => console.log('Event: valuesChanged'),
+  onValuesSet: () => console.log('Event: valuesSet'),
+  orientation: 'vertical',
+  snap: false,
+  snapPoints: [10, 20, 30, 40, 50, 60, 70, 80, 90],
+  tabIndex: 0,
+  values: [10, 90],
+};
