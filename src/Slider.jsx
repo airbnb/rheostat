@@ -31,6 +31,8 @@ export default React.createClass({
     className: PropTypes.string,
     // a custom handle you can pass in
     handle: PropTypeReactComponent,
+    // the tab index to start each handler on
+    handleTabIndexStart: PropTypes.number,
     // the maximum possible value
     max: PropTypes.number,
     // the minimum possible value
@@ -61,8 +63,6 @@ export default React.createClass({
     snap: PropTypes.bool,
     // the points we should snap to
     snapPoints: PropTypeArrOfNumber,
-    // the tab index to start each handler on
-    tabIndex: PropTypes.number,
     // the values
     values: PropTypeArrOfNumber,
   },
@@ -72,6 +72,7 @@ export default React.createClass({
       algorithm: linear,
       className: '',
       handle: 'div',
+      handleTabIndexStart: 1,
       max: SliderConstants.PERCENT_FULL,
       min: SliderConstants.PERCENT_EMPTY,
       orientation: 'horizontal',
@@ -79,7 +80,6 @@ export default React.createClass({
       progressBar: 'div',
       snap: false,
       snapPoints: [],
-      tabIndex: 1,
       values: [
         SliderConstants.PERCENT_EMPTY,
       ],
@@ -600,7 +600,7 @@ export default React.createClass({
               onTouchStart={this.startTouchSlide}
               role="slider"
               style={handleStyle}
-              tabIndex={this.props.tabIndex + idx}
+              tabIndex={this.props.handleTabIndexStart + idx}
             />
           );
         })}
