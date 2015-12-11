@@ -5,7 +5,8 @@
   "main": "lib/Slider.js",
   "jsnext:main": "src/Slider.jsx",
   "scripts": {
-    "build": "babel src -d lib",
+    "build": "npm run clean && babel src -d lib",
+    "clean": "rimraf lib",
     "playground": "node devServer.js",
     "prepublish": "npm run build",
     "lint": "eslint src/Slider.jsx src/utils/*.js",
@@ -38,6 +39,7 @@
     "react-addons-test-utils": "^0.14.3",
     "react-dom": "^0.14.3",
     "reagent": "^0.1.0",
+    "rimraf": "^2.3.2",
     "sinon": "^1.17.2",
     "webpack": "^1.12.8",
     "webpack-dev-middleware": "^1.2.0",
