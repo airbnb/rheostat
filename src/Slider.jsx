@@ -40,11 +40,11 @@ export default React.createClass({
     // called on key press
     onKeyPress: PropTypes.func,
     // called when you finish dragging a handle
-    onSliderEnd: PropTypes.func,
+    onSliderDragEnd: PropTypes.func,
     // called every time the slider is dragged and the value changes
-    onSliderMove: PropTypes.func,
+    onSliderDragMove: PropTypes.func,
     // called when you start dragging a handle
-    onSliderStart: PropTypes.func,
+    onSliderDragStart: PropTypes.func,
     // called whenever the user is actively changing the values on the slider
     onValuesChanged: PropTypes.func,
     // called whenever the user is done changing values on the slider
@@ -348,7 +348,7 @@ export default React.createClass({
     document.addEventListener('touchmove', this.handleTouchSlide, false);
     document.addEventListener('touchend', this.endSlide, false);
 
-    if (this.props.onSliderStart) this.props.onSliderStart();
+    if (this.props.onSliderDragStart) this.props.onSliderDragStart();
 
     this.killEvent(ev);
   },
@@ -388,7 +388,7 @@ export default React.createClass({
     if (this.canMove(idx, positionPercent)) {
       // update mouse positions
       this.setState({ x, y });
-      if (this.props.onSliderMove) this.props.onSliderMove();
+      if (this.props.onSliderDragMove) this.props.onSliderDragMove();
     }
   },
 
@@ -408,7 +408,7 @@ export default React.createClass({
       document.detachEvent('onmouseup', this.endSlide);
     }
 
-    if (this.props.onSliderEnd) this.props.onSliderEnd();
+    if (this.props.onSliderDragEnd) this.props.onSliderDragEnd();
     if (this.props.snap) {
       const positionPercent = this.getSnapPosition(this.state.handlePos[idx]);
       this.slideTo(idx, positionPercent, true);

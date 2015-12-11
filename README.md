@@ -56,9 +56,9 @@ of the bar to set a value.
 ```js
   onClick: PropTypes.func
   onKeyPress: PropTypes.func
-  onSliderEnd: PropTypes.func
-  onSliderMove: PropTypes.func
-  onSliderStart: PropTypes.func
+  onSliderDragEnd: PropTypes.func
+  onSliderDragMove: PropTypes.func
+  onSliderDragStart: PropTypes.func
   onValuesChanged: PropTypes.func
   onValuesSet: PropTypes.func
 ```
