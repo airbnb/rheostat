@@ -1,4 +1,4 @@
-import { shallow, describeWithDOM, mount } from 'reagent';
+import { shallow, describeWithDOM, mount } from 'enzyme';
 import React from 'react';
 import Slider from '../';
 import sinon from 'sinon';
@@ -112,7 +112,9 @@ describeWithDOM('<Slider />', () => {
       const onValuesChanged = sinon.spy();
       const slider = mount(<Slider onValuesChanged={onValuesChanged} values={[50]} />);
 
-      slider.setProps({ values: [80] });
+      // TODO passing on onValuesChanged because of a bug with enzyme
+      // https://github.com/airbnb/enzyme/issues/69
+      slider.setProps({ onValuesChanged, values: [80] });
 
       assert.isTrue(onValuesChanged.calledOnce, 'updateNewValues was called');
 
@@ -120,21 +122,21 @@ describeWithDOM('<Slider />', () => {
     });
 
     it('should move the values if the min is changed to be larger', () => {
-      const slider = mount(<Slider values={[50]} />);
+      const slider = shallow(<Slider values={[50]} />);
       slider.setProps({ min: 80 });
 
       assert.include(slider.state('values'), 80, 'values was updated');
     });
 
     it('should move the values if the max is changed to be smaller', () => {
-      const slider = mount(<Slider values={[50]} />);
+      const slider = shallow(<Slider values={[50]} />);
       slider.setProps({ max: 20 });
 
       assert.include(slider.state('values'), 20, 'values was updated');
     });
 
     it('should add handles', () => {
-      const slider = mount(<Slider />);
+      const slider = shallow(<Slider />);
       assert(slider.state('values').length === 1, 'one handle exists');
       assert(slider.state('handlePos').length === 1, 'one handle exists');
 
