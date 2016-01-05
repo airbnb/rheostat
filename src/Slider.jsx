@@ -37,6 +37,8 @@ export default React.createClass({
     min: PropTypes.number,
     // called on click
     onClick: PropTypes.func,
+    // called whenever the user is done changing values on the slider
+    onChange: PropTypes.func,
     // called on key press
     onKeyPress: PropTypes.func,
     // called when you finish dragging a handle
@@ -46,9 +48,8 @@ export default React.createClass({
     // called when you start dragging a handle
     onSliderDragStart: PropTypes.func,
     // called whenever the user is actively changing the values on the slider
-    onValuesChanged: PropTypes.func,
-    // called whenever the user is done changing values on the slider
-    onValuesSet: PropTypes.func,
+    // (dragging, clicked, keypress)
+    onValuesUpdated: PropTypes.func,
     // the orientation
     orientation: PropTypes.oneOf(['horizontal', 'vertical']),
     // a component for rendering the pits
@@ -411,9 +412,9 @@ export default React.createClass({
     if (this.props.onSliderDragEnd) this.props.onSliderDragEnd();
     if (this.props.snap) {
       const positionPercent = this.getSnapPosition(this.state.handlePos[idx]);
-      this.slideTo(idx, positionPercent, true);
-    } else if (this.props.onValuesSet) {
-      this.props.onValuesSet(this.getPublicState());
+      this.slideTo(idx, positionPercent, () => this.fireChangeEvent());
+    } else {
+      this.fireChangeEvent();
     }
   },
 
@@ -444,7 +445,7 @@ export default React.createClass({
     const validPositionPercent = this.getSnapPosition(positionPercent);
 
     // Move the handle there
-    this.slideTo(handleId, validPositionPercent, true);
+    this.slideTo(handleId, validPositionPercent, () => this.fireChangeEvent());
 
     if (this.props.onClick) this.props.onClick();
   },
@@ -463,7 +464,7 @@ export default React.createClass({
     if (proposedPercentage === null) return;
 
     if (this.canMove(idx, proposedPercentage)) {
-      this.slideTo(idx, proposedPercentage, true);
+      this.slideTo(idx, proposedPercentage, () => this.fireChangeEvent());
       if (this.props.onKeyPress) this.props.onKeyPress();
     }
 
@@ -526,12 +527,17 @@ export default React.createClass({
   },
 
   // istanbul ignore next
-  slideTo(idx, proposedPosition, commitValues) {
+  fireChangeEvent() {
+    if (this.props.onChange) this.props.onChange(this.getPublicState());
+  },
+
+  // istanbul ignore next
+  slideTo(idx, proposedPosition, onAfterSet) {
     const nextState = this.getNextState(idx, proposedPosition);
 
     this.setState(nextState, () => {
-      if (this.props.onValuesChanged) this.props.onValuesChanged(this.getPublicState());
-      if (commitValues && this.props.onValuesSet) this.props.onValuesSet(this.getPublicState());
+      if (this.props.onValuesUpdated) this.props.onValuesUpdated(this.getPublicState());
+      if (onAfterSet) onAfterSet();
     });
   },
 
@@ -555,15 +561,7 @@ export default React.createClass({
         );
       }),
       values: nextValues,
-    }, () => {
-      if (this.props.onValuesChanged) {
-        this.props.onValuesChanged({
-          max,
-          min,
-          values: nextValues,
-        });
-      }
-    });
+    }, () => this.fireChangeEvent());
   },
 
   killEvent(ev) {
