@@ -114,7 +114,7 @@ describeWithDOM('<Slider />', () => {
 
       // TODO passing on onValuesChanged because of a bug with enzyme
       // https://github.com/airbnb/enzyme/issues/69
-      slider.setProps({ onValuesChanged, values: [80] });
+      slider.setProps({ onChange, values: [80] });
 
       assert.isTrue(onChange.calledOnce, 'updateNewValues was called');
 
