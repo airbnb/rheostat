@@ -1,5 +1,6 @@
 export default {
   className: 'foobar',
+  handleTabIndexStart: 0,
   max: 100,
   min: 1,
   onClick: () => console.log('Event: click'),
@@ -11,6 +12,5 @@ export default {
   orientation: 'vertical',
   snap: false,
   snapPoints: [10, 20, 30, 40, 50, 60, 70, 80, 90],
-  tabIndex: 0,
   values: [10, 90],
 };
