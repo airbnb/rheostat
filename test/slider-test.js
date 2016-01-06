@@ -89,34 +89,34 @@ describeWithDOM('<Slider />', () => {
     });
 
     it('should not update values if we are sliding', () => {
-      const onValuesChanged = sinon.spy();
-      const slider = mount(<Slider onValuesChanged={onValuesChanged} values={[0]} />);
+      const onChange = sinon.spy();
+      const slider = mount(<Slider onChange={onChange} values={[0]} />);
 
       slider.setState({ slidingIndex: 0 });
 
       slider.setProps({ values: [50] });
 
-      assert(onValuesChanged.callCount === 0, 'updateNewValues was not called');
+      assert(onChange.callCount === 0, 'updateNewValues was not called');
     });
 
     it('should not update values if they are the same', () => {
-      const onValuesChanged = sinon.spy();
-      const slider = mount(<Slider onValuesChanged={onValuesChanged} values={[50]} />);
+      const onChange = sinon.spy();
+      const slider = mount(<Slider onChange={onChange} values={[50]} />);
 
       slider.setProps({ values: [50] });
 
-      assert(onValuesChanged.callCount === 0, 'updateNewValues was not called');
+      assert(onChange.callCount === 0, 'updateNewValues was not called');
     });
 
     it('should update values when they change', () => {
-      const onValuesChanged = sinon.spy();
-      const slider = mount(<Slider onValuesChanged={onValuesChanged} values={[50]} />);
+      const onChange = sinon.spy();
+      const slider = mount(<Slider onChange={onChange} values={[50]} />);
 
       // TODO passing on onValuesChanged because of a bug with enzyme
       // https://github.com/airbnb/enzyme/issues/69
       slider.setProps({ onValuesChanged, values: [80] });
 
-      assert.isTrue(onValuesChanged.calledOnce, 'updateNewValues was called');
+      assert.isTrue(onChange.calledOnce, 'updateNewValues was called');
 
       assert.include(slider.state('values'), 80, 'new value is reflected in state');
     });

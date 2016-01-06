@@ -27,7 +27,7 @@ export default class LabeledSlider extends React.Component {
       }}>
         <Rheostat
           {...this.props}
-          onValuesChanged={this.updateValue}
+          onValuesUpdated={this.updateValue}
           values={this.state.values}
         />
         <ol>

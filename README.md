@@ -47,20 +47,21 @@ of `values` on the slider.
   pitPoints: PropTypes.arrayOf(PropTypes.number)
 ```
 
-Event handlers. Note, `onValuesChanged` gets called every time the value is changed
-(while dragging) whereas `onValuesSet` is only called once the values are set (once dragging ends).
+NOTE: `onChange` is called whenever the value is changed and committed. This happens at the end of
+a drag, keypress, or click event. `onChange` is recommended when you wish to persist the values.
 
-`onValuesSet` is called on every key press, when dragging ends, or if a user clicks on any part
-of the bar to set a value.
+`onValuesUpdated` is a convenience event that is triggered while the value is being actively
+changed. This includes dragging, click, or keypress. `onValuesUpdated` is recommended if you need
+to work with the values before they're committed.
 
 ```js
+  onChange: PropTypes.func
   onClick: PropTypes.func
   onKeyPress: PropTypes.func
   onSliderDragEnd: PropTypes.func
   onSliderDragMove: PropTypes.func
   onSliderDragStart: PropTypes.func
-  onValuesChanged: PropTypes.func
-  onValuesSet: PropTypes.func
+  onValuesUpdated: PropTypes.func
 ```
 
 `snap` is a boolean which controls the slider's snapping behavior.

@@ -91,7 +91,7 @@ class FluxExample extends React.Component {
       }}>
         <Rheostat
           {...this.props}
-          onValuesChanged={this.valuesChanged}
+          onValuesUpdated={this.valuesChanged}
         />
         <div>
           <h3>Change the values</h3>
