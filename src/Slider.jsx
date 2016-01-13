@@ -113,8 +113,8 @@ export default React.createClass({
     );
 
     const valuesChanged = (
-      this.props.values.length !== nextProps.values.length ||
-      this.props.values.some((value, idx) => nextProps.values[idx] !== value)
+      this.state.values.length !== nextProps.values.length ||
+      this.state.values.some((value, idx) => nextProps.values[idx] !== value)
     );
 
     const orientationChanged = (
