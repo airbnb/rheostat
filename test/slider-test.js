@@ -1,6 +1,6 @@
 import { shallow, describeWithDOM, mount } from 'enzyme';
 import React from 'react';
-import Slider from '../';
+import Slider from '../src/Slider';
 import sinon from 'sinon';
 import { assert } from 'chai';
 import { KEYS } from '../lib/constants/SliderConstants';
