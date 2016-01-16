@@ -112,9 +112,7 @@ describeWithDOM('<Slider />', () => {
       const onChange = sinon.spy();
       const slider = mount(<Slider onChange={onChange} values={[50]} />);
 
-      // TODO passing on onValuesChanged because of a bug with enzyme
-      // https://github.com/airbnb/enzyme/issues/69
-      slider.setProps({ onChange, values: [80] });
+      slider.setProps({ values: [80] });
 
       assert.isTrue(onChange.calledOnce, 'updateNewValues was called');
 
