@@ -88,6 +88,18 @@ describeWithDOM('<Slider />', () => {
       );
     });
 
+    it('should not call onChange twice if values are the same as what is in state', () => {
+      const onChange = sinon.spy();
+      const slider = mount(<Slider onChange={onChange} values={[0]} />);
+
+      // programatically change values like if the slider was dragged
+      slider.setState({ values: [10] });
+
+      slider.setProps({ values: [10] });
+
+      assert(onChange.callCount === 0, 'onChange was not called');
+    });
+
     it('should not update values if we are sliding', () => {
       const onChange = sinon.spy();
       const slider = mount(<Slider onChange={onChange} values={[0]} />);
