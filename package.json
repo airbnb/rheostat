@@ -19,7 +19,7 @@
     "url": "git@github.com:airbnb/rheostat.git"
   },
   "author": "Josh Perez <josh.perez@airbnb.com>",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "devDependencies": {
     "alt": "^0.17.9",
     "babel": "^5.8.34",
