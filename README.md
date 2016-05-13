@@ -93,7 +93,7 @@ The values, by default 0 and 100.
 
 ## Usage
 
-> Important: Make sure to include the [css file](slider.css) or feel free to create your own.
+> Important: Make sure to include the [css file](css/slider.css) or feel free to create your own.
 
 * Simple.
 
