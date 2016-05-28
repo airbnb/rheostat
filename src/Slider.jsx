@@ -1,18 +1,85 @@
 import * as SliderConstants from './constants/SliderConstants';
 import React, { PropTypes } from 'react';
 import linear from './algorithms/linear';
+import { StyleSheet, css } from 'aphrodite';
+
+const handleGrab = {
+  backgroundColor: '#dadfe8',
+  content: '',
+  display: 'block',
+  position: 'absolute',
+};
+
+const styles = StyleSheet.create({
+  main: {
+    overflow: 'visible',
+  },
+
+  background: {
+    backgroundColor: '#fcfcfc',
+    border: '1px solid #d8d8d8',
+    position: 'relative',
+  },
+
+  progress: {
+    backgroundColor: '#abc4e8',
+    position: 'absolute',
+  },
+
+  handle: {
+    ':after': handleGrab,
+    ':before': handleGrab,
+    backgroundColor: '#fff',
+    border: '1px solid #d8d8d8',
+    borderRadius: '20%',
+    height: 24,
+    outline: 'none',
+    width: 24,
+    zIndex: 2,
+  },
+});
+
+const horizontal = StyleSheet.create({
+  main: {
+    height: 24,
+  },
+
+  background: {
+    height: 15,
+    top: 0,
+    width: '100%',
+  },
+
+  progress: {
+    height: 13,
+    top: 2,
+  },
+
+  handle: {
+    marginLeft: -12,
+    top: -5,
+
+    ':before': {
+      left: 10,
+
+      top: 7,
+      height: 10,
+      width: 1,
+    },
+
+    ':after': {
+      left: 13,
+
+      top: 7,
+      height: 10,
+      width: 1,
+    },
+  },
+});
 
 // istanbul ignore next
 function getDOMNode(node) {
   return React.version.indexOf('0.14') > -1 ? node : node.getDOMNode();
-}
-
-function getClassName(props) {
-  const orientation = props.orientation === 'vertical'
-    ? 'rheostat-vertical'
-    : 'rheostat-horizontal';
-
-  return ['rheostat', orientation].concat(props.className.split(' ')).join(' ');
 }
 
 const PropTypeArrOfNumber = PropTypes.arrayOf(PropTypes.number);
@@ -27,8 +94,6 @@ export default React.createClass({
     }),
     // any children you pass in
     children: PropTypes.any,
-    // standard class name you'd like to apply to the root element
-    className: PropTypes.string,
     // a custom handle you can pass in
     handle: PropTypeReactComponent,
     // the tab index to start each handler on
@@ -71,7 +136,6 @@ export default React.createClass({
   getDefaultProps() {
     return {
       algorithm: linear,
-      className: '',
       handle: 'div',
       handleTabIndexStart: 1,
       max: SliderConstants.PERCENT_FULL,
@@ -91,7 +155,6 @@ export default React.createClass({
     const { max, min, values } = this.props;
 
     return {
-      className: getClassName(this.props),
       handlePos: values.map((value) => {
         return this.props.algorithm.getPosition(
           value,
@@ -117,16 +180,13 @@ export default React.createClass({
       this.state.values.some((value, idx) => nextProps.values[idx] !== value)
     );
 
-    const orientationChanged = (
-      nextProps.className !== this.props.className ||
-      nextProps.orientation !== this.props.orientation
-    );
-
-    if (orientationChanged) {
-      this.setState({
-        className: getClassName(nextProps),
-      });
-    }
+    // XXX
+//     const orientationChanged = nextProps.orientation !== this.props.orientation;
+//     if (orientationChanged) {
+//       this.setState({
+//         className: getClassName(nextProps),
+//       });
+//     }
 
     if (minMaxChanged || valuesChanged) this.updateNewValues(nextProps);
   },
@@ -574,12 +634,12 @@ export default React.createClass({
   render() {
     return (
       <div
-        className={this.state.className}
+        className={css(styles.main, horizontal.main)}
         ref="rheostat"
         onClick={this.handleClick}
         style={{ position: 'relative' }}
       >
-        <div className="rheostat-background" />
+        <div className={css(styles.background, horizontal.background)} />
         {this.state.handlePos.map((pos, idx) => {
           const handleStyle = this.props.orientation === 'vertical'
             ? { top: `${pos}%`, position: 'absolute' }
@@ -591,7 +651,7 @@ export default React.createClass({
               aria-valuemin={this.getMinValue(idx)}
               aria-valuenow={this.state.values[idx]}
               data-handle-key={idx}
-              className="rheostat-handle"
+              className={css(styles.handle, horizontal.handle)}
               key={idx}
               onKeyDown={this.handleKeydown}
               onMouseDown={this.startMouseSlide}
@@ -609,7 +669,7 @@ export default React.createClass({
 
           return (
             <this.props.progressBar
-              className="rheostat-progress"
+              className={css(styles.progress, horizontal.progress)}
               key={idx}
               style={this.getProgressStyle(idx)}
             />
