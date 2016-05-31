@@ -119,9 +119,9 @@ ReactDOM.render((
 
 ## Live Playground
 
-For more examples you can check out the live playground.
+For more examples you can check out the storybook.
 
 * Clone this repo on your machine.
 * `npm install`
-* `npm run playground`
-* Visit `http://localhost:8989/`.
+* `npm run storybook`
+* Visit `http://localhost:9001/`.
