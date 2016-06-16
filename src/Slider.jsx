@@ -334,10 +334,6 @@ export default React.createClass({
 
   // istanbul ignore next
   startMouseSlide(ev) {
-    if (this.props.disabled) {
-      return;
-    }
-
     this.setStartSlide(ev, ev.clientX, ev.clientY);
 
     if (typeof document.addEventListener === 'function') {
@@ -353,10 +349,6 @@ export default React.createClass({
 
   // istanbul ignore next
   startTouchSlide(ev) {
-    if (this.props.disabled) {
-      return;
-    }
-
     if (ev.changedTouches.length > 1) return;
 
     const touch = ev.changedTouches[0];
@@ -437,10 +429,6 @@ export default React.createClass({
 
   // istanbul ignore next
   handleClick(ev) {
-    if (this.props.disabled) {
-      return;
-    }
-
     // if we're coming off of the end of a slide don't handle the click also
     if (this.state.slidingIndex === -1) {
       this.setState({ slidingIndex: null });
@@ -473,10 +461,6 @@ export default React.createClass({
 
   // istanbul ignore next
   handleKeydown(ev) {
-    if (this.props.disabled) {
-      return;
-    }
-
     const idx = this.getHandleFor(ev);
 
     if (ev.keyCode === SliderConstants.KEYS.ESC) {
@@ -597,11 +581,13 @@ export default React.createClass({
   },
 
   render() {
+    const disabled = this.props.disabled;
+
     return (
       <div
         className={this.state.className}
         ref="rheostat"
-        onClick={this.handleClick}
+        onClick={!disabled && this.handleClick}
         style={{ position: 'relative' }}
       >
         <div className="rheostat-background" />
@@ -615,13 +601,13 @@ export default React.createClass({
               aria-valuemax={this.getMaxValue(idx)}
               aria-valuemin={this.getMinValue(idx)}
               aria-valuenow={this.state.values[idx]}
-              aria-disabled={this.props.disabled}
+              aria-disabled={disabled}
               data-handle-key={idx}
               className="rheostat-handle"
               key={idx}
-              onKeyDown={this.handleKeydown}
-              onMouseDown={this.startMouseSlide}
-              onTouchStart={this.startTouchSlide}
+              onKeyDown={!disabled && this.handleKeydown}
+              onMouseDown={!disabled && this.startMouseSlide}
+              onTouchStart={!disabled && this.startTouchSlide}
               role="slider"
               style={handleStyle}
               tabIndex={this.props.handleTabIndexStart + idx}
