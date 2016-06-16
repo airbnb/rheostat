@@ -178,5 +178,8 @@ storiesOf('Slider', module)
   ))
   .add('Vertical', () => (
     <LabeledSlider orientation="vertical" />
+  ))
+  .add('Disabled', () => (
+    <LabeledSlider disabled />
   ));
 

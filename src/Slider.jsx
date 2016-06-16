@@ -29,6 +29,8 @@ export default React.createClass({
     children: PropTypes.any,
     // standard class name you'd like to apply to the root element
     className: PropTypes.string,
+    // prevent the slider from moving when clicked
+    disabled: PropTypes.bool,
     // a custom handle you can pass in
     handle: PropTypeReactComponent,
     // the tab index to start each handler on
@@ -72,6 +74,7 @@ export default React.createClass({
     return {
       algorithm: linear,
       className: '',
+      disabled: false,
       handle: 'div',
       handleTabIndexStart: 1,
       max: SliderConstants.PERCENT_FULL,
@@ -121,6 +124,12 @@ export default React.createClass({
       nextProps.className !== this.props.className ||
       nextProps.orientation !== this.props.orientation
     );
+
+    const disabledChanged = nextProps.disabled !== this.props.disabled;
+
+    if (disabledChanged) {
+      this.endSlide();
+    }
 
     if (orientationChanged) {
       this.setState({
@@ -325,6 +334,10 @@ export default React.createClass({
 
   // istanbul ignore next
   startMouseSlide(ev) {
+    if (this.props.disabled) {
+      return;
+    }
+
     this.setStartSlide(ev, ev.clientX, ev.clientY);
 
     if (typeof document.addEventListener === 'function') {
@@ -335,11 +348,15 @@ export default React.createClass({
       document.attachEvent('onmouseup', this.endSlide);
     }
 
-    return this.killEvent(ev);
+    this.killEvent(ev);
   },
 
   // istanbul ignore next
   startTouchSlide(ev) {
+    if (this.props.disabled) {
+      return;
+    }
+
     if (ev.changedTouches.length > 1) return;
 
     const touch = ev.changedTouches[0];
@@ -420,6 +437,10 @@ export default React.createClass({
 
   // istanbul ignore next
   handleClick(ev) {
+    if (this.props.disabled) {
+      return;
+    }
+
     // if we're coming off of the end of a slide don't handle the click also
     if (this.state.slidingIndex === -1) {
       this.setState({ slidingIndex: null });
@@ -452,6 +473,10 @@ export default React.createClass({
 
   // istanbul ignore next
   handleKeydown(ev) {
+    if (this.props.disabled) {
+      return;
+    }
+
     const idx = this.getHandleFor(ev);
 
     if (ev.keyCode === SliderConstants.KEYS.ESC) {
@@ -590,6 +615,7 @@ export default React.createClass({
               aria-valuemax={this.getMaxValue(idx)}
               aria-valuemin={this.getMinValue(idx)}
               aria-valuenow={this.state.values[idx]}
+              aria-disabled={this.props.disabled}
               data-handle-key={idx}
               className="rheostat-handle"
               key={idx}

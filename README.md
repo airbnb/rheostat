@@ -91,6 +91,12 @@ The values, by default 0 and 100.
   values: PropTypes.arrayOf(PropTypes.number)
 ```
 
+You can disable the slider to prevent the user from moving it.
+
+```js
+  disabled: PropTypes.bool
+```
+
 ## Usage
 
 > Important: Make sure to include the [css file](css/slider.css) or feel free to create your own.
