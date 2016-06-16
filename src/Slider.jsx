@@ -125,7 +125,7 @@ export default React.createClass({
       nextProps.orientation !== this.props.orientation
     );
 
-    const disabledChanged = nextProps.disabled !== this.props.disabled;
+    const willBeDisabled = nextProps.disabled && !this.props.disabled;
 
     if (orientationChanged) {
       this.setState({
@@ -135,7 +135,7 @@ export default React.createClass({
 
     if (minMaxChanged || valuesChanged) this.updateNewValues(nextProps);
 
-    if (disabledChanged) {
+    if (willBeDisabled && this.state.slidingIndex !== null) {
       this.endSlide();
     }
   },
