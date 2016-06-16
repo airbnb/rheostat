@@ -127,10 +127,6 @@ export default React.createClass({
 
     const disabledChanged = nextProps.disabled !== this.props.disabled;
 
-    if (disabledChanged) {
-      this.endSlide();
-    }
-
     if (orientationChanged) {
       this.setState({
         className: getClassName(nextProps),
@@ -138,6 +134,10 @@ export default React.createClass({
     }
 
     if (minMaxChanged || valuesChanged) this.updateNewValues(nextProps);
+
+    if (disabledChanged) {
+      this.endSlide();
+    }
   },
 
   getPublicState() {
