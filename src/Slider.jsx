@@ -582,6 +582,18 @@ export default React.createClass({
 
   render() {
     const disabled = this.props.disabled;
+    const {
+      algorithm,
+      children,
+      handle: Handle,
+      handleTabIndexStart,
+      max,
+      min,
+      orientation,
+      pitComponent: PitComponent,
+      pitPoints,
+      progressBar: ProgressBar,
+    } = this.props;
 
     return (
       <div
@@ -592,12 +604,12 @@ export default React.createClass({
       >
         <div className="rheostat-background" />
         {this.state.handlePos.map((pos, idx) => {
-          const handleStyle = this.props.orientation === 'vertical'
+          const handleStyle = orientation === 'vertical'
             ? { top: `${pos}%`, position: 'absolute' }
             : { left: `${pos}%`, position: 'absolute' };
 
           return (
-            <this.props.handle
+            <Handle
               aria-valuemax={this.getMaxValue(idx)}
               aria-valuemin={this.getMinValue(idx)}
               aria-valuenow={this.state.values[idx]}
@@ -610,7 +622,7 @@ export default React.createClass({
               onTouchStart={!disabled && this.startTouchSlide}
               role="slider"
               style={handleStyle}
-              tabIndex={this.props.handleTabIndexStart + idx}
+              tabIndex={handleTabIndexStart + idx}
             />
           );
         })}
@@ -620,24 +632,24 @@ export default React.createClass({
           }
 
           return (
-            <this.props.progressBar
+            <ProgressBar
               className="rheostat-progress"
               key={idx}
               style={this.getProgressStyle(idx)}
             />
           );
         })}
-        {this.props.pitComponent && this.props.pitPoints.map((n) => {
-          const pos = this.props.algorithm.getPosition(n, this.props.min, this.props.max);
-          const pitStyle = this.props.orientation === 'vertical'
+        {PitComponent && pitPoints.map((n) => {
+          const pos = algorithm.getPosition(n, min, max);
+          const pitStyle = orientation === 'vertical'
             ? { top: `${pos}%`, position: 'absolute' }
             : { left: `${pos}%`, position: 'absolute' };
 
           return (
-            <this.props.pitComponent key={n} style={pitStyle}>{n}</this.props.pitComponent>
+            <PitComponent key={n} style={pitStyle}>{n}</PitComponent>
           );
         })}
-        {this.props.children}
+        {children}
       </div>
     );
   },
