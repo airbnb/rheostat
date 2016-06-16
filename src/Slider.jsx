@@ -581,10 +581,10 @@ export default React.createClass({
   },
 
   render() {
-    const disabled = this.props.disabled;
     const {
       algorithm,
       children,
+      disabled,
       handle: Handle,
       handleTabIndexStart,
       max,
