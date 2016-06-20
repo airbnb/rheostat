@@ -4,7 +4,7 @@ import linear from './algorithms/linear';
 
 // istanbul ignore next
 function getDOMNode(node) {
-  return _react2['default'].version.replace('.', '') >= 140 ? node : node.getDOMNode();
+  return React.version.replace('.', '') >= 140 ? node : node.getDOMNode();
 }
 
 function getClassName(props) {
