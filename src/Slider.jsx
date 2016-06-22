@@ -29,6 +29,8 @@ export default React.createClass({
     children: PropTypes.any,
     // standard class name you'd like to apply to the root element
     className: PropTypes.string,
+    // prevent the slider from moving when clicked
+    disabled: PropTypes.bool,
     // a custom handle you can pass in
     handle: PropTypeReactComponent,
     // the tab index to start each handler on
@@ -72,6 +74,7 @@ export default React.createClass({
     return {
       algorithm: linear,
       className: '',
+      disabled: false,
       handle: 'div',
       handleTabIndexStart: 1,
       max: SliderConstants.PERCENT_FULL,
@@ -122,6 +125,8 @@ export default React.createClass({
       nextProps.orientation !== this.props.orientation
     );
 
+    const willBeDisabled = nextProps.disabled && !this.props.disabled;
+
     if (orientationChanged) {
       this.setState({
         className: getClassName(nextProps),
@@ -129,6 +134,10 @@ export default React.createClass({
     }
 
     if (minMaxChanged || valuesChanged) this.updateNewValues(nextProps);
+
+    if (willBeDisabled && this.state.slidingIndex !== null) {
+      this.endSlide();
+    }
   },
 
   getPublicState() {
@@ -335,7 +344,7 @@ export default React.createClass({
       document.attachEvent('onmouseup', this.endSlide);
     }
 
-    return this.killEvent(ev);
+    this.killEvent(ev);
   },
 
   // istanbul ignore next
@@ -572,33 +581,48 @@ export default React.createClass({
   },
 
   render() {
+    const {
+      algorithm,
+      children,
+      disabled,
+      handle: Handle,
+      handleTabIndexStart,
+      max,
+      min,
+      orientation,
+      pitComponent: PitComponent,
+      pitPoints,
+      progressBar: ProgressBar,
+    } = this.props;
+
     return (
       <div
         className={this.state.className}
         ref="rheostat"
-        onClick={this.handleClick}
+        onClick={!disabled && this.handleClick}
         style={{ position: 'relative' }}
       >
         <div className="rheostat-background" />
         {this.state.handlePos.map((pos, idx) => {
-          const handleStyle = this.props.orientation === 'vertical'
+          const handleStyle = orientation === 'vertical'
             ? { top: `${pos}%`, position: 'absolute' }
             : { left: `${pos}%`, position: 'absolute' };
 
           return (
-            <this.props.handle
+            <Handle
               aria-valuemax={this.getMaxValue(idx)}
               aria-valuemin={this.getMinValue(idx)}
               aria-valuenow={this.state.values[idx]}
+              aria-disabled={disabled}
               data-handle-key={idx}
               className="rheostat-handle"
               key={idx}
-              onKeyDown={this.handleKeydown}
-              onMouseDown={this.startMouseSlide}
-              onTouchStart={this.startTouchSlide}
+              onKeyDown={!disabled && this.handleKeydown}
+              onMouseDown={!disabled && this.startMouseSlide}
+              onTouchStart={!disabled && this.startTouchSlide}
               role="slider"
               style={handleStyle}
-              tabIndex={this.props.handleTabIndexStart + idx}
+              tabIndex={handleTabIndexStart + idx}
             />
           );
         })}
@@ -608,24 +632,24 @@ export default React.createClass({
           }
 
           return (
-            <this.props.progressBar
+            <ProgressBar
               className="rheostat-progress"
               key={idx}
               style={this.getProgressStyle(idx)}
             />
           );
         })}
-        {this.props.pitComponent && this.props.pitPoints.map((n) => {
-          const pos = this.props.algorithm.getPosition(n, this.props.min, this.props.max);
-          const pitStyle = this.props.orientation === 'vertical'
+        {PitComponent && pitPoints.map((n) => {
+          const pos = algorithm.getPosition(n, min, max);
+          const pitStyle = orientation === 'vertical'
             ? { top: `${pos}%`, position: 'absolute' }
             : { left: `${pos}%`, position: 'absolute' };
 
           return (
-            <this.props.pitComponent key={n} style={pitStyle}>{n}</this.props.pitComponent>
+            <PitComponent key={n} style={pitStyle}>{n}</PitComponent>
           );
         })}
-        {this.props.children}
+        {children}
       </div>
     );
   },
