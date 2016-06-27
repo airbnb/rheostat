@@ -9,7 +9,7 @@
     "playground": "node devServer.js",
     "lint": "eslint src/Slider.jsx src/utils/*.js",
     "test": "npm run build && npm run lint && npm run test:coverage",
-    "test:coverage": "babel-node node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- -R tap test/*-test.js"
+    "test:coverage": "babel-node node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- -R tap 'test/**/*-test.js'"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
     "babel-core": "^5.8.34",
     "babel-loader": "^5.4.0",
     "babel-preset-airbnb": "^1.0.1",
+    "casual": "^1.5.3",
     "chai": "^3.4.1",
     "cosmos-js": "^0.7.0",
     "eslint": "^1.8.0",
