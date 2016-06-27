@@ -4,12 +4,12 @@ import geometric from '../../lib/algorithms/geometric';
 
 describe('geometric algorithm', () => {
   it('should have inverse functions for getPosition and getValue', () => {
-      const min = casual.integer(0, 100);
-      const max = casual.integer(900, 1000);
-      const originalPosition = casual.integer(100, 900);
-      const value = geometric.getValue(originalPosition, min, max);
-      const positionFromValue = geometric.getPosition(value, min, max);
-      assert.equal(Math.round(positionFromValue), originalPosition);
+    const min = casual.integer(0, 100);
+    const max = casual.integer(900, 1000);
+    const originalPosition = casual.integer(100, 900);
+    const value = geometric.getValue(originalPosition, min, max);
+    const positionFromValue = geometric.getPosition(value, min, max);
+    assert.equal(Math.round(positionFromValue), originalPosition);
   });
 
   it('should handle the minimum end of the range correctly', () => {
