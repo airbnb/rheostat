@@ -10,7 +10,7 @@
 
 ## Props
 
-The algorithm, by default [`linear`](src/utils/linear.js), the slider will use. Feel free to write
+The algorithm, by default [`linear`](src/algorithms/linear.js), the slider will use. Feel free to write
 your own as long as it conforms to the shape.
 
 ```js
