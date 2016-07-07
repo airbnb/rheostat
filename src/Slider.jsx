@@ -2,11 +2,6 @@ import * as SliderConstants from './constants/SliderConstants';
 import React, { PropTypes } from 'react';
 import linear from './algorithms/linear';
 
-// istanbul ignore next
-function getDOMNode(node) {
-  return React.version.indexOf('0.14') > -1 ? node : node.getDOMNode();
-}
-
 function getClassName(props) {
   const orientation = props.orientation === 'vertical'
     ? 'rheostat-vertical'
@@ -150,7 +145,8 @@ export default React.createClass({
 
   // istanbul ignore next
   getSliderBoundingBox() {
-    const node = getDOMNode(this.refs.rheostat);
+    const { rheostat } = this.refs;
+    const node = rheostat.getDOMNode ? rheostat.getDOMNode() : rheostat;
     const rect = node.getBoundingClientRect();
 
     return {
