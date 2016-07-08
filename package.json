@@ -11,7 +11,7 @@
     "lint": "eslint src/Slider.jsx src/utils/*.js",
     "storybook": "start-storybook -p 9001",
     "test": "npm run build && npm run lint && npm run test:coverage",
-    "test:coverage": "babel-node node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- -R tap 'test/**/*-test.js'",
+    "test:coverage": "babel-node node_modules/.bin/babel-istanbul cover node_modules/.bin/_mocha -- -R tap 'test/**/*-test.js'",
     "test:quick": "babel-node node_modules/.bin/_mocha -R tap test/*-test.js"
   },
   "repository": {
