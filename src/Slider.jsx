@@ -4,7 +4,14 @@ import linear from './algorithms/linear';
 
 // istanbul ignore next
 function getDOMNode(node) {
-  return React.version.indexOf('0.14') > -1 ? node : node.getDOMNode();
+  // Fix for version 15.0.2
+  var version = _react2['default'].version;
+  var mainVersion = Number.parseInt(version.split('.')[0]);
+  if (mainVersion > 0) {
+    return node;
+  } else {
+    return version.indexOf('0.14') > -1 ? node : node.getDOMNode();
+  }
 }
 
 function getClassName(props) {
@@ -576,8 +583,15 @@ export default React.createClass({
   killEvent(ev) {
     ev.stopPropagation();
     ev.preventDefault();
-    ev.cancelBubble = true;
-    ev.returnValue = false;
+
+    // The problem is these variable will be null - https://facebook.github.io/react/docs/events.html#event-pooling
+    // This kill event is non-standard
+    // Doc here:
+    // https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/cancelBubble
+    // https://developer.mozilla.org/en-US/docs/Web/API/Event/returnValue
+    //ev.cancelBubble = true;
+    //ev.returnValue = false;
+    
   },
 
   render() {
