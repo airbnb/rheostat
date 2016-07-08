@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.1.2] - 2016-07-08
+
+### Fixed
+
+- React v15 support.
+
 ## [1.1.1] - 2016-06-27
 
 ### Added
