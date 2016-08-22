@@ -28,8 +28,6 @@ export default React.createClass({
     disabled: PropTypes.bool,
     // a custom handle you can pass in
     handle: PropTypeReactComponent,
-    // the tab index to start each handler on
-    handleTabIndexStart: PropTypes.number,
     // the maximum possible value
     max: PropTypes.number,
     // the minimum possible value
@@ -71,7 +69,6 @@ export default React.createClass({
       className: '',
       disabled: false,
       handle: 'div',
-      handleTabIndexStart: 1,
       max: SliderConstants.PERCENT_FULL,
       min: SliderConstants.PERCENT_EMPTY,
       orientation: 'horizontal',
@@ -582,7 +579,6 @@ export default React.createClass({
       children,
       disabled,
       handle: Handle,
-      handleTabIndexStart,
       max,
       min,
       orientation,
@@ -618,7 +614,7 @@ export default React.createClass({
               onTouchStart={!disabled && this.startTouchSlide}
               role="slider"
               style={handleStyle}
-              tabIndex={handleTabIndexStart + idx}
+              tabIndex={0}
             />
           );
         })}
