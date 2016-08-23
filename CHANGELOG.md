@@ -5,6 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.0.0] - 2016-08-22
+
+### Changed
+
+- A11y for tabbing between handles.
+- Changed slider handles from div to button.
+
 ## [1.1.2] - 2016-07-08
 
 ### Fixed
