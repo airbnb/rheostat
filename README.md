@@ -26,13 +26,6 @@ Custom class name that will be applied to the root of Rheostat.
   className: PropTypes.string
 ```
 
-The tab index to start the first handle on, by default 1. Successive handles will have a tabIndex
-of consecutive increasing order.
-
-```js
-  handleTabIndexStart: PropTypes.number
-```
-
 Custom React component overrides for both the handles, and the "progress" bar.
 
 ```js
