@@ -13,6 +13,12 @@ function getClassName(props) {
 const PropTypeArrOfNumber = PropTypes.arrayOf(PropTypes.number);
 const PropTypeReactComponent = PropTypes.oneOfType([PropTypes.func, PropTypes.string]);
 
+const Button = React.createClass({
+  render() {
+    return <button {...this.props} type="button" />;
+  },
+});
+
 export default React.createClass({
   propTypes: {
     // the algorithm to use
@@ -68,7 +74,7 @@ export default React.createClass({
       algorithm: linear,
       className: '',
       disabled: false,
-      handle: 'div',
+      handle: Button,
       max: SliderConstants.PERCENT_FULL,
       min: SliderConstants.PERCENT_EMPTY,
       orientation: 'horizontal',
