@@ -405,7 +405,7 @@ export default React.createClass({
   endSlide() {
     const idx = this.state.slidingIndex;
 
-    this.setState({ slidingIndex: -1 });
+    this.setState({ slidingIndex: null });
 
     if (typeof document.removeEventListener === 'function') {
       document.removeEventListener('mouseup', this.endSlide, false);
@@ -428,12 +428,6 @@ export default React.createClass({
 
   // istanbul ignore next
   handleClick(ev) {
-    // if we're coming off of the end of a slide don't handle the click also
-    if (this.state.slidingIndex === -1) {
-      this.setState({ slidingIndex: null });
-      return;
-    }
-
     if (ev.target.getAttribute('data-handle-key')) {
       return;
     }
@@ -615,6 +609,7 @@ export default React.createClass({
               data-handle-key={idx}
               className="rheostat-handle"
               key={idx}
+              onClick={this.killEvent}
               onKeyDown={!disabled && this.handleKeydown}
               onMouseDown={!disabled && this.startMouseSlide}
               onTouchStart={!disabled && this.startTouchSlide}
