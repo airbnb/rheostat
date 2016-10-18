@@ -2,17 +2,10 @@ import React, { PropTypes } from 'react';
 
 import * as SliderConstants from './constants/SliderConstants';
 import linear from './algorithms/linear';
+import { css, withStyles } from './themes/withStyles';
 
-// eslint-disable-next-line no-undef
-// const document = document;
-
-function getClassName(props) {
-  const orientation = props.orientation === 'vertical'
-    ? 'rheostat-vertical'
-    : 'rheostat-horizontal';
-
-  return ['rheostat', orientation].concat(props.className.split(' ')).join(' ');
-}
+const BACKGROUND_HEIGHT_UNITS = 1.5;
+const DEFAULT_HANDLE_WIDTH_UNITS = 4;
 
 const PropTypeArrOfNumber = PropTypes.arrayOf(PropTypes.number);
 const PropTypeReactComponent = PropTypes.oneOfType([PropTypes.func, PropTypes.string]);
@@ -26,9 +19,96 @@ function killEvent(ev) {
   ev.preventDefault();
 }
 
-function Button(props) {
-  return <button {...props} type="button" />;
+const stylePropTypes = {
+  orientation: PropTypes.string,
+  disabled: PropTypes.bool,
+  styles: PropTypes.object.isRequired,
+};
+
+const styleDefaults = {
+  orientation: 'horizontal',
+  disabled: false,
+};
+
+function StyledButton(props) {
+  const { styles, orientation, disabled, ...passProps } = props;
+  delete passProps.theme;
+  return (
+    <button
+      {...css(
+        styles.button,
+        orientation === 'vertical' ? styles.button_v : styles.button_h,
+        disabled && styles.button_disabled
+      )}
+      {...passProps}
+    />
+  );
 }
+StyledButton.propTypes = stylePropTypes;
+StyledButton.defaultProps = styleDefaults;
+
+const DefaultHandle = withStyles(({ color, unit }) => ({
+  button: {
+    width: DEFAULT_HANDLE_WIDTH_UNITS * unit,
+    height: DEFAULT_HANDLE_WIDTH_UNITS * unit,
+    borderWidth: unit / 4,
+    borderStyle: 'solid',
+    borderColor: color.buttons.secondaryBorder,
+    backgroundColor: color.white,
+    borderRadius: DEFAULT_HANDLE_WIDTH_UNITS * unit,
+    outline: 'none',
+    zIndex: 2,
+    boxShadow: `0 ${unit / 4}px ${unit / 4}px ${color.carousel}`,
+  },
+  button_h: {
+    marginLeft: -(DEFAULT_HANDLE_WIDTH_UNITS / 2) * unit,
+    top: ((BACKGROUND_HEIGHT_UNITS / 2) - (DEFAULT_HANDLE_WIDTH_UNITS / 2)) * unit,
+  },
+  button_v: {
+    marginTop: -(DEFAULT_HANDLE_WIDTH_UNITS / 2) * unit,
+    left: ((BACKGROUND_HEIGHT_UNITS / 2) - (DEFAULT_HANDLE_WIDTH_UNITS / 2)) * unit,
+  },
+  button_disabled: {
+    borderColor: color.buttons.secondaryDisabledBorder,
+  },
+}))(StyledButton);
+
+function StyledDiv(props) {
+  const { styles, orientation, disabled, ...passProps } = props;
+  delete passProps.theme;
+  return (
+    <div
+      {...css(
+        styles.div,
+        orientation === 'vertical' ? styles.div_v : styles.div_h,
+        disabled && styles.div_disabled
+      )}
+      {...passProps}
+    />
+  );
+}
+StyledDiv.propTypes = stylePropTypes;
+StyledDiv.defaultProps = styleDefaults;
+
+const DefaultProgressBar = withStyles(({ color, unit }) => ({
+  div: {
+    backgroundColor: color.buttons.secondaryBorder,
+    position: 'absolute',
+    borderRadius: BACKGROUND_HEIGHT_UNITS * unit,
+  },
+  div_h: {
+    height: BACKGROUND_HEIGHT_UNITS * unit,
+    top: 0,
+  },
+  div_v: {
+    width: BACKGROUND_HEIGHT_UNITS * unit,
+    left: 0,
+  },
+  div_disabled: {
+    backgroundColor: color.buttons.secondaryDisabledBorder,
+  },
+}))(StyledDiv);
+
 
 const propTypes = {
   // the algorithm to use
@@ -38,8 +118,6 @@ const propTypes = {
   }),
   // any children you pass in
   children: PropTypes.any,
-  // standard class name you'd like to apply to the root element
-  className: PropTypes.string,
   // prevent the slider from moving when clicked
   disabled: PropTypes.bool,
   // a custom handle you can pass in
@@ -77,18 +155,19 @@ const propTypes = {
   snapPoints: PropTypeArrOfNumber,
   // the values
   values: PropTypeArrOfNumber,
+  // react-with-styles export
+  styles: PropTypes.object.isRequired,
 };
 
 const defaultProps = {
   algorithm: linear,
-  className: '',
   disabled: false,
-  handle: Button,
+  handle: DefaultHandle,
+  progressBar: DefaultProgressBar,
   max: SliderConstants.PERCENT_FULL,
   min: SliderConstants.PERCENT_EMPTY,
   orientation: 'horizontal',
   pitPoints: [],
-  progressBar: 'div',
   snap: false,
   snapPoints: [],
   values: [
@@ -96,13 +175,12 @@ const defaultProps = {
   ],
 };
 
-class Rheostat extends React.Component {
+export class Rheostat extends React.Component {
   constructor(props) {
     super(props);
 
     const { max, min, values } = this.props;
     this.state = {
-      className: getClassName(this.props),
       handlePos: values.map(value => this.props.algorithm.getPosition(value, min, max)),
       handleDimensions: 0,
       mousePos: null,
@@ -148,18 +226,7 @@ class Rheostat extends React.Component {
       this.state.values.some((value, idx) => nextProps.values[idx] !== value)
     );
 
-    const orientationChanged = (
-      nextProps.className !== this.props.className ||
-      nextProps.orientation !== this.props.orientation
-    );
-
     const willBeDisabled = nextProps.disabled && !this.props.disabled;
-
-    if (orientationChanged) {
-      this.setState({
-        className: getClassName(nextProps),
-      });
-    }
 
     if (minMaxChanged || valuesChanged) this.updateNewValues(nextProps);
 
@@ -601,17 +668,25 @@ class Rheostat extends React.Component {
       pitComponent: PitComponent,
       pitPoints,
       progressBar: ProgressBar,
+      styles,
     } = this.props;
 
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div
-        className={this.state.className}
+        {...css(
+          styles.rheostat,
+          orientation === 'vertical' ? styles.rheostat_v : styles.rheostat_h
+        )}
         ref={(ref) => { this.rheostat = ref; }}
         onClick={!disabled && this.handleClick}
         style={{ position: 'relative' }}
       >
-        <div className="rheostat-background" />
+        <div
+          {...css(
+            styles.background,
+            orientation === 'vertical' ? styles.background_v : styles.background_h)}
+        />
         {this.state.handlePos.map((pos, idx) => {
           const handleStyle = orientation === 'vertical'
             ? { top: `${pos}%`, position: 'absolute' }
@@ -624,8 +699,9 @@ class Rheostat extends React.Component {
               aria-valuenow={this.state.values[idx]}
               aria-disabled={disabled}
               data-handle-key={idx}
-              className="rheostat-handle"
               key={idx}
+              orientation={orientation}
+              disabled={disabled}
               onKeyDown={!disabled && this.handleKeydown}
               onMouseDown={!disabled && this.startMouseSlide}
               onTouchStart={!disabled && this.startTouchSlide}
@@ -642,9 +718,9 @@ class Rheostat extends React.Component {
 
           return (
             <ProgressBar
-              className="rheostat-progress"
               key={idx}
               style={this.getProgressStyle(idx)}
+              disabled={disabled}
             />
           );
         })}
@@ -666,4 +742,30 @@ class Rheostat extends React.Component {
 Rheostat.propTypes = propTypes;
 Rheostat.defaultProps = defaultProps;
 
-export default Rheostat;
+export default withStyles(({ color, unit }) => ({
+  rheostat: {
+    overflow: 'visible',
+  },
+  rheostat_h: {
+    height: 4 * unit,
+  },
+  rheostat_v: {
+    height: '100%',
+    width: 4 * unit,
+  },
+  background: {
+    backgroundColor: color.accent.bgGray,
+    position: 'relative',
+    borderRadius: BACKGROUND_HEIGHT_UNITS * unit,
+  },
+  background_h: {
+    height: BACKGROUND_HEIGHT_UNITS * unit,
+    top: 0,
+    width: '100%',
+  },
+  background_v: {
+    width: BACKGROUND_HEIGHT_UNITS * unit,
+    top: 0,
+    height: '100%',
+  },
+}))(Rheostat);

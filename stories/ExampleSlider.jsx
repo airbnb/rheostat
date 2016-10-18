@@ -1,7 +1,8 @@
 import React from 'react';
+import { storiesOf, action } from '@kadira/storybook';
+
 import Rheostat from '../';
 import log10 from '../lib/algorithms/log10';
-import { storiesOf, action } from '@kadira/storybook';
 
 class LabeledSlider extends React.Component {
   constructor(props) {
@@ -64,6 +65,7 @@ storiesOf('Slider', module)
               height: 24,
               width: 24,
               zIndex: 3,
+              top: -8,
             })}
           />
         )
@@ -180,6 +182,10 @@ storiesOf('Slider', module)
     <LabeledSlider orientation="vertical" />
   ))
   .add('Disabled', () => (
-    <LabeledSlider disabled />
+    <LabeledSlider
+      disabled
+      min={1}
+      max={40}
+      values={[10]}
+    />
   ));
-

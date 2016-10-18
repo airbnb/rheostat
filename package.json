@@ -12,7 +12,8 @@
     "storybook": "start-storybook -p 9001",
     "test": "npm run build && npm run lint && npm run test:coverage",
     "test:coverage": "babel-node node_modules/.bin/babel-istanbul cover node_modules/.bin/_mocha -- -R tap 'test/**/*-test.js'",
-    "test:quick": "babel-node node_modules/.bin/_mocha -R tap test/*-test.js"
+    "test:quick": "babel-node node_modules/.bin/_mocha -R tap test/*-test.js",
+    "watch": "npm run clean && babel src --watch -d lib"
   },
   "repository": {
     "type": "git",
@@ -20,8 +21,13 @@
   },
   "author": "Josh Perez <josh.perez@airbnb.com>",
   "license": "MIT",
+  "dependencies": {
+    "color": "^0.11.3",
+    "global-cache": "^1.2.0"
+  },
   "devDependencies": {
     "@kadira/storybook": "^1.26.0",
+    "aphrodite": "^0.6.0",
     "babel-cli": "^6.9.0",
     "babel-istanbul": "^0.8.0",
     "babel-preset-airbnb": "^1.0.1",
@@ -36,6 +42,8 @@
     "react": "^0.14.3",
     "react-addons-test-utils": "^0.14.8",
     "react-dom": "^0.14.3",
+    "react-with-styles": "^1.0.0",
+    "react-with-styles-interface-aphrodite": "^1.0.0",
     "rimraf": "^2.3.2",
     "sinon": "^1.17.2",
     "style-loader": "^0.13.1"
