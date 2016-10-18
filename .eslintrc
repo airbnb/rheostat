@@ -1,7 +1,9 @@
 {
   "extends": "airbnb",
   "env": {
-    "es6": true
+    "es6": true,
+    "browser": true,
+    "mocha": true,
   },
   "ecmaFeatures": {
     "modules": true,
