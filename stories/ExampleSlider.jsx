@@ -59,24 +59,23 @@ storiesOf('Slider', module)
     <LabeledSlider />
   ))
   .add('Custom Handle', () => {
-    class MyHandle extends React.Component {
-      render() {
-        return (
-          <div
-            {...this.props}
-            style={Object.assign({}, this.props.style, {
-              backgroundColor: 'rgba(0, 15, 137, 0.5)',
-              border: '1px solid #000f89',
-              borderRadius: '100%',
-              cursor: 'ew-resize',
-              marginLeft: -13,
-              height: 24,
-              width: 24,
-              zIndex: 3,
-            })}
-          />
-        );
-      }
+    function MyHandle({ style, ...passProps }) {
+      return (
+        <div
+          {...passProps}
+          style={{
+            ...style,
+            backgroundColor: 'rgba(0, 15, 137, 0.5)',
+            border: '1px solid #000f89',
+            borderRadius: '100%',
+            cursor: 'ew-resize',
+            marginLeft: -13,
+            height: 24,
+            width: 24,
+            zIndex: 3,
+          }}
+        />
+      );
     }
     MyHandle.propTypes = {
       style: PropTypes.object,
@@ -148,20 +147,18 @@ storiesOf('Slider', module)
     />
   ))
   .add('Pits', () => {
-    class PitComponent extends React.Component {
-      render() {
-        const { style, children } = this.props;
-        return (
-          <div
-            style={Object.assign({}, style, {
-              background: '#a2a2a2',
-              width: 1,
-              height: children % 10 === 0 ? 12 : 8,
-              top: 20,
-            })}
-          />
-        );
-      }
+    function PitComponent({ style, children }) {
+      return (
+        <div
+          style={{
+            ...style,
+            background: '#a2a2a2',
+            width: 1,
+            height: children % 10 === 0 ? 12 : 8,
+            top: 20,
+          }}
+        />
+      );
     }
     PitComponent.propTypes = {
       style: PropTypes.object,

@@ -15,7 +15,7 @@ function testKeys(slider, tests) {
   });
 }
 
-const newSlider = props => new Slider(Object.assign({}, Slider.defaultProps, props));
+const newSlider = props => new Slider({ ...Slider.defaultProps, ...props });
 
 describeWithDOM('<Slider />', () => {
   describe('render', () => {
@@ -42,6 +42,7 @@ describeWithDOM('<Slider />', () => {
     it('renders pits if they are provided', () => {
       const pitRender = sinon.stub().returns(<div />);
 
+      // eslint-disable-next-line
       const PitComponent = React.createClass({
         render: pitRender,
       });
@@ -54,6 +55,7 @@ describeWithDOM('<Slider />', () => {
     it('renders pits if they are provided', () => {
       const pitRender = sinon.stub().returns(<div />);
 
+      // eslint-disable-next-line
       const PitComponent = React.createClass({
         render: pitRender,
       });
@@ -173,19 +175,6 @@ describe('Slider API', () => {
       assert.isTrue(has(state, 'min'), 'min exists');
       assert.isTrue(has(state, 'values'), 'values exists');
       assert(Object.keys(state).length === 3, 'only 3 properties are present');
-    });
-  });
-
-  describe('getHandleFor', () => {
-    it('should return the handle attribute', () => {
-      const slider = newSlider();
-      const handleId = slider.getHandleFor({
-        currentTarget: {
-          getAttribute: () => 2,
-        },
-      });
-
-      assert(handleId === 2, 'handle id was retrieved');
     });
   });
 
@@ -557,26 +546,6 @@ describe('Slider API', () => {
       });
 
       assert.isTrue(slider.canMove(0, 40), 'sure you can move here');
-    });
-  });
-
-  describe('killEvent', () => {
-    it('kills the event', () => {
-      const event = {
-        stopPropagation: sinon.spy(),
-        preventDefault: sinon.spy(),
-        cancelBubble: false,
-        returnValue: null,
-      };
-
-      const slider = newSlider();
-
-      slider.killEvent(event);
-
-      assert.isTrue(event.stopPropagation.calledOnce);
-      assert.isTrue(event.preventDefault.calledOnce);
-      assert.isTrue(event.cancelBubble);
-      assert.isFalse(event.returnValue);
     });
   });
 });

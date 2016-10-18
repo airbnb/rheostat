@@ -1,13 +1,11 @@
 {
   "extends": "airbnb",
   "rules": {
-    "id-length": 0,
+    "react/forbid-prop-types": 1,
+    "react/no-string-refs": 1,
     "react/no-multi-comp": 0,
     "react/prefer-es6-class": 0,
     "react/prefer-stateless-function": 0,
-    "react/forbid-prop-types": 1,
-    "react/no-string-refs": 1,
-    "no-param-reassign": 1,
     "jsx-a11y/no-static-element-interactions": 1,
   }
 }
