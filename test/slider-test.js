@@ -174,19 +174,6 @@ describe('Slider API', () => {
     });
   });
 
-  describe('getHandleFor', () => {
-    it('should return the handle attribute', () => {
-      const slider = newSlider();
-      const handleId = slider.getHandleFor({
-        currentTarget: {
-          getAttribute: () => 2,
-        },
-      });
-
-      assert(handleId === 2, 'handle id was retrieved');
-    });
-  });
-
   describe('getProgressStyle', () => {
     it('should get correct style for horizontal slider', () => {
       const slider = newSlider();
@@ -555,26 +542,6 @@ describe('Slider API', () => {
       });
 
       assert.isTrue(slider.canMove(0, 40), 'sure you can move here');
-    });
-  });
-
-  describe('killEvent', () => {
-    it('kills the event', () => {
-      const event = {
-        stopPropagation: sinon.spy(),
-        preventDefault: sinon.spy(),
-        cancelBubble: false,
-        returnValue: null,
-      };
-
-      const slider = newSlider();
-
-      slider.killEvent(event);
-
-      assert.isTrue(event.stopPropagation.calledOnce);
-      assert.isTrue(event.preventDefault.calledOnce);
-      assert.isTrue(event.cancelBubble);
-      assert.isFalse(event.returnValue);
     });
   });
 });
