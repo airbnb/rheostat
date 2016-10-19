@@ -8,9 +8,11 @@
     "build": "npm run clean && babel src -d lib",
     "clean": "rimraf lib",
     "prepublish": "npm run build",
-    "lint": "eslint src/Slider.jsx src/utils/*.js",
+    "lint": "eslint --ext .js,.jsx src",
     "storybook": "start-storybook -p 9001",
-    "test": "npm run build && npm run lint && npm run test:coverage",
+    "pretest": "npm run lint",
+    "test": "npm run build && npm run test:coverage",
+    "tests-only": "npm run build && npm run test:quick",
     "test:coverage": "babel-node node_modules/.bin/babel-istanbul cover node_modules/.bin/_mocha -- -R tap 'test/**/*-test.js'",
     "test:quick": "babel-node node_modules/.bin/_mocha -R tap test/*-test.js"
   },
