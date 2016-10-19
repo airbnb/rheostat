@@ -1,12 +1,5 @@
 {
   "extends": "airbnb",
-  "env": {
-    "es6": true
-  },
-  "ecmaFeatures": {
-    "modules": true,
-    "jsx": true
-  },
   "rules": {
     "id-length": 0,
     "react/no-multi-comp": 0
