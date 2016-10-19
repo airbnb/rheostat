@@ -1,5 +1,8 @@
-import * as SliderConstants from './constants/SliderConstants';
+/* globals document */
+
 import React, { PropTypes } from 'react';
+
+import * as SliderConstants from './constants/SliderConstants';
 import linear from './algorithms/linear';
 
 function getClassName(props) {
@@ -9,6 +12,8 @@ function getClassName(props) {
 
   return ['rheostat', orientation].concat(props.className.split(' ')).join(' ');
 }
+
+const has = Object.prototype.hasOwnProperty;
 
 const PropTypeArrOfNumber = PropTypes.arrayOf(PropTypes.number);
 const PropTypeReactComponent = PropTypes.oneOfType([PropTypes.func, PropTypes.string]);
@@ -93,13 +98,7 @@ export default React.createClass({
 
     return {
       className: getClassName(this.props),
-      handlePos: values.map((value) => {
-        return this.props.algorithm.getPosition(
-          value,
-          min,
-          max
-        );
-      }),
+      handlePos: values.map(value => this.props.algorithm.getPosition(value, min, max)),
       handleDimensions: 0,
       mousePos: null,
       sliderBox: {},
@@ -202,16 +201,16 @@ export default React.createClass({
     if (!handleNode) return 0;
 
     return this.props.orientation === 'vertical'
-      ? (handleNode.clientHeight / sliderBox.height) * SliderConstants.PERCENT_FULL / 2
-      : (handleNode.clientWidth / sliderBox.width) * SliderConstants.PERCENT_FULL / 2;
+      ? ((handleNode.clientHeight / sliderBox.height) * SliderConstants.PERCENT_FULL) / 2
+      : ((handleNode.clientWidth / sliderBox.width) * SliderConstants.PERCENT_FULL) / 2;
   },
 
   getClosestSnapPoint(value) {
     if (!this.props.snapPoints.length) return value;
 
-    return this.props.snapPoints.reduce((snapTo, snap) => {
-      return Math.abs(snapTo - value) < Math.abs(snap - value) ? snapTo : snap;
-    });
+    return this.props.snapPoints.reduce((snapTo, snap) => (
+      Math.abs(snapTo - value) < Math.abs(snap - value) ? snapTo : snap
+    ));
   },
 
   getSnapPosition(positionPercent) {
@@ -252,11 +251,11 @@ export default React.createClass({
     const stepMultiplier = {
       [SliderConstants.KEYS.LEFT]: v => v * -1,
       [SliderConstants.KEYS.RIGHT]: v => v * 1,
-      [SliderConstants.KEYS.PAGE_DOWN]: v => v > 1 ? -v : v * -10,
-      [SliderConstants.KEYS.PAGE_UP]: v => v > 1 ? v : v * 10,
+      [SliderConstants.KEYS.PAGE_DOWN]: v => (v > 1 ? -v : v * -10),
+      [SliderConstants.KEYS.PAGE_UP]: v => (v > 1 ? v : v * 10),
     };
 
-    if (stepMultiplier.hasOwnProperty(keyCode)) {
+    if (has.call(stepMultiplier, keyCode)) {
       proposedPercentage += stepMultiplier[keyCode](stepValue);
 
       if (shouldSnap) {
@@ -297,15 +296,15 @@ export default React.createClass({
 
     const actualPosition = this.validatePosition(idx, proposedPosition);
 
-    const nextHandlePos = handlePos.map((pos, index) => {
-      return index === idx ? actualPosition : pos;
-    });
+    const nextHandlePos = handlePos.map((pos, index) => (
+      index === idx ? actualPosition : pos
+    ));
 
     return {
       handlePos: nextHandlePos,
-      values: nextHandlePos.map((pos) => {
-        return this.props.algorithm.getValue(pos, min, max);
-      }),
+      values: nextHandlePos.map(pos => (
+        this.props.algorithm.getValue(pos, min, max)
+      )),
     };
   },
 
@@ -389,8 +388,8 @@ export default React.createClass({
     const { slidingIndex: idx, sliderBox } = this.state;
 
     const positionPercent = this.props.orientation === 'vertical'
-      ? (y - sliderBox.top) / sliderBox.height * SliderConstants.PERCENT_FULL
-      : (x - sliderBox.left) / sliderBox.width * SliderConstants.PERCENT_FULL;
+      ? ((y - sliderBox.top) / sliderBox.height) * SliderConstants.PERCENT_FULL
+      : ((x - sliderBox.left) / sliderBox.width) * SliderConstants.PERCENT_FULL;
 
     this.slideTo(idx, positionPercent);
 
@@ -555,13 +554,7 @@ export default React.createClass({
     const nextValues = this.validateValues(values, nextProps);
 
     this.setState({
-      handlePos: nextValues.map((value) => {
-        return this.props.algorithm.getPosition(
-          value,
-          min,
-          max
-        );
-      }),
+      handlePos: nextValues.map(value => this.props.algorithm.getPosition(value, min, max)),
       values: nextValues,
     }, () => this.fireChangeEvent());
   },

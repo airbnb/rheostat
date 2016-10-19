@@ -1,6 +1,6 @@
 export default {
   getPosition(value, min, max) {
-    return (value - min) / (max - min) * 100;
+    return ((value - min) / (max - min)) * 100;
   },
 
   getValue(pos, min, max) {
@@ -12,6 +12,6 @@ export default {
       return max;
     }
 
-    return Math.round((max - min) * decimal + min);
+    return Math.round(((max - min) * decimal) + min);
   },
 };

@@ -21,6 +21,6 @@ export default {
     // calculate adjustment factor
     const scale = (maxv - minv) / 100;
 
-    return Math.floor(Math.exp(minv + scale * positionPercent)) || 0;
+    return Math.floor(Math.exp(minv + (scale * positionPercent))) || 0;
   },
 };

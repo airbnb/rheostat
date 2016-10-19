@@ -4,6 +4,6 @@ export default {
   },
 
   getValue(x, min, max) {
-    return Math.floor(Math.pow(x / 100, 2) * (max - min) + min);
+    return (Math.floor(Math.pow(x / 100, 2) * (max - min)) + min);
   },
 };
