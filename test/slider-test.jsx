@@ -1,8 +1,10 @@
 import { shallow, describeWithDOM, mount } from 'enzyme';
 import React from 'react';
-import Slider from '../src/Slider';
 import sinon from 'sinon';
 import { assert } from 'chai';
+import has from 'has';
+
+import Slider from '../src/Slider';
 import { KEYS } from '../lib/constants/SliderConstants';
 
 function testKeys(slider, tests) {
@@ -44,7 +46,7 @@ describeWithDOM('<Slider />', () => {
         render: pitRender,
       });
 
-      const slider = mount(<Slider pitComponent={PitComponent} pitPoints={[0, 20]} />);
+      mount(<Slider pitComponent={PitComponent} pitPoints={[0, 20]} />);
 
       assert.isTrue(pitRender.calledTwice, 'two pits were rendered, one for each point');
     });
@@ -56,7 +58,7 @@ describeWithDOM('<Slider />', () => {
         render: pitRender,
       });
 
-      const slider = mount(
+      mount(
         <Slider
           orientation="vertical"
           pitComponent={PitComponent}
@@ -167,9 +169,9 @@ describe('Slider API', () => {
       const slider = newSlider();
       const state = slider.getPublicState();
 
-      assert.isTrue(state.hasOwnProperty('max'), 'max exists');
-      assert.isTrue(state.hasOwnProperty('min'), 'min exists');
-      assert.isTrue(state.hasOwnProperty('values'), 'values exists');
+      assert.isTrue(has(state, 'max'), 'max exists');
+      assert.isTrue(has(state, 'min'), 'min exists');
+      assert.isTrue(has(state, 'values'), 'values exists');
       assert(Object.keys(state).length === 3, 'only 3 properties are present');
     });
   });
@@ -192,8 +194,8 @@ describe('Slider API', () => {
       const slider = newSlider();
       const style = slider.getProgressStyle(0);
 
-      assert.isTrue(style.hasOwnProperty('left'), 'left exists');
-      assert.isTrue(style.hasOwnProperty('width'), 'width exists');
+      assert.isTrue(has(style, 'left'), 'left exists');
+      assert.isTrue(has(style, 'width'), 'width exists');
       assert(Object.keys(style).length === 2, 'only two properties exist');
     });
 
@@ -225,8 +227,8 @@ describe('Slider API', () => {
       const slider = newSlider({ orientation: 'vertical' });
       const style = slider.getProgressStyle(0);
 
-      assert.isTrue(style.hasOwnProperty('top'), 'top exists');
-      assert.isTrue(style.hasOwnProperty('height'), 'height exists');
+      assert.isTrue(has(style, 'top'), 'top exists');
+      assert.isTrue(has(style, 'height'), 'height exists');
       assert(Object.keys(style).length === 2, 'only two properties exist');
     });
 

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+import { storiesOf } from '@kadira/storybook';
+
 import Rheostat from '../';
 import log10 from '../lib/algorithms/log10';
-import { storiesOf, action } from '@kadira/storybook';
 
 class LabeledSlider extends React.Component {
   constructor(props) {
@@ -21,12 +22,16 @@ class LabeledSlider extends React.Component {
   }
 
   render() {
+    const { formatValue } = this.props;
+
     return (
-      <div style={{
-        margin: '10% auto',
-        height: '50%',
-        width: '50%',
-      }}>
+      <div
+        style={{
+          margin: '10% auto',
+          height: '50%',
+          width: '50%',
+        }}
+      >
         <Rheostat
           {...this.props}
           onValuesUpdated={this.updateValue}
@@ -34,9 +39,9 @@ class LabeledSlider extends React.Component {
         />
         <ol>
           <lh>Values</lh>
-          {this.state.values.map((value) => (
+          {this.state.values.map(value => (
             <li key={value}>
-              {this.props.formatValue ? this.props.formatValue(value) : value}
+              {formatValue ? formatValue(value) : value}
             </li>
           ))}
         </ol>
@@ -44,6 +49,10 @@ class LabeledSlider extends React.Component {
     );
   }
 }
+LabeledSlider.propTypes = {
+  values: PropTypes.array,
+  formatValue: PropTypes.func,
+};
 
 storiesOf('Slider', module)
   .add('A Simple Slider', () => (
@@ -66,9 +75,12 @@ storiesOf('Slider', module)
               zIndex: 3,
             })}
           />
-        )
+        );
       }
     }
+    MyHandle.propTypes = {
+      style: PropTypes.object,
+    };
 
     return (
       <LabeledSlider
@@ -90,16 +102,15 @@ storiesOf('Slider', module)
         return `${n}nd`;
       } else if (rem === 3) {
         return `${n}rd`;
-      } else {
-        return `${n}th`;
       }
+      return `${n}th`;
     }
 
     return (
       <LabeledSlider
         min={startDate}
         max={endDate}
-        formatValue={value => {
+        formatValue={(value) => {
           const date = new Date(value);
           return `${months[date.getMonth()]} ${ordinal(date.getDate())}`;
         }}
@@ -139,24 +150,29 @@ storiesOf('Slider', module)
   .add('Pits', () => {
     class PitComponent extends React.Component {
       render() {
+        const { style, children } = this.props;
         return (
           <div
-            style={Object.assign({}, this.props.style, {
+            style={Object.assign({}, style, {
               background: '#a2a2a2',
               width: 1,
-              height: this.props.children % 10 === 0 ? 12 : 8,
+              height: children % 10 === 0 ? 12 : 8,
               top: 20,
             })}
           />
         );
       }
     }
+    PitComponent.propTypes = {
+      style: PropTypes.object,
+      children: PropTypes.number,
+    };
 
     return (
       <LabeledSlider
         pitComponent={PitComponent}
-        pitPoints={[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]}
-        snap={true}
+        pitPoints={[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]} // eslint-disable-line max-len
+        snap
         snapPoints={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
         values={[40, 80]}
       />
@@ -166,13 +182,13 @@ storiesOf('Slider', module)
     <LabeledSlider
       max={5}
       min={1}
-      snap={true}
+      snap
       values={[3]}
     />
   ))
   .add('Snapping', () => (
     <LabeledSlider
-      snap={true}
+      snap
       snapPoints={[20, 40, 60, 80]}
     />
   ))
@@ -182,4 +198,3 @@ storiesOf('Slider', module)
   .add('Disabled', () => (
     <LabeledSlider disabled />
   ));
-
