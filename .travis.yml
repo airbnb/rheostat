@@ -4,19 +4,21 @@ node_js:
   - "5"
   - "4"
   - "iojs"
-  - "0.12"
-  - "0.11"
-  - "0.10"
 before_install:
   - 'if [ "${TRAVIS_NODE_VERSION}" != "0.9" ]; then case "$(npm --version)" in 1.*) npm install -g npm@1.4.28 ;; 2.*) npm install -g npm@2 ;; esac ; fi'
   - 'if [ "${TRAVIS_NODE_VERSION}" != "0.6" ] && [ "${TRAVIS_NODE_VERSION}" != "0.9" ]; then npm install -g npm; fi'
+before_script:
+  - 'if [ -n "${REACT-}" ]; then sh install-relevant-react.sh; fi'
 script:
   - 'if [ -n "${LINT-}" ]; then npm run lint ; fi'
   - 'if [ -n "${COVERAGE-}" ]; then npm run test:coverage ; fi'
   - 'if [ -n "${TEST-}" ]; then npm run tests-only ; fi'
 sudo: false
 env:
-  - TEST=true
+  - TEST=true REACT=0.12
+  - TEST=true REACT=0.13
+  - TEST=true REACT=0.14
+  - TEST=true REACT=15
 matrix:
   fast_finish: true
   include:
@@ -26,4 +28,3 @@ matrix:
       env: COVERAGE=true
   allow_failures:
     - node_js: "iojs"
-    - node_js: "0.11"

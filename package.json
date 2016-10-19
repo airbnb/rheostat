@@ -14,7 +14,11 @@
     "test": "npm run build && npm run test:coverage",
     "tests-only": "npm run build && npm run test:quick",
     "test:coverage": "babel-node node_modules/.bin/babel-istanbul cover node_modules/.bin/_mocha -- -R tap 'test/**/*-test.js'",
-    "test:quick": "babel-node node_modules/.bin/_mocha -R tap test/*-test.js"
+    "test:quick": "babel-node node_modules/.bin/_mocha -R tap test/*-test.js",
+    "react:clean": "rimraf node_modules/react node_modules/react-dom node_modules/react-addons-test-utils",
+    "react:13": "npm run react:clean && npm i react@0.13",
+    "react:14": "npm run react:clean && npm i react@0.14 react-dom@0.14 react-addons-test-utils@0.14",
+    "react:15": "npm run react:clean && npm i react@15 react-dom@15 react-addons-test-utils@15"
   },
   "repository": {
     "type": "git",
@@ -42,7 +46,7 @@
     "react": "^0.14.3",
     "react-addons-test-utils": "^0.14.8",
     "react-dom": "^0.14.3",
-    "rimraf": "^2.3.2",
+    "rimraf": "^2.5.4",
     "sinon": "^1.17.2",
     "style-loader": "^0.13.1"
   },
