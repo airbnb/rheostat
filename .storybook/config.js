@@ -1,8 +1,7 @@
 import { configure } from '@kadira/storybook';
+import initializeTheme from '../theme/initializeTheme';
 
-import '../css/slider.css';
-import '../css/slider-horizontal.css';
-import '../css/slider-vertical.css';
+initializeTheme();
 
 function loadStories() {
   require('../stories/ExampleSlider.jsx');
