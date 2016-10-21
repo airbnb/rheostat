@@ -18,85 +18,93 @@ const has = Object.prototype.hasOwnProperty;
 const PropTypeArrOfNumber = PropTypes.arrayOf(PropTypes.number);
 const PropTypeReactComponent = PropTypes.oneOfType([PropTypes.func, PropTypes.string]);
 
-const Button = React.createClass({
+function getHandleFor(ev) {
+  return Number(ev.currentTarget.getAttribute('data-handle-key'));
+}
+
+function killEvent(ev) {
+  ev.stopPropagation();
+  ev.preventDefault();
+}
+
+class Button extends React.Component {
   render() {
     return <button {...this.props} type="button" />;
-  },
-});
+  }
+}
 
-export default React.createClass({
-  propTypes: {
-    // the algorithm to use
-    algorithm: PropTypes.shape({
-      getValue: PropTypes.func,
-      getPosition: PropTypes.func,
-    }),
-    // any children you pass in
-    children: PropTypes.any,
-    // standard class name you'd like to apply to the root element
-    className: PropTypes.string,
-    // prevent the slider from moving when clicked
-    disabled: PropTypes.bool,
-    // a custom handle you can pass in
-    handle: PropTypeReactComponent,
-    // the maximum possible value
-    max: PropTypes.number,
-    // the minimum possible value
-    min: PropTypes.number,
-    // called on click
-    onClick: PropTypes.func,
-    // called whenever the user is done changing values on the slider
-    onChange: PropTypes.func,
-    // called on key press
-    onKeyPress: PropTypes.func,
-    // called when you finish dragging a handle
-    onSliderDragEnd: PropTypes.func,
-    // called every time the slider is dragged and the value changes
-    onSliderDragMove: PropTypes.func,
-    // called when you start dragging a handle
-    onSliderDragStart: PropTypes.func,
-    // called whenever the user is actively changing the values on the slider
-    // (dragging, clicked, keypress)
-    onValuesUpdated: PropTypes.func,
-    // the orientation
-    orientation: PropTypes.oneOf(['horizontal', 'vertical']),
-    // a component for rendering the pits
-    pitComponent: PropTypeReactComponent,
-    // the points that pits are rendered on
-    pitPoints: PropTypeArrOfNumber,
-    // a custom progress bar you can pass in
-    progressBar: PropTypeReactComponent,
-    // should we snap?
-    snap: PropTypes.bool,
-    // the points we should snap to
-    snapPoints: PropTypeArrOfNumber,
-    // the values
-    values: PropTypeArrOfNumber,
-  },
+const propTypes = {
+  // the algorithm to use
+  algorithm: PropTypes.shape({
+    getValue: PropTypes.func,
+    getPosition: PropTypes.func,
+  }),
+  // any children you pass in
+  children: PropTypes.any,
+  // standard class name you'd like to apply to the root element
+  className: PropTypes.string,
+  // prevent the slider from moving when clicked
+  disabled: PropTypes.bool,
+  // a custom handle you can pass in
+  handle: PropTypeReactComponent,
+  // the maximum possible value
+  max: PropTypes.number,
+  // the minimum possible value
+  min: PropTypes.number,
+  // called on click
+  onClick: PropTypes.func,
+  // called whenever the user is done changing values on the slider
+  onChange: PropTypes.func,
+  // called on key press
+  onKeyPress: PropTypes.func,
+  // called when you finish dragging a handle
+  onSliderDragEnd: PropTypes.func,
+  // called every time the slider is dragged and the value changes
+  onSliderDragMove: PropTypes.func,
+  // called when you start dragging a handle
+  onSliderDragStart: PropTypes.func,
+  // called whenever the user is actively changing the values on the slider
+  // (dragging, clicked, keypress)
+  onValuesUpdated: PropTypes.func,
+  // the orientation
+  orientation: PropTypes.oneOf(['horizontal', 'vertical']),
+  // a component for rendering the pits
+  pitComponent: PropTypeReactComponent,
+  // the points that pits are rendered on
+  pitPoints: PropTypeArrOfNumber,
+  // a custom progress bar you can pass in
+  progressBar: PropTypeReactComponent,
+  // should we snap?
+  snap: PropTypes.bool,
+  // the points we should snap to
+  snapPoints: PropTypeArrOfNumber,
+  // the values
+  values: PropTypeArrOfNumber,
+};
 
-  getDefaultProps() {
-    return {
-      algorithm: linear,
-      className: '',
-      disabled: false,
-      handle: Button,
-      max: SliderConstants.PERCENT_FULL,
-      min: SliderConstants.PERCENT_EMPTY,
-      orientation: 'horizontal',
-      pitPoints: [],
-      progressBar: 'div',
-      snap: false,
-      snapPoints: [],
-      values: [
-        SliderConstants.PERCENT_EMPTY,
-      ],
-    };
-  },
+const defaultProps = {
+  algorithm: linear,
+  className: '',
+  disabled: false,
+  handle: Button,
+  max: SliderConstants.PERCENT_FULL,
+  min: SliderConstants.PERCENT_EMPTY,
+  orientation: 'horizontal',
+  pitPoints: [],
+  progressBar: 'div',
+  snap: false,
+  snapPoints: [],
+  values: [
+    SliderConstants.PERCENT_EMPTY,
+  ],
+};
 
-  getInitialState() {
+class Rheostat extends React.Component {
+  constructor(props) {
+    super(props);
+
     const { max, min, values } = this.props;
-
-    return {
+    this.state = {
       className: getClassName(this.props),
       handlePos: values.map(value => this.props.algorithm.getPosition(value, min, max)),
       handleDimensions: 0,
@@ -105,7 +113,33 @@ export default React.createClass({
       slidingIndex: null,
       values,
     };
-  },
+    this.getPublicState = this.getPublicState.bind(this);
+    this.getSliderBoundingBox = this.getSliderBoundingBox.bind(this);
+    this.getProgressStyle = this.getProgressStyle.bind(this);
+    this.getMinValue = this.getMinValue.bind(this);
+    this.getMaxValue = this.getMaxValue.bind(this);
+    this.getHandleDimensions = this.getHandleDimensions.bind(this);
+    this.getClosestSnapPoint = this.getClosestSnapPoint.bind(this);
+    this.getSnapPosition = this.getSnapPosition.bind(this);
+    this.getNextPositionForKey = this.getNextPositionForKey.bind(this);
+    this.getNextState = this.getNextState.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.getClosestHandle = this.getClosestHandle.bind(this);
+    this.setStartSlide = this.setStartSlide.bind(this);
+    this.startMouseSlide = this.startMouseSlide.bind(this);
+    this.startTouchSlide = this.startTouchSlide.bind(this);
+    this.handleMouseSlide = this.handleMouseSlide.bind(this);
+    this.handleTouchSlide = this.handleTouchSlide.bind(this);
+    this.handleSlide = this.handleSlide.bind(this);
+    this.endSlide = this.endSlide.bind(this);
+    this.handleKeydown = this.handleKeydown.bind(this);
+    this.validatePosition = this.validatePosition.bind(this);
+    this.validateValues = this.validateValues.bind(this);
+    this.canMove = this.canMove.bind(this);
+    this.fireChangeEvent = this.fireChangeEvent.bind(this);
+    this.slideTo = this.slideTo.bind(this);
+    this.updateNewValues = this.updateNewValues.bind(this);
+  }
 
   componentWillReceiveProps(nextProps) {
     const minMaxChanged = (
@@ -135,7 +169,7 @@ export default React.createClass({
     if (willBeDisabled && this.state.slidingIndex !== null) {
       this.endSlide();
     }
-  },
+  }
 
   getPublicState() {
     return {
@@ -143,7 +177,7 @@ export default React.createClass({
       min: this.props.min,
       values: this.state.values,
     };
-  },
+  }
 
   // istanbul ignore next
   getSliderBoundingBox() {
@@ -157,11 +191,7 @@ export default React.createClass({
       top: rect.top,
       width: rect.width || node.clientWidth,
     };
-  },
-
-  getHandleFor(ev) {
-    return Number(ev.currentTarget.getAttribute('data-handle-key'));
-  },
+  }
 
   getProgressStyle(idx) {
     const { handlePos } = this.state;
@@ -180,19 +210,19 @@ export default React.createClass({
     return this.props.orientation === 'vertical'
       ? { height: `${diffValue}%`, top: `${prevValue}%` }
       : { left: `${prevValue}%`, width: `${diffValue}%` };
-  },
+  }
 
   getMinValue(idx) {
     return this.state.values[idx - 1]
       ? Math.max(this.props.min, this.state.values[idx - 1])
       : this.props.min;
-  },
+  }
 
   getMaxValue(idx) {
     return this.state.values[idx + 1]
       ? Math.min(this.props.max, this.state.values[idx + 1])
       : this.props.max;
-  },
+  }
 
   // istanbul ignore next
   getHandleDimensions(ev, sliderBox) {
@@ -203,7 +233,7 @@ export default React.createClass({
     return this.props.orientation === 'vertical'
       ? ((handleNode.clientHeight / sliderBox.height) * SliderConstants.PERCENT_FULL) / 2
       : ((handleNode.clientWidth / sliderBox.width) * SliderConstants.PERCENT_FULL) / 2;
-  },
+  }
 
   getClosestSnapPoint(value) {
     if (!this.props.snapPoints.length) return value;
@@ -211,7 +241,7 @@ export default React.createClass({
     return this.props.snapPoints.reduce((snapTo, snap) => (
       Math.abs(snapTo - value) < Math.abs(snap - value) ? snapTo : snap
     ));
-  },
+  }
 
   getSnapPosition(positionPercent) {
     if (!this.props.snap) return positionPercent;
@@ -223,7 +253,7 @@ export default React.createClass({
     const snapValue = this.getClosestSnapPoint(value);
 
     return algorithm.getPosition(snapValue, min, max);
-  },
+  }
 
   getNextPositionForKey(idx, keyCode) {
     const { handlePos, values } = this.state;
@@ -288,7 +318,7 @@ export default React.createClass({
     return shouldSnap
       ? algorithm.getPosition(proposedValue, min, max)
       : proposedPercentage;
-  },
+  }
 
   getNextState(idx, proposedPosition) {
     const { handlePos } = this.state;
@@ -306,7 +336,7 @@ export default React.createClass({
         this.props.algorithm.getValue(pos, min, max)
       )),
     };
-  },
+  }
 
   getClosestHandle(positionPercent) {
     const { handlePos } = this.state;
@@ -316,7 +346,7 @@ export default React.createClass({
       const current = Math.abs(handlePos[closestIdx] - positionPercent);
       return challenger < current ? idx : closestIdx;
     }, 0);
-  },
+  }
 
   // istanbul ignore next
   setStartSlide(ev, x, y) {
@@ -326,9 +356,9 @@ export default React.createClass({
       handleDimensions: this.getHandleDimensions(ev, sliderBox),
       mousePos: { x, y },
       sliderBox,
-      slidingIndex: this.getHandleFor(ev),
+      slidingIndex: getHandleFor(ev),
     });
-  },
+  }
 
   // istanbul ignore next
   startMouseSlide(ev) {
@@ -342,8 +372,8 @@ export default React.createClass({
       document.attachEvent('onmouseup', this.endSlide);
     }
 
-    this.killEvent(ev);
-  },
+    killEvent(ev);
+  }
 
   // istanbul ignore next
   startTouchSlide(ev) {
@@ -358,15 +388,15 @@ export default React.createClass({
 
     if (this.props.onSliderDragStart) this.props.onSliderDragStart();
 
-    this.killEvent(ev);
-  },
+    killEvent(ev);
+  }
 
   // istanbul ignore next
   handleMouseSlide(ev) {
     if (this.state.slidingIndex === null) return;
     this.handleSlide(ev.clientX, ev.clientY);
-    this.killEvent(ev);
-  },
+    killEvent(ev);
+  }
 
   // istanbul ignore next
   handleTouchSlide(ev) {
@@ -380,8 +410,8 @@ export default React.createClass({
     const touch = ev.changedTouches[0];
 
     this.handleSlide(touch.clientX, touch.clientY);
-    this.killEvent(ev);
-  },
+    killEvent(ev);
+  }
 
   // istanbul ignore next
   handleSlide(x, y) {
@@ -398,7 +428,7 @@ export default React.createClass({
       this.setState({ x, y });
       if (this.props.onSliderDragMove) this.props.onSliderDragMove();
     }
-  },
+  }
 
   // istanbul ignore next
   endSlide() {
@@ -423,7 +453,7 @@ export default React.createClass({
     } else {
       this.fireChangeEvent();
     }
-  },
+  }
 
   // istanbul ignore next
   handleClick(ev) {
@@ -449,11 +479,11 @@ export default React.createClass({
     this.slideTo(handleId, validPositionPercent, () => this.fireChangeEvent());
 
     if (this.props.onClick) this.props.onClick();
-  },
+  }
 
   // istanbul ignore next
   handleKeydown(ev) {
-    const idx = this.getHandleFor(ev);
+    const idx = getHandleFor(ev);
 
     if (ev.keyCode === SliderConstants.KEYS.ESC) {
       ev.currentTarget.blur();
@@ -469,9 +499,9 @@ export default React.createClass({
       if (this.props.onKeyPress) this.props.onKeyPress();
     }
 
-    this.killEvent(ev);
+    killEvent(ev);
     return;
-  },
+  }
 
   // Make sure the proposed position respects the bounds and
   // does not collide with other handles too much.
@@ -489,7 +519,7 @@ export default React.createClass({
         ? handlePos[idx - 1] + handleDimensions
         : SliderConstants.PERCENT_EMPTY // 0% is the lowest value
     );
-  },
+  }
 
   validateValues(proposedValues, props) {
     const { max, min } = props || this.props;
@@ -503,7 +533,7 @@ export default React.createClass({
 
       return realValue;
     });
-  },
+  }
 
   // Can we move the slider to the given position?
   canMove(idx, proposedPosition) {
@@ -525,12 +555,12 @@ export default React.createClass({
     if (proposedPosition < prevHandlePosition) return false;
 
     return true;
-  },
+  }
 
   // istanbul ignore next
   fireChangeEvent() {
     if (this.props.onChange) this.props.onChange(this.getPublicState());
-  },
+  }
 
   // istanbul ignore next
   slideTo(idx, proposedPosition, onAfterSet) {
@@ -540,7 +570,7 @@ export default React.createClass({
       if (this.props.onValuesUpdated) this.props.onValuesUpdated(this.getPublicState());
       if (onAfterSet) onAfterSet();
     });
-  },
+  }
 
   // istanbul ignore next
   updateNewValues(nextProps) {
@@ -557,14 +587,7 @@ export default React.createClass({
       handlePos: nextValues.map(value => this.props.algorithm.getPosition(value, min, max)),
       values: nextValues,
     }, () => this.fireChangeEvent());
-  },
-
-  killEvent(ev) {
-    ev.stopPropagation();
-    ev.preventDefault();
-    ev.cancelBubble = true;
-    ev.returnValue = false;
-  },
+  }
 
   render() {
     const {
@@ -581,6 +604,7 @@ export default React.createClass({
     } = this.props;
 
     return (
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div
         className={this.state.className}
         ref="rheostat"
@@ -638,5 +662,9 @@ export default React.createClass({
         {children}
       </div>
     );
-  },
-});
+  }
+}
+Rheostat.propTypes = propTypes;
+Rheostat.defaultProps = defaultProps;
+
+export default Rheostat;

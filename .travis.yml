@@ -15,7 +15,6 @@ script:
   - 'if [ -n "${TEST-}" ]; then npm run tests-only ; fi'
 sudo: false
 env:
-  - TEST=true REACT=0.12
   - TEST=true REACT=0.13
   - TEST=true REACT=0.14
   - TEST=true REACT=15

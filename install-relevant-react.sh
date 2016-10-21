@@ -4,10 +4,6 @@ REACT=${REACT:-15}
 
 echo "installing React $REACT"
 
-if [ "$REACT" = "0.12" ]; then
-    npm run react:12
-fi
-
 if [ "$REACT" = "0.13" ]; then
     npm run react:13
 fi
