@@ -9,3 +9,5 @@ export const KEYS = {
 };
 export const PERCENT_EMPTY = 0;
 export const PERCENT_FULL = 100;
+export const BACKGROUND_HEIGHT_UNITS = 1.5;
+export const DEFAULT_HANDLE_WIDTH_UNITS = 4;

@@ -4,8 +4,11 @@ import sinon from 'sinon';
 import { assert } from 'chai';
 import has from 'has';
 
-import Slider from '../src/Slider';
+import Slider, { Rheostat } from '../src/Slider';
 import { KEYS } from '../lib/constants/SliderConstants';
+import initializeTheme from '../theme/initializeTheme';
+
+initializeTheme();
 
 function testKeys(slider, tests) {
   Object.keys(tests).forEach((key) => {
@@ -15,28 +18,30 @@ function testKeys(slider, tests) {
   });
 }
 
-const newSlider = props => new Slider({ ...Slider.defaultProps, ...props });
+const newSlider = props => new Rheostat({ ...Rheostat.defaultProps, ...props });
+const handle = 'withStyles(DefaultHandle)';
+const progress = 'withStyles(DefaultProgressBar)';
 
 describeWithDOM('<Slider />', () => {
   describe('render', () => {
     it('should render the slider with one handle by default', () => {
-      const wrapper = shallow(<Slider />);
-      assert(wrapper.find('.rheostat-handle').length === 1, 'no values one handle');
+      const wrapper = shallow(<Slider />).shallow();
+      assert(wrapper.find(handle).length === 1, 'no values one handle');
     });
 
     it('should render the slider with a single handle', () => {
-      const wrapper = shallow(<Slider values={[1]} />);
-      assert(wrapper.find('.rheostat-handle').length === 1, 'one handle is present');
+      const wrapper = shallow(<Slider values={[1]} />).shallow();
+      assert(wrapper.find(handle).length === 1, 'one handle is present');
     });
 
     it('should render the slider with as many handles as values', () => {
-      const wrapper = shallow(<Slider values={[0, 25, 50, 75, 100]} />);
-      assert(wrapper.find('.rheostat-handle').length === 5, 'five handles are present');
+      const wrapper = shallow(<Slider values={[0, 25, 50, 75, 100]} />).shallow();
+      assert(wrapper.find(handle).length === 5, 'five handles are present');
     });
 
     it('should render the slider with a bar', () => {
-      const wrapper = shallow(<Slider />);
-      assert(wrapper.find('.rheostat-progress').length === 1, 'the bar is present');
+      const wrapper = shallow(<Slider />).shallow();
+      assert(wrapper.find(progress).length === 1, 'the bar is present');
     });
 
     it('renders pits if they are provided', () => {
@@ -48,7 +53,6 @@ describeWithDOM('<Slider />', () => {
       });
 
       mount(<Slider pitComponent={PitComponent} pitPoints={[0, 20]} />);
-
       assert.isTrue(pitRender.calledTwice, 'two pits were rendered, one for each point');
     });
 
@@ -73,28 +77,9 @@ describeWithDOM('<Slider />', () => {
   });
 
   describe('componentWillReceiveProps', () => {
-    it('should re-evaluate the orientation when props change', () => {
-      const slider = mount(<Slider />);
-      assert(slider.props().orientation === 'horizontal', 'slider is horizontal');
-      assert.include(
-        slider.state('className'),
-        'rheostat-horizontal',
-        'cached class has horizontal'
-      );
-
-      slider.setProps({ orientation: 'vertical' });
-
-      assert(slider.props().orientation === 'vertical', 'slider was changed to vertical');
-      assert.include(
-        slider.state('className'),
-        'rheostat-vertical',
-        'the cached classes were updated'
-      );
-    });
-
     it('should not call onChange twice if values are the same as what is in state', () => {
       const onChange = sinon.spy();
-      const slider = mount(<Slider onChange={onChange} values={[0]} />);
+      const slider = mount(<Rheostat onChange={onChange} values={[0]} />);
 
       // programatically change values like if the slider was dragged
       slider.setState({ values: [10] });
@@ -106,7 +91,7 @@ describeWithDOM('<Slider />', () => {
 
     it('should not update values if we are sliding', () => {
       const onChange = sinon.spy();
-      const slider = mount(<Slider onChange={onChange} values={[0]} />);
+      const slider = mount(<Rheostat onChange={onChange} values={[0]} />);
 
       slider.setState({ slidingIndex: 0 });
 
@@ -117,7 +102,7 @@ describeWithDOM('<Slider />', () => {
 
     it('should not update values if they are the same', () => {
       const onChange = sinon.spy();
-      const slider = mount(<Slider onChange={onChange} values={[50]} />);
+      const slider = mount(<Rheostat onChange={onChange} values={[50]} />);
 
       slider.setProps({ values: [50] });
 
@@ -126,7 +111,7 @@ describeWithDOM('<Slider />', () => {
 
     it('should update values when they change', () => {
       const onChange = sinon.spy();
-      const slider = mount(<Slider onChange={onChange} values={[50]} />);
+      const slider = mount(<Rheostat onChange={onChange} values={[50]} />);
 
       slider.setProps({ values: [80] });
 
@@ -136,21 +121,21 @@ describeWithDOM('<Slider />', () => {
     });
 
     it('should move the values if the min is changed to be larger', () => {
-      const slider = shallow(<Slider values={[50]} />);
+      const slider = shallow(<Slider values={[50]} />).shallow();
       slider.setProps({ min: 80 });
 
       assert.include(slider.state('values'), 80, 'values was updated');
     });
 
     it('should move the values if the max is changed to be smaller', () => {
-      const slider = shallow(<Slider values={[50]} />);
+      const slider = shallow(<Slider values={[50]} />).shallow();
       slider.setProps({ max: 20 });
 
       assert.include(slider.state('values'), 20, 'values was updated');
     });
 
     it('should add handles', () => {
-      const slider = shallow(<Slider />);
+      const slider = shallow(<Slider />).shallow();
       assert(slider.state('values').length === 1, 'one handle exists');
       assert(slider.state('handlePos').length === 1, 'one handle exists');
 

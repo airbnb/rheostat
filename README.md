@@ -20,12 +20,6 @@ your own as long as it conforms to the shape.
   })
 ```
 
-Custom class name that will be applied to the root of Rheostat.
-
-```js
-  className: PropTypes.string
-```
-
 Custom React component overrides for both the handles, and the "progress" bar.
 
 ```js
@@ -90,9 +84,13 @@ You can disable the slider to prevent the user from moving it.
   disabled: PropTypes.bool
 ```
 
-## Usage
+`react-with-styles` adds a `styles` object via a higher-order component See [Using `react-with-styles`](https://github.com/adamrneary/rheostat/blob/master/README.md#using-react-with-styles)
 
-> Important: Make sure to include the [css file](css/slider.css) or feel free to create your own.
+```js
+  styles: PropTypes.object
+```
+
+## Usage
 
 * Simple.
 
@@ -114,6 +112,24 @@ ReactDOM.render((
     values={[1, 100]}
   />
 ), document.getElementById('slider-root'));
+```
+
+## Using `react-with-styles`
+
+Rather than styling the component with css, we use `react-with-styles`, an interface compatible with
+React Native, Aphrodite, JSS, and more to come. [Full instructions for `react-with-styles` are available](https://github.com/airbnb/react-with-styles), but the base implementation requires:
+
+1. An interface for the styles library you choose (we use Aphrodite at Airbnb)
+1. A theme file defining a unit and the 7 colors used by Rheostat ([example](https://github.com/airbnb/rheostat/blob/master/theme/default.js))
+1. Registering your theme and interface as [in this example](https://github.com/airbnb/rheostat/blob/master/theme/initializeTheme.js) or below:
+
+```js
+import aphroditeInterface from 'react-with-styles-interface-aphrodite';
+import ReactWithStylesThemedStyleSheet from 'react-with-styles/lib/ThemedStyleSheet';
+
+import MyDefaultTheme from './MyDefaultTheme';
+ReactWithStylesThemedStyleSheet.registerDefaultTheme(MyDefaultTheme);
+ReactWithStylesThemedStyleSheet.registerInterface(aphroditeInterface);
 ```
 
 ## Live Playground

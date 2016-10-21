@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { storiesOf } from '@kadira/storybook';
 
-import Rheostat from '../';
+import Slider from '../';
 import log10 from '../lib/algorithms/log10';
 
 class LabeledSlider extends React.Component {
@@ -32,7 +32,7 @@ class LabeledSlider extends React.Component {
           width: '50%',
         }}
       >
-        <Rheostat
+        <Slider
           {...this.props}
           onValuesUpdated={this.updateValue}
           values={this.state.values}
@@ -73,6 +73,7 @@ storiesOf('Slider', module)
             height: 24,
             width: 24,
             zIndex: 3,
+            top: -8,
           }}
         />
       );
@@ -193,5 +194,10 @@ storiesOf('Slider', module)
     <LabeledSlider orientation="vertical" />
   ))
   .add('Disabled', () => (
-    <LabeledSlider disabled />
+    <LabeledSlider
+      disabled
+      min={1}
+      max={40}
+      values={[10]}
+    />
   ));

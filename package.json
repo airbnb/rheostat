@@ -6,6 +6,7 @@
   "jsnext:main": "src/Slider.jsx",
   "scripts": {
     "build": "npm run clean && babel src -d lib",
+    "build:watch": "npm run clean && babel src --watch -d lib",
     "clean": "rimraf lib",
     "prepublish": "npm run build",
     "lint": "eslint --ext .js,.jsx src test stories",
@@ -28,6 +29,7 @@
   "license": "MIT",
   "devDependencies": {
     "@kadira/storybook": "^2.4.2",
+    "aphrodite": "^0.6.0",
     "babel-cli": "^6.16.0",
     "babel-core": "^6.17.0",
     "babel-istanbul": "^0.11.0",
@@ -35,23 +37,28 @@
     "casual": "^1.5.6",
     "chai": "^3.5.0",
     "chai-enzyme": "^0.5.2",
+    "color": "^0.11.3",
     "enzyme": "^1.6.0",
     "eslint": "^3.8.1",
     "eslint-config-airbnb": "^12.0.0",
     "eslint-plugin-import": "^1.16.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.4.1",
+    "global-cache": "^1.2.0",
     "has": "^1.0.1",
     "mocha": "^3.1.2",
     "raw-loader": "^0.5.1",
     "react": "^0.14.3",
     "react-addons-test-utils": "^0.14.8",
     "react-dom": "^0.14.3",
+    "react-with-styles": "^1.0.0",
+    "react-with-styles-interface-aphrodite": "^1.0.0",
     "rimraf": "^2.5.4",
     "sinon": "^1.17.6",
     "style-loader": "^0.13.1"
   },
   "peerDependencies": {
+    "react-with-styles": "^1.0.0",
     "react": ">=0.13.x"
   }
 }
