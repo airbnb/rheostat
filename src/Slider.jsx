@@ -500,7 +500,6 @@ class Rheostat extends React.Component {
     }
 
     killEvent(ev);
-    return;
   }
 
   // Make sure the proposed position respects the bounds and
@@ -513,11 +512,11 @@ class Rheostat extends React.Component {
         proposedPosition,
         handlePos[idx + 1] !== undefined
           ? handlePos[idx + 1] - handleDimensions
-          : SliderConstants.PERCENT_FULL // 100% is the highest value
+          : SliderConstants.PERCENT_FULL, // 100% is the highest value
       ),
       handlePos[idx - 1] !== undefined
         ? handlePos[idx - 1] + handleDimensions
-        : SliderConstants.PERCENT_EMPTY // 0% is the lowest value
+        : SliderConstants.PERCENT_EMPTY, // 0% is the lowest value
     );
   }
 

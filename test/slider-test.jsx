@@ -65,7 +65,7 @@ describeWithDOM('<Slider />', () => {
           orientation="vertical"
           pitComponent={PitComponent}
           pitPoints={[10]}
-        />
+        />,
       );
 
       assert.isTrue(pitRender.calledOnce, 'one pit was rendered vertically');
@@ -79,7 +79,7 @@ describeWithDOM('<Slider />', () => {
       assert.include(
         slider.state('className'),
         'rheostat-horizontal',
-        'cached class has horizontal'
+        'cached class has horizontal',
       );
 
       slider.setProps({ orientation: 'vertical' });
@@ -88,7 +88,7 @@ describeWithDOM('<Slider />', () => {
       assert.include(
         slider.state('className'),
         'rheostat-vertical',
-        'the cached classes were updated'
+        'the cached classes were updated',
       );
     });
 
