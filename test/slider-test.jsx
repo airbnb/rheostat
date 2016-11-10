@@ -287,7 +287,7 @@ describe('Slider API', () => {
   });
 
   describe('getNextPositionForKey', () => {
-    it('should try to advance 1% when pressing left or right', () => {
+    it('should try to advance 1% when pressing left, right, up or down', () => {
       const slider = newSlider({
         values: [50],
       });
@@ -295,6 +295,8 @@ describe('Slider API', () => {
       testKeys(slider, {
         LEFT: 49,
         RIGHT: 51,
+        UP: 51,
+        DOWN: 49,
       });
     });
 
