@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.1.0] - 2016-11-10
+
+### Changed
+
+- Up/Down keys also move the slider now.
+
 ## [2.0.1] - 2016-10-19
 
 ### Fixed
