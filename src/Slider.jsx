@@ -29,7 +29,7 @@ function killEvent(ev) {
 
 class Button extends React.Component {
   render() {
-    return <button {...this.props} type="button" />;
+    return <button {...this.props} aria-label="Slider Handle" type="button" />;
   }
 }
 
@@ -620,10 +620,10 @@ class Rheostat extends React.Component {
 
           return (
             <Handle
+              aria-disabled={disabled}
               aria-valuemax={this.getMaxValue(idx)}
               aria-valuemin={this.getMinValue(idx)}
               aria-valuenow={this.state.values[idx]}
-              aria-disabled={disabled}
               data-handle-key={idx}
               className="rheostat-handle"
               key={idx}
