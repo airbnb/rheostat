@@ -37,7 +37,7 @@
     "chai-enzyme": "^0.6.0",
     "enzyme": "^1.6.0",
     "eslint": "^3.10.2",
-    "eslint-config-airbnb": "^13.0.0",
+    "eslint-config-airbnb": "^14.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.7.1",
