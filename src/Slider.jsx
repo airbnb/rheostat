@@ -1,4 +1,5 @@
 /* globals document */
+/* eslint react/no-array-index-key: 1 */
 
 import React, { PropTypes } from 'react';
 

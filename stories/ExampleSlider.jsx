@@ -50,8 +50,12 @@ class LabeledSlider extends React.Component {
   }
 }
 LabeledSlider.propTypes = {
-  values: PropTypes.array,
+  values: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   formatValue: PropTypes.func,
+};
+LabeledSlider.defaultProps = {
+  values: [],
+  formatValue: null,
 };
 
 storiesOf('Slider', module)
@@ -79,6 +83,9 @@ storiesOf('Slider', module)
     }
     MyHandle.propTypes = {
       style: PropTypes.object,
+    };
+    MyHandle.defaultProps = {
+      style: null,
     };
 
     return (
@@ -161,8 +168,12 @@ storiesOf('Slider', module)
       );
     }
     PitComponent.propTypes = {
-      style: PropTypes.object,
+      style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
       children: PropTypes.number,
+    };
+    PitComponent.defaultProps = {
+      style: null,
+      children: null,
     };
 
     return (
