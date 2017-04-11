@@ -1,7 +1,8 @@
 /* globals document */
 /* eslint react/no-array-index-key: 1 */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import * as SliderConstants from './constants/SliderConstants';
 import linear from './algorithms/linear';

@@ -35,6 +35,7 @@
     "casual": "^1.5.8",
     "chai": "^3.5.0",
     "chai-enzyme": "^0.6.1",
+    "create-react-class": "^15.5.2",
     "enzyme": "^1.6.0",
     "eslint": "^3.13.1",
     "eslint-config-airbnb": "^14.0.0",
@@ -53,5 +54,8 @@
   },
   "peerDependencies": {
     "react": ">=0.13.x"
+  },
+  "dependencies": {
+    "prop-types": "^15.5.6"
   }
 }

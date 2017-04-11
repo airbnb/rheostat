@@ -1,5 +1,7 @@
 import { shallow, describeWithDOM, mount } from 'enzyme';
 import React from 'react';
+import createReactClass from 'create-react-class';
+
 import sinon from 'sinon';
 import { assert } from 'chai';
 import has from 'has';
@@ -41,9 +43,7 @@ describeWithDOM('<Slider />', () => {
 
     it('renders pits if they are provided', () => {
       const pitRender = sinon.stub().returns(<div />);
-
-      // eslint-disable-next-line
-      const PitComponent = React.createClass({
+      const PitComponent = createReactClass({
         render: pitRender,
       });
 
@@ -54,9 +54,7 @@ describeWithDOM('<Slider />', () => {
 
     it('renders pits if they are provided', () => {
       const pitRender = sinon.stub().returns(<div />);
-
-      // eslint-disable-next-line
-      const PitComponent = React.createClass({
+      const PitComponent = createReactClass({
         render: pitRender,
       });
 
