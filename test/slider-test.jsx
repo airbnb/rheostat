@@ -9,6 +9,12 @@ import has from 'has';
 import Slider from '../src/Slider';
 import { KEYS } from '../lib/constants/SliderConstants';
 
+const { SKIP_DOM } = process.env;
+
+function skipWithDom() {
+  return SKIP_DOM === '1' && this.skip();
+}
+
 function testKeys(slider, tests) {
   Object.keys(tests).forEach((key) => {
     const keyCode = KEYS[key];
@@ -19,145 +25,149 @@ function testKeys(slider, tests) {
 
 const newSlider = props => new Slider({ ...Slider.defaultProps, ...props });
 
-describe('render', () => {
-  it('should render the slider with one handle by default', () => {
-    const wrapper = shallow(<Slider />);
-    assert(wrapper.find('.rheostat-handle').length === 1, 'no values one handle');
-  });
+describe('<Slider />', () => {
+  beforeEach(skipWithDom);
 
-  it('should render the slider with a single handle', () => {
-    const wrapper = shallow(<Slider values={[1]} />);
-    assert(wrapper.find('.rheostat-handle').length === 1, 'one handle is present');
-  });
-
-  it('should render the slider with as many handles as values', () => {
-    const wrapper = shallow(<Slider values={[0, 25, 50, 75, 100]} />);
-    assert(wrapper.find('.rheostat-handle').length === 5, 'five handles are present');
-  });
-
-  it('should render the slider with a bar', () => {
-    const wrapper = shallow(<Slider />);
-    assert(wrapper.find('.rheostat-progress').length === 1, 'the bar is present');
-  });
-
-  it('renders pits if they are provided', () => {
-    const pitRender = sinon.stub().returns(<div />);
-    const PitComponent = createReactClass({
-      render: pitRender,
+  describe('render', () => {
+    it('should render the slider with one handle by default', () => {
+      const wrapper = shallow(<Slider />);
+      assert(wrapper.find('.rheostat-handle').length === 1, 'no values one handle');
     });
 
-    mount(<Slider pitComponent={PitComponent} pitPoints={[0, 20]} />);
-
-    assert.isTrue(pitRender.calledTwice, 'two pits were rendered, one for each point');
-  });
-
-  it('renders pits if they are provided', () => {
-    const pitRender = sinon.stub().returns(<div />);
-    const PitComponent = createReactClass({
-      render: pitRender,
+    it('should render the slider with a single handle', () => {
+      const wrapper = shallow(<Slider values={[1]} />);
+      assert(wrapper.find('.rheostat-handle').length === 1, 'one handle is present');
     });
 
-    mount(
-      <Slider
-        orientation="vertical"
-        pitComponent={PitComponent}
-        pitPoints={[10]}
-      />,
-    );
+    it('should render the slider with as many handles as values', () => {
+      const wrapper = shallow(<Slider values={[0, 25, 50, 75, 100]} />);
+      assert(wrapper.find('.rheostat-handle').length === 5, 'five handles are present');
+    });
 
-    assert.isTrue(pitRender.calledOnce, 'one pit was rendered vertically');
-  });
-});
+    it('should render the slider with a bar', () => {
+      const wrapper = shallow(<Slider />);
+      assert(wrapper.find('.rheostat-progress').length === 1, 'the bar is present');
+    });
 
-describe('componentWillReceiveProps', () => {
-  it('should re-evaluate the orientation when props change', () => {
-    const slider = mount(<Slider />);
-    assert(slider.props().orientation === 'horizontal', 'slider is horizontal');
-    assert.include(
-      slider.state('className'),
-      'rheostat-horizontal',
-      'cached class has horizontal',
-    );
+    it('renders pits if they are provided', () => {
+      const pitRender = sinon.stub().returns(<div />);
+      const PitComponent = createReactClass({
+        render: pitRender,
+      });
 
-    slider.setProps({ orientation: 'vertical' });
+      mount(<Slider pitComponent={PitComponent} pitPoints={[0, 20]} />);
 
-    assert(slider.props().orientation === 'vertical', 'slider was changed to vertical');
-    assert.include(
-      slider.state('className'),
-      'rheostat-vertical',
-      'the cached classes were updated',
-    );
-  });
+      assert.isTrue(pitRender.calledTwice, 'two pits were rendered, one for each point');
+    });
 
-  it('should not call onChange twice if values are the same as what is in state', () => {
-    const onChange = sinon.spy();
-    const slider = mount(<Slider onChange={onChange} values={[0]} />);
+    it('renders pits if they are provided', () => {
+      const pitRender = sinon.stub().returns(<div />);
+      const PitComponent = createReactClass({
+        render: pitRender,
+      });
 
-    // programatically change values like if the slider was dragged
-    slider.setState({ values: [10] });
+      mount(
+        <Slider
+          orientation="vertical"
+          pitComponent={PitComponent}
+          pitPoints={[10]}
+        />,
+      );
 
-    slider.setProps({ values: [10] });
-
-    assert(onChange.callCount === 0, 'onChange was not called');
+      assert.isTrue(pitRender.calledOnce, 'one pit was rendered vertically');
+    });
   });
 
-  it('should not update values if we are sliding', () => {
-    const onChange = sinon.spy();
-    const slider = mount(<Slider onChange={onChange} values={[0]} />);
+  describe('componentWillReceiveProps', () => {
+    it('should re-evaluate the orientation when props change', () => {
+      const slider = mount(<Slider />);
+      assert(slider.props().orientation === 'horizontal', 'slider is horizontal');
+      assert.include(
+        slider.state('className'),
+        'rheostat-horizontal',
+        'cached class has horizontal',
+      );
 
-    slider.setState({ slidingIndex: 0 });
+      slider.setProps({ orientation: 'vertical' });
 
-    slider.setProps({ values: [50] });
+      assert(slider.props().orientation === 'vertical', 'slider was changed to vertical');
+      assert.include(
+        slider.state('className'),
+        'rheostat-vertical',
+        'the cached classes were updated',
+      );
+    });
 
-    assert(onChange.callCount === 0, 'updateNewValues was not called');
-  });
+    it('should not call onChange twice if values are the same as what is in state', () => {
+      const onChange = sinon.spy();
+      const slider = mount(<Slider onChange={onChange} values={[0]} />);
 
-  it('should not update values if they are the same', () => {
-    const onChange = sinon.spy();
-    const slider = mount(<Slider onChange={onChange} values={[50]} />);
+      // programatically change values like if the slider was dragged
+      slider.setState({ values: [10] });
 
-    slider.setProps({ values: [50] });
+      slider.setProps({ values: [10] });
 
-    assert(onChange.callCount === 0, 'updateNewValues was not called');
-  });
+      assert(onChange.callCount === 0, 'onChange was not called');
+    });
 
-  it('should update values when they change', () => {
-    const onChange = sinon.spy();
-    const slider = mount(<Slider onChange={onChange} values={[50]} />);
+    it('should not update values if we are sliding', () => {
+      const onChange = sinon.spy();
+      const slider = mount(<Slider onChange={onChange} values={[0]} />);
 
-    slider.setProps({ values: [80] });
+      slider.setState({ slidingIndex: 0 });
 
-    assert.isTrue(onChange.calledOnce, 'updateNewValues was called');
+      slider.setProps({ values: [50] });
 
-    assert.include(slider.state('values'), 80, 'new value is reflected in state');
-  });
+      assert(onChange.callCount === 0, 'updateNewValues was not called');
+    });
 
-  it('should move the values if the min is changed to be larger', () => {
-    const slider = shallow(<Slider values={[50]} />);
-    slider.setProps({ min: 80 });
+    it('should not update values if they are the same', () => {
+      const onChange = sinon.spy();
+      const slider = mount(<Slider onChange={onChange} values={[50]} />);
 
-    assert.include(slider.state('values'), 80, 'values was updated');
-  });
+      slider.setProps({ values: [50] });
 
-  it('should move the values if the max is changed to be smaller', () => {
-    const slider = shallow(<Slider values={[50]} />);
-    slider.setProps({ max: 20 });
+      assert(onChange.callCount === 0, 'updateNewValues was not called');
+    });
 
-    assert.include(slider.state('values'), 20, 'values was updated');
-  });
+    it('should update values when they change', () => {
+      const onChange = sinon.spy();
+      const slider = mount(<Slider onChange={onChange} values={[50]} />);
 
-  it('should add handles', () => {
-    const slider = shallow(<Slider />);
-    assert(slider.state('values').length === 1, 'one handle exists');
-    assert(slider.state('handlePos').length === 1, 'one handle exists');
+      slider.setProps({ values: [80] });
 
-    slider.setProps({ values: [] });
-    assert(slider.state('values').length === 0, 'no handles exist');
-    assert(slider.state('handlePos').length === 0, 'no handles exist');
+      assert.isTrue(onChange.calledOnce, 'updateNewValues was called');
 
-    slider.setProps({ values: [0, 100] });
-    assert(slider.state('values').length === 2, 'two handles exist');
-    assert(slider.state('handlePos').length === 2, 'two handles exist');
+      assert.include(slider.state('values'), 80, 'new value is reflected in state');
+    });
+
+    it('should move the values if the min is changed to be larger', () => {
+      const slider = shallow(<Slider values={[50]} />);
+      slider.setProps({ min: 80 });
+
+      assert.include(slider.state('values'), 80, 'values was updated');
+    });
+
+    it('should move the values if the max is changed to be smaller', () => {
+      const slider = shallow(<Slider values={[50]} />);
+      slider.setProps({ max: 20 });
+
+      assert.include(slider.state('values'), 20, 'values was updated');
+    });
+
+    it('should add handles', () => {
+      const slider = shallow(<Slider />);
+      assert(slider.state('values').length === 1, 'one handle exists');
+      assert(slider.state('handlePos').length === 1, 'one handle exists');
+
+      slider.setProps({ values: [] });
+      assert(slider.state('values').length === 0, 'no handles exist');
+      assert(slider.state('handlePos').length === 0, 'no handles exist');
+
+      slider.setProps({ values: [0, 100] });
+      assert(slider.state('values').length === 2, 'two handles exist');
+      assert(slider.state('handlePos').length === 2, 'two handles exist');
+    });
   });
 });
 

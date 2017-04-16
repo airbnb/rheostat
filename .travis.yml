@@ -11,7 +11,7 @@ before_script:
   - 'if [ -n "${REACT-}" ]; then sh install-relevant-react.sh; fi'
 script:
   - 'if [ -n "${LINT-}" ]; then npm run lint ; fi'
-  - 'if [ -n "${COVERAGE-}" ]; then npm run test:coverage ; fi'
+  - 'if [ -n "${COVERAGE-}" ]; then npm run test ; fi'
   - 'if [ -n "${TEST-}" ]; then npm run tests-only ; fi'
 sudo: false
 env:
