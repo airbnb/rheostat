@@ -1,0 +1,14 @@
+{
+    "check-coverage": true,
+    "lines": 68.16,
+    "statements": 66.1,
+    "functions": 81.82,
+    "branches": 66.28,
+    "reporter": [
+      "lcov",
+      "text"
+    ],
+    "extension": [
+      ".jsx"
+    ]
+}
