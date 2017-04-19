@@ -9,10 +9,12 @@ import has from 'has';
 import Slider from '../src/Slider';
 import { KEYS } from '../lib/constants/SliderConstants';
 
-const { SKIP_DOM } = process.env;
+const { WITH_DOM } = process.env;
 
 function skipWithDom() {
-  return SKIP_DOM === '1' && this.skip();
+  if (WITH_DOM !== '1') {
+    this.skip();
+  }
 }
 
 function testKeys(slider, tests) {
