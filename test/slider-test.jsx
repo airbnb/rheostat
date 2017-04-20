@@ -1,4 +1,4 @@
-import { shallow, describeWithDOM, mount } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import React from 'react';
 import createReactClass from 'create-react-class';
 
@@ -8,6 +8,14 @@ import has from 'has';
 
 import Slider from '../src/Slider';
 import { KEYS } from '../lib/constants/SliderConstants';
+
+const { WITH_DOM } = process.env;
+
+function skipWithoutDom() {
+  if (WITH_DOM !== '1') {
+    this.skip();
+  }
+}
 
 function testKeys(slider, tests) {
   Object.keys(tests).forEach((key) => {
@@ -19,7 +27,9 @@ function testKeys(slider, tests) {
 
 const newSlider = props => new Slider({ ...Slider.defaultProps, ...props });
 
-describeWithDOM('<Slider />', () => {
+describe('<Slider />', () => {
+  beforeEach(skipWithoutDom);
+
   describe('render', () => {
     it('should render the slider with one handle by default', () => {
       const wrapper = shallow(<Slider />);
