@@ -120,7 +120,7 @@ describe('<Slider />', () => {
 
       slider.setProps({ values: [50] });
 
-      assert(onChange.callCount === 1, 'updateNewValues was not called');
+      assert(onChange.callCount === 1, 'updateNewValues was called');
     });
 
     it('should not update values if they are the same', () => {
