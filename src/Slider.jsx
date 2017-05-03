@@ -577,11 +577,6 @@ class Rheostat extends React.Component {
 
   // istanbul ignore next
   updateNewValues(nextProps) {
-    // Don't update while the slider is sliding
-    if (this.state.slidingIndex !== null) {
-      return;
-    }
-
     const { max, min, values } = nextProps;
 
     const nextValues = this.validateValues(values, nextProps);
