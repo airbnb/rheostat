@@ -112,17 +112,6 @@ describe('<Slider />', () => {
       assert(onChange.callCount === 0, 'onChange was not called');
     });
 
-    it('should not update values if we are sliding', () => {
-      const onChange = sinon.spy();
-      const slider = mount(<Slider onChange={onChange} values={[0]} />);
-
-      slider.setState({ slidingIndex: 0 });
-
-      slider.setProps({ values: [50] });
-
-      assert(onChange.callCount === 0, 'updateNewValues was not called');
-    });
-
     it('should not update values if they are the same', () => {
       const onChange = sinon.spy();
       const slider = mount(<Slider onChange={onChange} values={[50]} />);
