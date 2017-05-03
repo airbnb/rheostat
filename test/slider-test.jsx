@@ -18,7 +18,7 @@ function skipWithoutDom() {
 }
 
 function testKeys(slider, tests) {
-  Object.keys(tests).forEach(key => {
+  Object.keys(tests).forEach((key) => {
     const keyCode = KEYS[key];
     const pos = tests[key];
     assert(slider.getNextPositionForKey(0, keyCode) === pos, `${key}: ${pos}%`);
@@ -68,7 +68,13 @@ describe('<Slider />', () => {
         render: pitRender,
       });
 
-      mount(<Slider orientation="vertical" pitComponent={PitComponent} pitPoints={[10]} />);
+      mount(
+        <Slider
+          orientation="vertical"
+          pitComponent={PitComponent}
+          pitPoints={[10]}
+        />,
+      );
 
       assert.isTrue(pitRender.calledOnce, 'one pit was rendered vertically');
     });
@@ -81,7 +87,7 @@ describe('<Slider />', () => {
       assert.include(
         slider.state('className'),
         'rheostat-horizontal',
-        'cached class has horizontal'
+        'cached class has horizontal',
       );
 
       slider.setProps({ orientation: 'vertical' });
@@ -90,7 +96,7 @@ describe('<Slider />', () => {
       assert.include(
         slider.state('className'),
         'rheostat-vertical',
-        'the cached classes were updated'
+        'the cached classes were updated',
       );
     });
 
@@ -104,6 +110,17 @@ describe('<Slider />', () => {
       slider.setProps({ values: [10] });
 
       assert(onChange.callCount === 0, 'onChange was not called');
+    });
+
+    it('should not update values if we are sliding', () => {
+      const onChange = sinon.spy();
+      const slider = mount(<Slider onChange={onChange} values={[0]} />);
+
+      slider.setState({ slidingIndex: 0 });
+
+      slider.setProps({ values: [50] });
+
+      assert(onChange.callCount === 0, 'updateNewValues was not called');
     });
 
     it('should not update values if they are the same', () => {
