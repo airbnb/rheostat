@@ -178,6 +178,7 @@ describe('<Slider />', () => {
     const handle = wrapper.find('.rheostat-handle');
     handle.simulate('mouseDown', { clientX: 0, clientY: 0 });
     assert(onSliderDragStart.callCount === 1, 'onDragStart was called from mouseDown');
+    assert(onSliderDragStart.calledWith({ clientX: 0, clientY: 0 }));
     const touchProps = {
       changedTouches: [
         {
@@ -188,6 +189,7 @@ describe('<Slider />', () => {
     };
     handle.simulate('touchStart', touchProps);
     assert(onSliderDragStart.callCount === 2, 'onDragStart was called from touchStart');
+    assert(onSliderDragStart.calledWith(touchProps));
   });
 });
 

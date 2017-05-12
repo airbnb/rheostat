@@ -376,7 +376,7 @@ class Rheostat extends React.Component {
       document.attachEvent('onmouseup', this.endSlide);
     }
 
-    if (this.props.onSliderDragStart) this.props.onSliderDragStart();
+    if (this.props.onSliderDragStart) this.props.onSliderDragStart(ev);
 
     killEvent(ev);
   }
@@ -392,7 +392,7 @@ class Rheostat extends React.Component {
     document.addEventListener('touchmove', this.handleTouchSlide, false);
     document.addEventListener('touchend', this.endSlide, false);
 
-    if (this.props.onSliderDragStart) this.props.onSliderDragStart();
+    if (this.props.onSliderDragStart) this.props.onSliderDragStart(ev);
 
     killEvent(ev);
   }
