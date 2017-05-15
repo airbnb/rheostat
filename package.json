@@ -62,6 +62,6 @@
     "react": ">=0.13.x"
   },
   "dependencies": {
-    "prop-types": "^15.5.6"
+    "prop-types": "^15.5.10"
   }
 }
