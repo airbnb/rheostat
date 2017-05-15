@@ -33,6 +33,7 @@
     "@kadira/storybook": "^2.35.3",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
+    "babel-plugin-transform-replace-object-assign": "^0.2.1",
     "babel-preset-airbnb": "^2.2.3",
     "babel-register": "^6.24.1",
     "casual": "^1.5.12",
@@ -62,6 +63,7 @@
     "react": ">=0.13.x"
   },
   "dependencies": {
+    "object.assign": "^4.0.4",
     "prop-types": "^15.5.10"
   }
 }
