@@ -652,14 +652,14 @@ class Rheostat extends React.Component {
             />
           );
         })}
-        {PitComponent && pitPoints.map((n) => {
+        {PitComponent && pitPoints.map((n, index) => {
           const pos = algorithm.getPosition(n, min, max);
           const pitStyle = orientation === 'vertical'
             ? { top: `${pos}%`, position: 'absolute' }
             : { left: `${pos}%`, position: 'absolute' };
 
           return (
-            <PitComponent key={n} style={pitStyle}>{n}</PitComponent>
+            <PitComponent key={`${n}_PC_${index}`} style={pitStyle}>{n}</PitComponent>
           );
         })}
         {children}
