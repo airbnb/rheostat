@@ -1,6 +1,12 @@
+# gitignore
+
 lib
 node_modules
 npm-debug.log
 coverage
 build
 .nyc_output
+
+# Only apps should have lockfiles
+yarn.lock
+package-lock.json
