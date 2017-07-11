@@ -5,6 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.1.1] - 2017-07-11
+
+### Changed
+
+- [Fix] use prop-types + create-react-class packages (#73)
+- [Fix] ensure `Object.assign` is transformed to `object.assign`
+
 ## [2.1.0] - 2016-11-10
 
 ### Changed
