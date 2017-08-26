@@ -42,7 +42,7 @@ const propTypes = {
     getPosition: PropTypes.func,
   }),
   // any children you pass in
-  children: PropTypes.any,
+  children: PropTypes.node,
   // standard class name you'd like to apply to the root element
   className: PropTypes.string,
   // prevent the slider from moving when clicked
@@ -87,11 +87,20 @@ const propTypes = {
 const defaultProps = {
   algorithm: linear,
   className: '',
+  children: null,
   disabled: false,
   handle: Button,
   max: SliderConstants.PERCENT_FULL,
   min: SliderConstants.PERCENT_EMPTY,
+  onClick: null,
+  onChange: null,
+  onKeyPress: null,
+  onSliderDragEnd: null,
+  onSliderDragMove: null,
+  onSliderDragStart: null,
+  onValuesUpdated: null,
   orientation: 'horizontal',
+  pitComponent: null,
   pitPoints: [],
   progressBar: 'div',
   snap: false,
@@ -105,10 +114,10 @@ class Rheostat extends React.Component {
   constructor(props) {
     super(props);
 
-    const { max, min, values } = this.props;
+    const { algorithm, max, min, values } = this.props;
     this.state = {
       className: getClassName(this.props),
-      handlePos: values.map(value => this.props.algorithm.getPosition(value, min, max)),
+      handlePos: values.map(value => algorithm.getPosition(value, min, max)),
       handleDimensions: 0,
       mousePos: null,
       sliderBox: {},
@@ -144,21 +153,22 @@ class Rheostat extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const minMaxChanged = (
-      nextProps.min !== this.props.min || nextProps.max !== this.props.max
-    );
+    const { className, disabled, min, max, orientation } = this.props;
+    const { values, slidingIndex } = this.state;
+
+    const minMaxChanged = (nextProps.min !== min || nextProps.max !== max);
 
     const valuesChanged = (
-      this.state.values.length !== nextProps.values.length ||
-      this.state.values.some((value, idx) => nextProps.values[idx] !== value)
+      values.length !== nextProps.values.length ||
+      values.some((value, idx) => nextProps.values[idx] !== value)
     );
 
     const orientationChanged = (
-      nextProps.className !== this.props.className ||
-      nextProps.orientation !== this.props.orientation
+      nextProps.className !== className ||
+      nextProps.orientation !== orientation
     );
 
-    const willBeDisabled = nextProps.disabled && !this.props.disabled;
+    const willBeDisabled = nextProps.disabled && !disabled;
 
     if (orientationChanged) {
       this.setState({
@@ -168,17 +178,16 @@ class Rheostat extends React.Component {
 
     if (minMaxChanged || valuesChanged) this.updateNewValues(nextProps);
 
-    if (willBeDisabled && this.state.slidingIndex !== null) {
+    if (willBeDisabled && slidingIndex !== null) {
       this.endSlide();
     }
   }
 
   getPublicState() {
-    return {
-      max: this.props.max,
-      min: this.props.min,
-      values: this.state.values,
-    };
+    const { min, max } = this.props;
+    const { values } = this.state;
+
+    return { max, min, values };
   }
 
   // istanbul ignore next
@@ -562,7 +571,8 @@ class Rheostat extends React.Component {
 
   // istanbul ignore next
   fireChangeEvent() {
-    if (this.props.onChange) this.props.onChange(this.getPublicState());
+    const { onChange } = this.props;
+    if (onChange) onChange(this.getPublicState());
   }
 
   // istanbul ignore next
@@ -570,24 +580,28 @@ class Rheostat extends React.Component {
     const nextState = this.getNextState(idx, proposedPosition);
 
     this.setState(nextState, () => {
-      if (this.props.onValuesUpdated) this.props.onValuesUpdated(this.getPublicState());
+      const { onValuesUpdated } = this.props;
+      if (onValuesUpdated) onValuesUpdated(this.getPublicState());
       if (onAfterSet) onAfterSet();
     });
   }
 
   // istanbul ignore next
   updateNewValues(nextProps) {
+    const { slidingIndex } = this.state;
+
     // Don't update while the slider is sliding
-    if (this.state.slidingIndex !== null) {
+    if (slidingIndex !== null) {
       return;
     }
 
     const { max, min, values } = nextProps;
+    const { algorithm } = this.props;
 
     const nextValues = this.validateValues(values, nextProps);
 
     this.setState({
-      handlePos: nextValues.map(value => this.props.algorithm.getPosition(value, min, max)),
+      handlePos: nextValues.map(value => algorithm.getPosition(value, min, max)),
       values: nextValues,
     }, () => this.fireChangeEvent());
   }
@@ -605,17 +619,18 @@ class Rheostat extends React.Component {
       pitPoints,
       progressBar: ProgressBar,
     } = this.props;
+    const { className, handlePos, values } = this.state;
 
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div
-        className={this.state.className}
+        className={className}
         ref="rheostat"
         onClick={!disabled && this.handleClick}
         style={{ position: 'relative' }}
       >
         <div className="rheostat-background" />
-        {this.state.handlePos.map((pos, idx) => {
+        {handlePos.map((pos, idx) => {
           const handleStyle = orientation === 'vertical'
             ? { top: `${pos}%`, position: 'absolute' }
             : { left: `${pos}%`, position: 'absolute' };
@@ -624,7 +639,7 @@ class Rheostat extends React.Component {
             <Handle
               aria-valuemax={this.getMaxValue(idx)}
               aria-valuemin={this.getMinValue(idx)}
-              aria-valuenow={this.state.values[idx]}
+              aria-valuenow={values[idx]}
               aria-disabled={disabled}
               data-handle-key={idx}
               className="rheostat-handle"
@@ -639,7 +654,7 @@ class Rheostat extends React.Component {
             />
           );
         })}
-        {this.state.handlePos.map((node, idx, arr) => {
+        {handlePos.map((node, idx, arr) => {
           if (idx === 0 && arr.length > 1) {
             return null;
           }
