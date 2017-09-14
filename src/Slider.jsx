@@ -643,7 +643,7 @@ class Rheostat extends React.Component {
               aria-disabled={disabled}
               data-handle-key={idx}
               className="rheostat-handle"
-              key={idx}
+              key={`handle-${idx}`}
               onClick={this.killEvent}
               onKeyDown={!disabled && this.handleKeydown}
               onMouseDown={!disabled && this.startMouseSlide}
@@ -662,7 +662,7 @@ class Rheostat extends React.Component {
           return (
             <ProgressBar
               className="rheostat-progress"
-              key={idx}
+              key={`progress-bar-${idx}`}
               style={this.getProgressStyle(idx)}
             />
           );
@@ -674,7 +674,7 @@ class Rheostat extends React.Component {
             : { left: `${pos}%`, position: 'absolute' };
 
           return (
-            <PitComponent key={n} style={pitStyle}>{n}</PitComponent>
+            <PitComponent key={`pit-${n}`} style={pitStyle}>{n}</PitComponent>
           );
         })}
         {children}
