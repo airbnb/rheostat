@@ -171,6 +171,26 @@ describe('<Slider />', () => {
       assert(slider.state('handlePos').length === 2, 'two handles exist');
     });
   });
+
+  it('fires onSliderDragStart when clicked or touched', () => {
+    const onSliderDragStart = sinon.spy();
+    const wrapper = mount(<Slider onSliderDragStart={onSliderDragStart} values={[50]} />);
+    const handle = wrapper.find('.rheostat-handle');
+    handle.simulate('mouseDown', { clientX: 0, clientY: 0 });
+    assert(onSliderDragStart.callCount === 1, 'onDragStart was called from mouseDown');
+    assert(onSliderDragStart.calledWithMatch({ clientX: 0, clientY: 0 }));
+    const touchProps = {
+      changedTouches: [
+        {
+          clientX: 0,
+          clientY: 0,
+        },
+      ],
+    };
+    handle.simulate('touchStart', touchProps);
+    assert(onSliderDragStart.callCount === 2, 'onDragStart was called from touchStart');
+    assert(onSliderDragStart.calledWithMatch(touchProps));
+  });
 });
 
 describe('Slider API', () => {
