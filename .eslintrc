@@ -2,7 +2,6 @@
   "extends": "airbnb",
   "rules": {
     "react/forbid-prop-types": 1,
-    "react/no-string-refs": 1,
     "react/no-multi-comp": 0,
     "react/prefer-es6-class": 0,
     "react/prefer-stateless-function": 0,
