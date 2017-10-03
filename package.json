@@ -49,7 +49,7 @@
     "eslint-plugin-react": "^7.4.0",
     "has": "^1.0.1",
     "jsdom": "^9.12.0",
-    "mocha": "^3.5.3",
+    "mocha": "^4.0.0",
     "nyc": "^11.2.1",
     "raw-loader": "^0.5.1",
     "react": "^15.6.1",
