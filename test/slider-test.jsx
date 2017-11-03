@@ -68,13 +68,13 @@ describe('<Slider />', () => {
         render: pitRender,
       });
 
-      mount(
+      mount((
         <Slider
           orientation="vertical"
           pitComponent={PitComponent}
           pitPoints={[10]}
-        />,
-      );
+        />
+      ));
 
       assert.isTrue(pitRender.calledOnce, 'one pit was rendered vertically');
     });
