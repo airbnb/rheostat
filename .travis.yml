@@ -2,6 +2,7 @@ language: node_js
 os:
  - linux
 node_js:
+  - "9"
   - "8"
   - "6"
   - "4"
@@ -23,9 +24,10 @@ env:
 matrix:
   fast_finish: true
   include:
-    - node_js: "node"
+    - node_js: "lts/*"
       env: PRETEST=true
-    - node_js: "node"
+    - node_js: "lts/*"
       env: COVERAGE=true
   allow_failures:
+    - node_js: "9"
     - node_js: "iojs"
