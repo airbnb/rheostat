@@ -23,6 +23,7 @@ env:
   - TEST=true REACT=0.13
   - TEST=true REACT=0.14
   - TEST=true REACT=15
+  - TEST=true REACT=16
 matrix:
   fast_finish: true
   include:
