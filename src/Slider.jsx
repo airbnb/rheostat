@@ -156,6 +156,9 @@ class Rheostat extends React.Component {
     this.slideTo = this.slideTo.bind(this);
     this.updateNewValues = this.updateNewValues.bind(this);
     this.setRef = this.setRef.bind(this);
+    this.invalidatePitStyleCache = this.invalidatePitStyleCache.bind(this);
+
+    this.pitStyleCache = {};
   }
 
   componentWillReceiveProps(nextProps) {
@@ -165,6 +168,8 @@ class Rheostat extends React.Component {
       min,
       max,
       orientation,
+      pitPoints,
+      algorithm,
     } = this.props;
     const {
       values,
@@ -183,6 +188,10 @@ class Rheostat extends React.Component {
       nextProps.orientation !== orientation
     );
 
+    const algorithmChanged = nextProps.algorithm !== algorithm;
+
+    const pitPointsChanged = nextProps.pitPoints !== pitPoints;
+
     const willBeDisabled = nextProps.disabled && !disabled;
 
     if (orientationChanged) {
@@ -192,6 +201,10 @@ class Rheostat extends React.Component {
     }
 
     if (minMaxChanged || valuesChanged) this.updateNewValues(nextProps);
+
+    if (minMaxChanged || pitPointsChanged || orientationChanged || algorithmChanged) {
+      this.invalidatePitStyleCache();
+    }
 
     if (willBeDisabled && slidingIndex !== null) {
       this.endSlide();
@@ -643,6 +656,10 @@ class Rheostat extends React.Component {
     }, () => this.fireChangeEvent());
   }
 
+  invalidatePitStyleCache() {
+    this.pitStyleCache = {};
+  }
+
   render() {
     const {
       algorithm,
@@ -705,10 +722,15 @@ class Rheostat extends React.Component {
           );
         })}
         {PitComponent && pitPoints.map((n) => {
-          const pos = algorithm.getPosition(n, min, max);
-          const pitStyle = orientation === 'vertical'
-            ? { top: `${pos}%`, position: 'absolute' }
-            : { left: `${pos}%`, position: 'absolute' };
+          let pitStyle = this.pitStyleCache[n];
+
+          if (!pitStyle) {
+            const pos = algorithm.getPosition(n, min, max);
+            pitStyle = orientation === 'vertical'
+              ? { top: `${pos}%`, position: 'absolute' }
+              : { left: `${pos}%`, position: 'absolute' };
+            this.pitStyleCache[n] = pitStyle;
+          }
 
           return (
             <PitComponent key={`pit-${n}`} style={pitStyle}>{n}</PitComponent>
