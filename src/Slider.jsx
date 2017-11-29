@@ -141,6 +141,7 @@ class Rheostat extends React.Component {
     this.fireChangeEvent = this.fireChangeEvent.bind(this);
     this.slideTo = this.slideTo.bind(this);
     this.updateNewValues = this.updateNewValues.bind(this);
+    this.setRef = this.setRef.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -183,7 +184,7 @@ class Rheostat extends React.Component {
 
   // istanbul ignore next
   getSliderBoundingBox() {
-    const { rheostat } = this.refs;
+    const rheostat = this.ref;
     const node = rheostat.getDOMNode ? rheostat.getDOMNode() : rheostat;
     const rect = node.getBoundingClientRect();
 
@@ -362,6 +363,11 @@ class Rheostat extends React.Component {
       sliderBox,
       slidingIndex: getHandleFor(ev),
     });
+  }
+
+  // istanbul ignore next
+  setRef(ref) {
+    this.ref = ref;
   }
 
   // istanbul ignore next
@@ -610,7 +616,7 @@ class Rheostat extends React.Component {
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div
         className={this.state.className}
-        ref="rheostat"
+        ref={this.setRef}
         onClick={!disabled && this.handleClick}
         style={{ position: 'relative' }}
       >
