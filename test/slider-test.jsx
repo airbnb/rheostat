@@ -574,6 +574,46 @@ describe('Slider API', () => {
       assert(slider.validatePosition(0, 90) === 75, 'the handle reached its own max');
       assert(slider.validatePosition(1, 20) === 25, 'the handle reached its own min');
     });
+
+    it('should honor getNextHandlePosition precondition', () => {
+      const LEFT_MAX = 40;
+      const LEFT_HANDLE_IDX = 0;
+      const slider = newSlider({
+        values: [30],
+        getNextHandlePosition: (idx, pos) =>
+          (idx === LEFT_HANDLE_IDX && pos > LEFT_MAX ? LEFT_MAX : pos),
+      });
+
+
+      assert(slider.validatePosition(0, 90) === 40, 'it honors the validatePosition override');
+      assert(slider.validatePosition(0, 39) === 39, 'accepts the default value when condition is not triggered');
+    });
+
+    it('should throw if getNextHandlePosition returns invalid input', () => {
+      const nanSlider = newSlider({
+        values: [30],
+        getNextHandlePosition: () => NaN,
+      });
+
+      assert.throws(
+        () => nanSlider.validatePosition(0, 100),
+        TypeError,
+        'getNextHandlePosition returned invalid position. Valid positions are floats between 0 and 100',
+        'it throws if a non - float is returns from getNextHandlePosition',
+      );
+
+      const outOfBoundsSlider = newSlider({
+        values: [30],
+        getNextHandlePosition: () => -100,
+      });
+
+      assert.throws(
+        () => outOfBoundsSlider.validatePosition(0, 100),
+        TypeError,
+        'getNextHandlePosition returned invalid position. Valid positions are floats between 0 and 100',
+        'it throws if getNextHandlePosition returns out of bounds',
+      );
+    });
   });
 
   describe('validateValues', () => {
