@@ -1,6 +1,7 @@
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import createReactClass from 'create-react-class';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 import sinon from 'sinon';
 import { assert } from 'chai';
@@ -72,6 +73,19 @@ describeWithDOM('<Slider />', () => {
 
       assert.isTrue(pitRender.calledOnce, 'one pit was rendered vertically');
     });
+
+    it('doesn\'t re-renders pits when value are changed', () => {
+      const pitRender = sinon.stub().returns(<div />);
+      const PitComponent = createReactClass({
+        mixins: [PureRenderMixin],
+        render: pitRender,
+      });
+
+      const slider = mount(<Slider pitComponent={PitComponent} pitPoints={[20]} />);
+      slider.setProps({ values: [10] });
+
+      assert.isTrue(pitRender.calledOnce, 'one pit was rendered only once');
+    });
   });
 
   describe('componentWillReceiveProps', () => {
@@ -135,6 +149,64 @@ describeWithDOM('<Slider />', () => {
       assert.isTrue(onChange.calledOnce, 'updateNewValues was called');
 
       assert.include(slider.state('values'), 80, 'new value is reflected in state');
+    });
+
+    it('should re-render pits when min or max are changed', () => {
+      const pitRender = sinon.stub().returns(<div />);
+      const PitComponent = createReactClass({
+        mixins: [PureRenderMixin],
+        render: pitRender,
+      });
+
+      const slider = mount(<Slider pitComponent={PitComponent} pitPoints={[20]} />);
+      slider.setProps({ min: 30 });
+      slider.setProps({ max: 60 });
+
+      assert.isTrue(pitRender.calledThrice, 'one pit was rendered thrice');
+    });
+
+    it('should re-render pits when pitPoints are changed', () => {
+      const pitRender = sinon.stub().returns(<div />);
+      const PitComponent = createReactClass({
+        mixins: [PureRenderMixin],
+        render: pitRender,
+      });
+
+      const slider = mount(<Slider pitComponent={PitComponent} pitPoints={[20]} />);
+      slider.setProps({ pitPoints: [40] });
+
+      assert.isTrue(pitRender.calledTwice, 'one pit was rendered twice');
+    });
+
+    it('should re-render pits when orientation are changed', () => {
+      const pitRender = sinon.stub().returns(<div />);
+      const PitComponent = createReactClass({
+        mixins: [PureRenderMixin],
+        render: pitRender,
+      });
+
+      const slider = mount(<Slider pitComponent={PitComponent} pitPoints={[20]} />);
+      slider.setProps({ orientation: 'vertical' });
+
+      assert.isTrue(pitRender.calledTwice, 'one pit was rendered twice');
+    });
+
+    it('should re-render pits when algorithm are changed', () => {
+      const pitRender = sinon.stub().returns(<div />);
+      const PitComponent = createReactClass({
+        mixins: [PureRenderMixin],
+        render: pitRender,
+      });
+
+      const algorithm = {
+        getPosition: () => 20,
+        getValue: () => 30,
+      };
+
+      const slider = mount(<Slider pitComponent={PitComponent} pitPoints={[20]} />);
+      slider.setProps({ algorithm });
+
+      assert.isTrue(pitRender.calledTwice, 'one pit was rendered twice');
     });
 
     it('should move the values if the min is changed to be larger', () => {
