@@ -4,6 +4,6 @@ export default {
   },
 
   getValue(x, min, max) {
-    return (Math.floor(((x / 100) ** 2) * (max - min)) + min);
+    return (Math.round(((x / 100) ** 2) * (max - min)) + min);
   },
 };

@@ -12,6 +12,14 @@ describe('geometric algorithm', () => {
     assert.equal(Math.round(positionFromValue), originalPosition);
   });
 
+  it('should have inverse functions for getValue and getPosition', () => {
+    const min = 10;
+    const max = 1000;
+    const value = 358;
+    const positionFromValue = geometric.getPosition(value, min, max);
+    assert.equal(value, geometric.getValue(positionFromValue, min, max));
+  });
+
   it('should handle the minimum end of the range correctly', () => {
     const min = casual.integer(0, 99);
     const max = casual.integer(100, 1000);
