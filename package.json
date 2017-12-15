@@ -15,10 +15,9 @@
     "tests-only": "npm run build && npm run test:all",
     "pretest:all": "npm run react",
     "test:all": "npm run test:node && npm run test:dom",
-    "test:node": "npm run test:mocha",
-    "test:dom": "WITH_DOM=1 npm run test:mocha -- --require './test/.dom.js'",
-    "test:mocha": "npm run mocha 'test/**/*-test.*'",
-    "mocha": "mocha -R tap",
+    "test:node": "npm run jest -- --testEnvironment=node",
+    "test:dom": "WITH_DOM=1 npm run jest -- --testEnvironment=jsdom",
+    "jest": "jest",
     "react": "enzyme-adapter-react-install 15"
   },
   "repository": {
@@ -31,6 +30,7 @@
     "@kadira/storybook": "^2.35.3",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
+    "babel-jest": "^21.2.0",
     "babel-plugin-transform-replace-object-assign": "^0.2.1",
     "babel-preset-airbnb": "^2.4.0",
     "babel-register": "^6.26.0",
@@ -46,8 +46,8 @@
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.4.0",
     "has": "^1.0.1",
+    "jest": "^21.2.1",
     "jsdom": "^9.12.0",
-    "mocha": "^3.5.3",
     "nyc": "^11.3.0",
     "raw-loader": "^0.5.1",
     "react": "^15.6.2",
@@ -64,5 +64,13 @@
   "dependencies": {
     "object.assign": "^4.0.4",
     "prop-types": "^15.5.10"
+  },
+  "jest": {
+    "testMatch": [
+      "<rootDir>/test/*-test.*"
+    ],
+    "setupFiles": [
+      "<rootDir>/test/_setup.js"
+    ]
   }
 }

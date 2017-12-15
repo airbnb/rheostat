@@ -11,11 +11,7 @@ import { KEYS } from '../lib/constants/SliderConstants';
 
 const { WITH_DOM } = process.env;
 
-function skipWithoutDom() {
-  if (WITH_DOM !== '1') {
-    this.skip();
-  }
-}
+const describeWithDOM = WITH_DOM === '1' ? describe : describe.skip;
 
 function testKeys(slider, tests) {
   Object.keys(tests).forEach((key) => {
@@ -27,9 +23,7 @@ function testKeys(slider, tests) {
 
 const newSlider = props => new Slider({ ...Slider.defaultProps, ...props });
 
-describe('<Slider />', () => {
-  beforeEach(skipWithoutDom);
-
+describeWithDOM('<Slider />', () => {
   describe('render', () => {
     it('should render the slider with one handle by default', () => {
       const wrapper = shallow(<Slider />);
