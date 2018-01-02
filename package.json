@@ -61,7 +61,7 @@
     "react": ">=0.13.x"
   },
   "dependencies": {
-    "object.assign": "^4.0.4",
+    "object.assign": "^4.1.0",
     "prop-types": "^15.6.0"
   },
   "jest": {
