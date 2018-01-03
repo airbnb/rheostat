@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.1.3] - 2018-01-03
+
+### Fixes
+
+- revert jsnext:main extension removal (#135)
+
 ## [2.1.2] - 2018-01-02
 
 ### Fixes
