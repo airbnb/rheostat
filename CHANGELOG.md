@@ -5,12 +5,24 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.1.2] - 2018-01-02
+
+### Fixes
+
+- Slider: avoid key={0} (#106)
+- Use math.round instead of math.floor for getting value with geometric algorithm (#131)
+
+### Refactors
+
+- Slider: use function refs instead of string refs (#112)
+- Memoize pits styles (#123, #130)
+
 ## [2.1.1] - 2017-07-11
 
-### Changed
+### Fixed
 
-- [Fix] use prop-types + create-react-class packages (#73)
-- [Fix] ensure `Object.assign` is transformed to `object.assign`
+- use prop-types + create-react-class packages (#73)
+- ensure `Object.assign` is transformed to `object.assign`
 
 ## [2.1.0] - 2016-11-10
 
@@ -21,6 +33,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [2.0.1] - 2016-10-19
 
 ### Fixed
+
 - Eliminate slidingIndex of -1 (#33)
 
 ## [2.0.0] - 2016-08-22
