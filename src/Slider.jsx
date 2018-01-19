@@ -80,6 +80,8 @@ const propTypes = {
   snap: PropTypes.bool,
   // the points we should snap to
   snapPoints: PropTypeArrOfNumber,
+  // whether a proposed update is valid
+  getNextHandlePosition: PropTypes.func,
   // the values
   values: PropTypeArrOfNumber,
 };
@@ -105,6 +107,7 @@ const defaultProps = {
   progressBar: 'div',
   snap: false,
   snapPoints: [],
+  getNextHandlePosition: null,
   values: [
     SliderConstants.PERCENT_EMPTY,
   ],
@@ -483,8 +486,6 @@ class Rheostat extends React.Component {
     this.slideTo(idx, positionPercent);
 
     if (this.canMove(idx, positionPercent)) {
-      // update mouse positions
-      // this.setState({ mousePos: { x, y } });
       if (onSliderDragMove) onSliderDragMove();
     }
   }
@@ -565,14 +566,35 @@ class Rheostat extends React.Component {
     killEvent(ev);
   }
 
+  // Apply user adjustments to position
+  userAdjustPosition(idx, proposedPosition) {
+    const { getNextHandlePosition } = this.props;
+    let nextPosition = proposedPosition;
+    if (getNextHandlePosition) {
+      nextPosition = parseFloat(getNextHandlePosition(idx, proposedPosition));
+
+      if (
+        Number.isNaN(nextPosition)
+        || nextPosition < SliderConstants.PERCENT_EMPTY
+        || nextPosition > SliderConstants.PERCENT_FULL
+      ) {
+        throw new TypeError('getNextHandlePosition returned invalid position. Valid positions are floats between 0 and 100');
+      }
+    }
+
+    return nextPosition;
+  }
+
   // Make sure the proposed position respects the bounds and
   // does not collide with other handles too much.
   validatePosition(idx, proposedPosition) {
     const { handlePos, handleDimensions } = this.state;
 
+    const nextPosition = this.userAdjustPosition(idx, proposedPosition);
+
     return Math.max(
       Math.min(
-        proposedPosition,
+        nextPosition,
         handlePos[idx + 1] !== undefined
           ? handlePos[idx + 1] - handleDimensions
           : SliderConstants.PERCENT_FULL, // 100% is the highest value

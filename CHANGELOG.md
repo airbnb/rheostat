@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+- Add getNextHandlePosition prop to allow custom movement validation
+
 ## [2.1.3] - 2018-01-03
 
 ### Fixes

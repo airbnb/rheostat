@@ -56,6 +56,10 @@ a drag, keypress, or click event. `onChange` is recommended when you wish to per
 changed. This includes dragging, click, or keypress. `onValuesUpdated` is recommended if you need
 to work with the values before they're committed.
 
+If you need to perform custom logic to postprocess the handle position, `getNextHandlePosition` accepts
+a callback of the form `(handleIdx: int, percentPosition: float) => float`. Return the updated
+handle position. This is useful if you need to customize ranges within a single slider.
+
 ```js
   onChange: PropTypes.func
   onClick: PropTypes.func
@@ -64,6 +68,7 @@ to work with the values before they're committed.
   onSliderDragMove: PropTypes.func
   onSliderDragStart: PropTypes.func
   onValuesUpdated: PropTypes.func
+  getNextHandlePosition: PropTypes.func
 ```
 
 `snap` is a boolean which controls the slider's snapping behavior.
