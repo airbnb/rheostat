@@ -86,6 +86,27 @@ describeWithDOM('<Slider />', () => {
 
       assert.isTrue(pitRender.calledOnce, 'one pit was rendered only once');
     });
+
+    it('should not throw react errors on disabled', () => {
+      const consoleErrorMock = sinon.spy(console, 'error');
+      const slider = mount(<Slider />);
+      slider.setProps({ disabled: true });
+      sinon.assert.callCount(consoleErrorMock, 0);
+    });
+
+    it('should pass undefined to key and mouse event handlers on disabled', () => {
+      const slider = mount(<Slider disabled />);
+      assert.isUndefined(slider.find('.rheostat-handle').first().props().onKeyDown, 'onKeyDown is undefined');
+      assert.isUndefined(slider.find('.rheostat-handle').first().props().onMouseDown, 'onMouseDown is undefined');
+      assert.isUndefined(slider.find('.rheostat-handle').first().props().onTouchStart, 'onTouchStart is undefined');
+    });
+
+    it('should pass functions to key and mouse event handlers', () => {
+      const slider = mount(<Slider />);
+      assert.isFunction(slider.find('.rheostat-handle').first().props().onKeyDown, 'onKeyDown is function');
+      assert.isFunction(slider.find('.rheostat-handle').first().props().onMouseDown, 'onMouseDown is function');
+      assert.isFunction(slider.find('.rheostat-handle').first().props().onTouchStart, 'onTouchStart is function');
+    });
   });
 
   describe('componentWillReceiveProps', () => {

@@ -702,7 +702,7 @@ class Rheostat extends React.Component {
       <div
         className={className}
         ref={this.setRef}
-        onClick={!disabled && this.handleClick}
+        onClick={!disabled ? this.handleClick : undefined}
         style={{ position: 'relative' }}
       >
         <div className="rheostat-background" />
@@ -721,9 +721,9 @@ class Rheostat extends React.Component {
               className="rheostat-handle"
               key={`handle-${idx}`}
               onClick={this.killEvent}
-              onKeyDown={!disabled && this.handleKeydown}
-              onMouseDown={!disabled && this.startMouseSlide}
-              onTouchStart={!disabled && this.startTouchSlide}
+              onKeyDown={!disabled ? this.handleKeydown : undefined}
+              onMouseDown={!disabled ? this.startMouseSlide : undefined}
+              onTouchStart={!disabled ? this.startTouchSlide : undefined}
               role="slider"
               style={handleStyle}
               tabIndex={0}
