@@ -88,10 +88,8 @@ describeWithDOM('<Slider />', () => {
     });
 
     it('should not throw react errors on disabled', () => {
-      const consoleErrorMock = sinon.spy(console, 'error');
       const slider = mount(<Slider />);
       slider.setProps({ disabled: true });
-      sinon.assert.callCount(consoleErrorMock, 0);
     });
 
     it('should pass undefined to key and mouse event handlers on disabled', () => {
