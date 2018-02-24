@@ -8,11 +8,21 @@ import * as SliderConstants from './constants/SliderConstants';
 import linear from './algorithms/linear';
 
 function getClassName(props) {
-  const orientation = props.orientation === 'vertical'
-    ? 'rheostat-vertical'
-    : 'rheostat-horizontal';
+  let classNames = ['rheostat'];
 
-  return ['rheostat', orientation].concat(props.className.split(' ')).join(' ');
+  classNames.push(props.orientation === 'vertical'
+    ? 'rheostat-vertical'
+    : 'rheostat-horizontal');
+
+  if (props.disabled) {
+    classNames.push('rheostat-disabled');
+  }
+
+  if (props.className) {
+    classNames = [...classNames, ...props.className.split(' ')];
+  }
+
+  return classNames.join(' ');
 }
 
 const has = Object.prototype.hasOwnProperty;
@@ -197,7 +207,9 @@ class Rheostat extends React.Component {
 
     const willBeDisabled = nextProps.disabled && !disabled;
 
-    if (orientationChanged) {
+    const disabledChanged = nextProps.disabled !== disabled;
+
+    if (orientationChanged || disabledChanged) {
       this.setState({
         className: getClassName(nextProps),
       });
