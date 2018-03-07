@@ -8,18 +8,17 @@ import * as SliderConstants from './constants/SliderConstants';
 import linear from './algorithms/linear';
 
 function getClassName(props) {
-  let classNames = ['rheostat'];
-
-  classNames.push(props.orientation === 'vertical'
+  const orientationClassName = props.orientation === 'vertical'
     ? 'rheostat-vertical'
-    : 'rheostat-horizontal');
+    : 'rheostat-horizontal';
+  const classNames = ['rheostat', orientationClassName];
 
   if (props.disabled) {
     classNames.push('rheostat-disabled');
   }
 
   if (props.className) {
-    classNames = [...classNames, ...props.className.split(' ')];
+    classNames.push(...props.className.split(' '));
   }
 
   return classNames.join(' ');
