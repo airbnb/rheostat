@@ -9,7 +9,7 @@ class LabeledSlider extends React.Component {
     super(props);
 
     this.state = {
-      values: props.values || [0],
+      values: props.values,
     };
 
     this.updateValue = this.updateValue.bind(this);
@@ -54,7 +54,7 @@ LabeledSlider.propTypes = {
   formatValue: PropTypes.func,
 };
 LabeledSlider.defaultProps = {
-  values: [],
+  values: [0],
   formatValue: null,
 };
 
