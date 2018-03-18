@@ -9,5 +9,12 @@ module.exports = {
         include: path.resolve(__dirname, '../')
       }
     ]
+  },
+  externals: {
+    'jsdom': 'window',
+    'cheerio': 'window',
+    'react/lib/ExecutionEnvironment': true,
+    'react/lib/ReactContext': 'window',
+    'react/addons': true
   }
 }

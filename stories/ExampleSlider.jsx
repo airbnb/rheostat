@@ -1,5 +1,8 @@
 import React, { PropTypes } from 'react';
 import { storiesOf } from '@storybook/react';
+import { specs, describe, it } from 'storybook-addon-specifications';
+import { mount } from 'enzyme';
+import { expect } from 'chai';
 
 import Rheostat from '../';
 import log10 from '../lib/algorithms/log10';
@@ -59,9 +62,23 @@ LabeledSlider.defaultProps = {
 };
 
 storiesOf('Slider', module)
-  .add('A Simple Slider', () => (
-    <LabeledSlider />
-  ))
+  .add('A Simple Slider', () => {
+    const labeledSlider = <LabeledSlider />;
+
+    specs(() => describe('A Simple Slider', () => {
+      it('Should have a single default value of 0', () => {
+        const slider = mount(labeledSlider);
+        expect(slider.prop('values')).to.eql([0]);
+      });
+
+      it('Should have one button by default', () => {
+        const slider = mount(labeledSlider);
+        expect(slider.find('button')).to.have.length(1);
+      });
+    }));
+
+    return labeledSlider;
+  })
   .add('Custom Handle', () => {
     function MyHandle({ style, ...passProps }) {
       return (
