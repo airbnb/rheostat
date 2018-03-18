@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 
 import Rheostat from '../';
 import log10 from '../lib/algorithms/log10';
