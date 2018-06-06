@@ -87,6 +87,15 @@ describeWithDOM('<Slider />', () => {
       assert.isTrue(pitRender.calledOnce, 'one pit was rendered only once');
     });
 
+    it('should render the disabled state', () => {
+      const slider = mount(<Slider disabled />);
+      assert.include(
+        slider.state('className'),
+        'rheostat-disabled',
+        'the disabled class was rendered',
+      );
+    });
+
     it('should not throw react errors on disabled', () => {
       const slider = mount(<Slider />);
       slider.setProps({ disabled: true });
@@ -123,6 +132,25 @@ describeWithDOM('<Slider />', () => {
       assert.include(
         slider.state('className'),
         'rheostat-vertical',
+        'the cached classes were updated',
+      );
+    });
+
+    it('should re-evaluate the disabled state when props change', () => {
+      const slider = mount(<Slider />);
+      assert.isFalse(slider.props().disabled, 'slider is not disabled');
+      assert.notInclude(
+        slider.state('className'),
+        'rheostat-disabled',
+        'cached class has not disabled',
+      );
+
+      slider.setProps({ disabled: true });
+
+      assert.isTrue(slider.props().disabled, 'slider was disabled');
+      assert.include(
+        slider.state('className'),
+        'rheostat-disabled',
         'the cached classes were updated',
       );
     });
