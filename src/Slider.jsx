@@ -35,6 +35,22 @@ class Button extends React.Component {
   }
 }
 
+function ButtonTooltip(props) {
+  return (
+    <span {...props}>
+      {props.children}
+    </span>
+  );
+}
+
+ButtonTooltip.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+};
+
+ButtonTooltip.defaultProps = {
+  children: SliderConstants.PERCENT_EMPTY,
+};
+
 const propTypes = {
   // the algorithm to use
   algorithm: PropTypes.shape({
@@ -47,8 +63,14 @@ const propTypes = {
   className: PropTypes.string,
   // prevent the slider from moving when clicked
   disabled: PropTypes.bool,
+  // a custom function to format tooltip value
+  formatTooltipValue: PropTypes.func,
   // a custom handle you can pass in
   handle: PropTypeReactComponent,
+  // should we render tooltip?
+  handleTooltip: PropTypes.bool,
+  // a custom handle tooltip you can pass in
+  handleTooltipComponent: PropTypeReactComponent,
   // the maximum possible value
   max: PropTypes.number,
   // the minimum possible value
@@ -91,7 +113,10 @@ const defaultProps = {
   className: '',
   children: null,
   disabled: false,
+  formatTooltipValue: null,
   handle: Button,
+  handleTooltip: false,
+  handleTooltipComponent: ButtonTooltip,
   max: SliderConstants.PERCENT_FULL,
   min: SliderConstants.PERCENT_EMPTY,
   onClick: null,
@@ -138,6 +163,7 @@ class Rheostat extends React.Component {
     this.getMinValue = this.getMinValue.bind(this);
     this.getMaxValue = this.getMaxValue.bind(this);
     this.getHandleDimensions = this.getHandleDimensions.bind(this);
+    this.getHandleTooltipData = this.getHandleTooltipData.bind(this);
     this.getClosestSnapPoint = this.getClosestSnapPoint.bind(this);
     this.getSnapPosition = this.getSnapPosition.bind(this);
     this.getNextPositionForKey = this.getNextPositionForKey.bind(this);
@@ -399,6 +425,16 @@ class Rheostat extends React.Component {
       const current = Math.abs(handlePos[closestIdx] - positionPercent);
       return challenger < current ? idx : closestIdx;
     }, 0);
+  }
+
+  getHandleTooltipData(value) {
+    const { formatTooltipValue } = this.props;
+
+    if (formatTooltipValue) {
+      return formatTooltipValue(value);
+    }
+
+    return value;
   }
 
   // istanbul ignore next
@@ -688,6 +724,8 @@ class Rheostat extends React.Component {
       children,
       disabled,
       handle: Handle,
+      handleTooltip,
+      handleTooltipComponent: HandleTooltipComponent,
       max,
       min,
       orientation,
@@ -695,7 +733,12 @@ class Rheostat extends React.Component {
       pitPoints,
       progressBar: ProgressBar,
     } = this.props;
-    const { className, handlePos, values } = this.state;
+    const {
+      className,
+      handlePos,
+      slidingIndex,
+      values,
+    } = this.state;
 
     return (
       // eslint-disable-next-line jsx-a11y/click-events-have-key-events
@@ -727,7 +770,18 @@ class Rheostat extends React.Component {
               role="slider"
               style={handleStyle}
               tabIndex={0}
-            />
+            >
+              {
+                handleTooltip && (
+                  <HandleTooltipComponent
+                    className="rheostat-handle-tooltip"
+                    style={slidingIndex === idx ? { display: 'block' } : { display: 'none' }}
+                  >
+                    {this.getHandleTooltipData(values[idx])}
+                  </HandleTooltipComponent>
+                )
+              }
+            </Handle>
           );
         })}
         {handlePos.map((node, idx, arr) => {

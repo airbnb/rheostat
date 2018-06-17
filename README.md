@@ -40,6 +40,18 @@ The maximum and minimum possible values, by default 0 - 100.
   min: PropTypes.number
 ```
 
+You can enable a tooltip that appears above the handle.
+`handleTooltipComponent` is a custom React component for rendering "tooltip".
+```js
+  handleTooltip: PropTypes.bool
+  handleTooltipComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.string]);
+```
+
+If you need to format tooltip value, you can pass your custom function.
+```js
+  formatTooltipValue: PropTypes.func
+```
+
 `pitComponent` is a custom React component for rendering "pits" across the bar.
 `pitPoints` is the set of points at which it will render a pit. Points are an array
 of `values` on the slider.
@@ -120,6 +132,23 @@ ReactDOM.render((
   />
 ), document.getElementById('slider-root'));
 ```
+
+* A slider with tooltip
+
+```js
+import Rheostat from 'rheostat';
+
+ReactDOM.render((
+  <Rheostat
+    min={1}
+    max={100}
+    values={[75]}
+    handleTooltip
+  />
+), document.getElementById('slider-root'));
+```
+
+> Important: Make sure to include the [css file](css/slider-tooltip.css) for tooltip or feel free to create your own.
 
 ## Live Playground
 
