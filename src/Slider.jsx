@@ -771,16 +771,14 @@ class Rheostat extends React.Component {
               style={handleStyle}
               tabIndex={0}
             >
-              {
-                handleTooltip && (
-                  <HandleTooltipComponent
-                    className="rheostat-handle-tooltip"
-                    style={slidingIndex === idx ? { display: 'block' } : { display: 'none' }}
-                  >
-                    {this.getHandleTooltipData(values[idx])}
-                  </HandleTooltipComponent>
-                )
-              }
+              {handleTooltip && (
+                <HandleTooltipComponent
+                  className="rheostat-handle-tooltip"
+                  style={slidingIndex === idx ? { display: 'block' } : { display: 'none' }}
+                >
+                  {this.getHandleTooltipData(values[idx])}
+                </HandleTooltipComponent>
+              )}
             </Handle>
           );
         })}
