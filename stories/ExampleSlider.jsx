@@ -153,6 +153,40 @@ storiesOf('Slider', module)
       values={[10]}
     />
   ))
+  .add('Tooltip', () => (
+    <LabeledSlider
+      min={1}
+      max={100}
+      values={[50]}
+      handleTooltip
+    />
+  ))
+  .add('Tooltip (with many handles)', () => (
+    <LabeledSlider
+      min={1}
+      max={100}
+      values={[50, 75]}
+      handleTooltip
+    />
+  ))
+  .add('Tooltip (with formatting)', () => {
+    function formatTooltipValue(value) {
+      return (value).toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      });
+    }
+
+    return (
+      <LabeledSlider
+        min={1}
+        max={200}
+        values={[100]}
+        handleTooltip
+        formatTooltipValue={formatTooltipValue}
+      />
+    );
+  })
   .add('Pits', () => {
     function PitComponent({ style, children }) {
       return (

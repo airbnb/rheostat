@@ -46,6 +46,16 @@ describeWithDOM('<Slider />', () => {
       assert(wrapper.find('.rheostat-progress').length === 1, 'the bar is present');
     });
 
+    it('should render the slider with a tooltip for a single handle if enabled', () => {
+      const wrapper = shallow(<Slider values={[1]} handleTooltip />);
+      assert(wrapper.find('.rheostat-handle-tooltip').length === 1, 'the tooltip is present');
+    });
+
+    it('should render the slider with as many tooltips as values if enabled', () => {
+      const wrapper = shallow(<Slider values={[0, 25, 50, 75, 100]} handleTooltip />);
+      assert(wrapper.find('.rheostat-handle-tooltip').length === 5, 'five tooltips are present');
+    });
+
     it('renders pits if they are provided', () => {
       const pitRender = sinon.stub().returns(<div />);
       const PitComponent = createReactClass({
