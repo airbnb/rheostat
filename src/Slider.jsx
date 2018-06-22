@@ -27,6 +27,14 @@ function getHandleFor(ev) {
   return Number(ev.currentTarget.getAttribute('data-handle-key'));
 }
 
+function getClassName(props) {
+  const orientation = props.orientation === 'vertical'
+    ? 'rheostat-vertical'
+    : 'rheostat-horizontal';
+
+  return ['rheostat', orientation].concat(props.className.split(' ')).join(' ');
+}
+
 /* istanbul ignore next */
 function killEvent(ev) {
   ev.stopPropagation();
@@ -54,6 +62,9 @@ const propTypes = {
 
   // any children you pass in
   children: PropTypes.any,
+
+  // class name prop
+  className: PropTypes.string,
 
   // prevent the slider from moving when clicked
   disabled: PropTypes.bool,
@@ -111,6 +122,7 @@ const propTypes = {
 /* istanbul ignore next */
 const defaultProps = {
   autoAdjustVerticalPosition: true,
+  className: '',
   algorithm: LinearScale,
   disabled: false,
   max: PERCENT_FULL,
@@ -137,6 +149,7 @@ export class Rheostat extends React.Component {
       values,
     } = this.props;
     this.state = {
+      className: getClassName(this.props),
       handlePos: values.map(value => this.props.algorithm.getPosition(value, min, max)),
       handleDimensions: 0,
       mousePos: null,
@@ -183,6 +196,21 @@ export class Rheostat extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    const {
+      className,
+      disabled,
+      min,
+      max,
+      orientation,
+      pitPoints,
+      algorithm,
+    } = this.props;
+
+    const {
+      values,
+      slidingIndex,
+    } = this.state;
+
     const minMaxChanged = (
       nextProps.min !== this.props.min || nextProps.max !== this.props.max
     );
@@ -191,6 +219,17 @@ export class Rheostat extends React.Component {
       this.state.values.length !== nextProps.values.length ||
       this.state.values.some((value, idx) => nextProps.values[idx] !== value)
     );
+
+    const orientationChanged = (
+      nextProps.className !== className ||
+      nextProps.orientation !== orientation
+    );
+
+    if (orientationChanged) {
+      this.setState({
+        className: getClassName(nextProps),
+      });
+    }
 
     const willBeDisabled = nextProps.disabled && !this.props.disabled;
 
@@ -277,7 +316,6 @@ export class Rheostat extends React.Component {
     const value = algorithm.getValue(positionPercent, min, max);
 
     const stepAmount = Math.min(step, max - min);
-    console.log("s" + stepAmount);
     const snapValue = min + (Math.round((value - min) / stepAmount) * stepAmount);
     return algorithm.getPosition(snapValue, min, max);
   }
@@ -611,7 +649,6 @@ export class Rheostat extends React.Component {
   }
 
   render() {
-    // console.log(this.state.handlePos)
     const {
       css,
       autoAdjustVerticalPosition,
@@ -664,6 +701,7 @@ export class Rheostat extends React.Component {
                 aria-valuenow={this.state.values[idx]}
                 aria-disabled={disabled}
                 data-handle-key={idx}
+                className="rheostat-handle"
                 key={idx}
                 orientation={orientation}
                 disabled={disabled}
@@ -683,7 +721,6 @@ export class Rheostat extends React.Component {
           if (idx === 0 && arr.length > 1) {
             return null;
           }
-
           return (
             <ProgressBar
               key={idx}

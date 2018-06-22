@@ -8,10 +8,13 @@ import '../css/slider-vertical.css';
 
 /* Register react with styles interface */
 ThemedStyleSheet.registerTheme({
+  unit: 30,
   responsive: {},
   color: {
+    black: 'black',
+
     core: {
-      babu: 'red',
+      babu: '#456464',
     },
 
     buttons: {

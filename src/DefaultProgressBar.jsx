@@ -43,7 +43,7 @@ export default withStyles(({ color, unit }) => ({
   progressBar: {
     backgroundColor: color.core.babu,
     position: 'absolute',
-    borderRadius: BACKGROUND_HEIGHT_UNITS * unit,
+    borderRadius: BACKGROUND_HEIGHT_UNITS * unit * 5,
   },
 
   progressBar_luxury: {
@@ -58,9 +58,11 @@ export default withStyles(({ color, unit }) => ({
   progressBar_vertical: {
     width: BACKGROUND_HEIGHT_UNITS * unit,
     left: 0,
+    width: 100,
   },
 
   progressBar_disabled: {
     backgroundColor: color.buttons.defaultDisabledColor,
   },
+
 }))(DefaultProgressBar);
