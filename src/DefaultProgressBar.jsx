@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import withBrand from 'airbnb-dls-web/build/themes/withBrand';
-import { BRAND_LUXURY, BrandPropType } from 'airbnb-dls-web/build/themes/BrandProvider';
-import { withStyles, withStylesPropTypes } from 'airbnb-dls-web/build/themes/withStyles';
+import { withStyles, withStylesPropTypes } from 'react-with-styles';
 
 import { BACKGROUND_HEIGHT_UNITS } from './constants/SliderConstants';
 
@@ -12,7 +10,6 @@ const propTypes = {
   orientation: PropTypes.string,
   disabled: PropTypes.bool,
   style: PropTypes.object,
-  brand: BrandPropType.isRequired,
 };
 
 const defaultProps = {
@@ -26,15 +23,12 @@ function DefaultProgressBar({
   theme, // eslint-disable-line no-unused-vars
   orientation,
   disabled,
-  brand,
   ...passProps
 }) {
-  const isLuxury = brand === BRAND_LUXURY;
   return (
     <div
       {...css(
         styles.progressBar,
-        isLuxury && styles.progressBar_luxury,
         orientation === 'vertical' ? styles.progressBar_vertical : styles.progressBar_horizontal,
         disabled && styles.progressBar_disabled,
       )}
@@ -69,4 +63,4 @@ export default withStyles(({ color, unit }) => ({
   progressBar_disabled: {
     backgroundColor: color.buttons.defaultDisabledColor,
   },
-}))(withBrand(DefaultProgressBar));
+}))(DefaultProgressBar);

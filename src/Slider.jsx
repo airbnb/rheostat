@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import LinearScale from './algorithms/linear';
+import DefaultHandle from './DefaultHandle';
+import DefaultProgressBar from './DefaultProgressBar'
 
 import { withStyles, withStylesPropTypes } from 'react-with-styles';
 
@@ -111,13 +113,13 @@ const defaultProps = {
   autoAdjustVerticalPosition: true,
   algorithm: LinearScale,
   disabled: false,
-  handle: Button,
   max: PERCENT_FULL,
   min: PERCENT_EMPTY,
   step: DEFAULT_STEP,
   orientation: HORIZONTAL,
   pitPoints: [],
-  progressBar: 'div',
+  handle: DefaultHandle,
+  progressBar: DefaultProgressBar,
 
   values: [
     PERCENT_EMPTY,
@@ -216,14 +218,13 @@ export class Rheostat extends React.Component {
   // istanbul ignore next
   getSliderBoundingBox() {
     const rect = this.handleContainerNode.getBoundingClientRect();
-
-    return {
-      height: rect.height || this.handleContainerNode.clientHeight,
-      left: rect.left,
-      right: rect.right,
-      top: rect.top,
-      width: rect.width || this.handleContainerNode.clientWidth,
-    };
+      return {
+        height: rect.height || this.handleContainerNode.clientHeight,
+        left: rect.left,
+        right: rect.right,
+        top: rect.top,
+        width: rect.width || this.handleContainerNode.clientWidth,
+      };
   }
 
   getProgressStyle(idx) {
@@ -276,8 +277,8 @@ export class Rheostat extends React.Component {
     const value = algorithm.getValue(positionPercent, min, max);
 
     const stepAmount = Math.min(step, max - min);
+    console.log("s" + stepAmount);
     const snapValue = min + (Math.round((value - min) / stepAmount) * stepAmount);
-
     return algorithm.getPosition(snapValue, min, max);
   }
 
@@ -319,6 +320,7 @@ export class Rheostat extends React.Component {
       index === idx ? actualPosition : pos
     ));
 
+
     return {
       handlePos: nextHandlePos,
       values: nextHandlePos.map(pos => (
@@ -346,10 +348,10 @@ export class Rheostat extends React.Component {
   }
 
   // istanbul ignore next
-  setStartSlide(ev, x, y) {
+  setStartSlide(ev) {
+    const sliderBox = this.getSliderBoundingBox();
     this.setState({
-      handleDimensions: this.getHandleDimensions(),
-      mousePos: { x, y },
+      handleDimensions: this.getHandleDimensions(ev, sliderBox),
       slidingIndex: getHandleFor(ev),
     });
   }
@@ -417,9 +419,7 @@ export class Rheostat extends React.Component {
     if (this.props.orientation === VERTICAL) {
       return ((y - sliderBox.top) / sliderBox.height) * PERCENT_FULL;
     }
-
     const percent = ((x - sliderBox.left) / sliderBox.width) * PERCENT_FULL;
-
     return percent;
   }
 
@@ -521,7 +521,7 @@ export class Rheostat extends React.Component {
       ? ((handleDimensions / sliderBox.height) * PERCENT_FULL) / 2
       : ((handleDimensions / sliderBox.width) * PERCENT_FULL) / 2;
 
-    return Math.max(
+    const a =  Math.max(
       Math.min(
         proposedPosition,
         handlePos[idx + 1] !== undefined
@@ -532,6 +532,8 @@ export class Rheostat extends React.Component {
         ? handlePos[idx - 1] + handlePercentage
         : PERCENT_EMPTY, // 0% is the lowest value
     );
+
+    return a;
   }
 
   validateValues(proposedValues, props) {
@@ -602,7 +604,6 @@ export class Rheostat extends React.Component {
     const { max, min, values } = nextProps;
 
     const nextValues = this.validateValues(values, nextProps);
-
     this.setState({
       handlePos: nextValues.map(value => this.props.algorithm.getPosition(value, min, max)),
       values: nextValues,
@@ -610,6 +611,7 @@ export class Rheostat extends React.Component {
   }
 
   render() {
+    // console.log(this.state.handlePos)
     const {
       css,
       autoAdjustVerticalPosition,

@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import { storiesOf } from '@kadira/storybook';
 
-import Rheostat from '../src/Slider'; // TODO PW: Change back to ../ 
-import log10 from '../lib/algorithms/log10';
+import Rheostat from '../src/Slider'; // TODO PW: Change back to ../
+import log10 from '../src/algorithms/log10';
 
 class LabeledSlider extends React.Component {
   constructor(props) {
@@ -63,9 +63,10 @@ storiesOf('Slider', module)
     <LabeledSlider />
   ))
   .add('Custom Handle', () => {
-    function MyHandle({ style, ...passProps }) {
+    function MyHandle({ style, handleRef, ...passProps }) {
       return (
         <div
+          ref={handleRef}
           {...passProps}
           style={{
             ...style,

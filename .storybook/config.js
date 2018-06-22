@@ -9,6 +9,15 @@ import '../css/slider-vertical.css';
 /* Register react with styles interface */
 ThemedStyleSheet.registerTheme({
   responsive: {},
+  color: {
+    core: {
+      babu: 'red',
+    },
+
+    buttons: {
+      defaultDisabledColor: 'blue',
+    }
+  },
 });
 ThemedStyleSheet.registerInterface(aphroditeInterface);
 
