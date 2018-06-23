@@ -76,10 +76,6 @@ export function customHandleWithStyles(customHandle) {
       },
     },
 
-    handle_luxury: {
-      borderColor: color.black,
-    },
-
     handle_horizontal: {
       marginLeft: -(DEFAULT_HANDLE_WIDTH_UNITS / 2) * unit,
       top: ((BACKGROUND_HEIGHT_UNITS / 2) - (DEFAULT_HANDLE_WIDTH_UNITS / 2)) * unit,

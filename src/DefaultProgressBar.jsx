@@ -29,6 +29,7 @@ function DefaultProgressBar({
     <div
       {...css(
         styles.progressBar,
+        styles.progressBar_background,
         orientation === 'vertical' ? styles.progressBar_vertical : styles.progressBar_horizontal,
         disabled && styles.progressBar_disabled,
       )}
@@ -43,23 +44,24 @@ export default withStyles(({ color, unit }) => ({
   progressBar: {
     backgroundColor: color.core.babu,
     position: 'absolute',
-    borderRadius: BACKGROUND_HEIGHT_UNITS * unit * 5,
   },
 
-  progressBar_luxury: {
-    backgroundColor: color.black,
+  progressBar_background: {
+    height: 15,
+    top: 0,
+    width: '100%',
   },
 
   progressBar_horizontal: {
     height: BACKGROUND_HEIGHT_UNITS * unit,
-    top: 0,
+    top: 2,
   },
 
-  progressBar_vertical: {
-    width: BACKGROUND_HEIGHT_UNITS * unit,
-    left: 0,
-    width: 100,
-  },
+  // progressBar_vertical: {
+  //   width: BACKGROUND_HEIGHT_UNITS * unit,
+  //   left: 0,
+  //   width: 100,
+  // },
 
   progressBar_disabled: {
     backgroundColor: color.buttons.defaultDisabledColor,

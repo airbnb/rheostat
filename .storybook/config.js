@@ -14,7 +14,7 @@ ThemedStyleSheet.registerTheme({
     black: 'black',
 
     core: {
-      babu: '#456464',
+      babu: '#abc4e8',
     },
 
     buttons: {
