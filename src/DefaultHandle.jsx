@@ -51,25 +51,60 @@ export default withStyles(({ color, unit }) => ({
       height: DEFAULT_HANDLE_WIDTH_UNITS * unit,
       borderWidth: 1,
       borderStyle: 'solid',
-      borderColor: color.core.black,
+      borderColor: color.grey,
       backgroundColor: color.white,
-      borderRadius: 3,
+      borderRadius: '20%',
       outline: 'none',
       zIndex: 2,
       boxShadow: `0 ${unit / 4}px ${unit / 4}px ${color.textDisabled}`,
       ':focus': {
         boxShadow: `${color.focus} 0 0 2px 2px`,
       },
+
+      ':after': {
+        content: '',
+        display: 'block',
+        position: 'absolute',
+        backgroundColor: '#dadfe8',
+      }
     },
 
   handle_horizontal: {
     marginLeft: -(DEFAULT_HANDLE_WIDTH_UNITS / 2) * unit,
     top: ((BACKGROUND_HEIGHT_UNITS / 2) - (DEFAULT_HANDLE_WIDTH_UNITS / 2)) * unit,
+    'handle': {
+      ':after': {
+        top: 10,
+      }
+    },
+
+    background: {
+      borderRadius: 15,
+    }
   },
 
   handle_vertical: {
     marginTop: -(DEFAULT_HANDLE_WIDTH_UNITS / 2) * unit,
     left: ((BACKGROUND_HEIGHT_UNITS / 2) - (DEFAULT_HANDLE_WIDTH_UNITS / 2)) * unit,
+    progress: {
+      left: 2,
+      width: 13,
+    },
+    handle: {
+      left: -5,
+      'margin-top': -12,
+
+      ':before': {
+        top: 10,
+      },
+
+      ':after': {
+        top: 13,
+        left: 8,
+        height: 1,
+        width: 10,
+      }
+    }
   },
 
   handle_disabled: {

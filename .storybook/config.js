@@ -12,6 +12,7 @@ ThemedStyleSheet.registerTheme({
   responsive: {},
   color: {
     black: 'black',
+    grey: '#d8d8d8',
 
     core: {
       babu: '#abc4e8',
