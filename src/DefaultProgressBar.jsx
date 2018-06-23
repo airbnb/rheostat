@@ -44,17 +44,17 @@ export default withStyles(({ color, unit }) => ({
   progressBar: {
     backgroundColor: color.core.babu,
     position: 'absolute',
+    overflow: 'visible',
   },
 
   progressBar_background: {
-    height: 15,
+    height: BACKGROUND_HEIGHT_UNITS * unit,
     top: 0,
-    width: '100%',
   },
 
   progressBar_horizontal: {
     height: BACKGROUND_HEIGHT_UNITS * unit,
-    top: 2,
+    top: 1,
   },
 
   // progressBar_vertical: {

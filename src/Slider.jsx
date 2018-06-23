@@ -701,7 +701,6 @@ export class Rheostat extends React.Component {
                 aria-valuenow={this.state.values[idx]}
                 aria-disabled={disabled}
                 data-handle-key={idx}
-                className="rheostat-handle"
                 key={idx}
                 orientation={orientation}
                 disabled={disabled}
