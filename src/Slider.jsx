@@ -114,6 +114,7 @@ const defaultProps = {
   className: '',
   algorithm: LinearScale,
   disabled: false,
+  getNextHandlePosition: null,
   max: PERCENT_FULL,
   min: PERCENT_EMPTY,
   step: DEFAULT_STEP,
@@ -137,7 +138,7 @@ const defaultProps = {
   ],
 };
 
-export class Rheostat extends React.Component {
+class Rheostat extends React.Component {
   constructor(props) {
     super(props);
 
@@ -599,7 +600,7 @@ export class Rheostat extends React.Component {
 
     const proposedPercentage = this.getNextPositionForKey(idx, ev.keyCode);
 
-    if (proposedPercentage === null || isNaN(proposedPercentage)) return;
+    if (proposedPercentage === null) return;
 
     if (this.canMove(idx, proposedPercentage)) {
       this.slideTo(idx, proposedPercentage, () => this.fireChangeEvent());
@@ -743,7 +744,7 @@ export class Rheostat extends React.Component {
       : { top: 0, left: handleDimensions / 2, right: handleDimensions / 2 };
 
     return (
-      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+      // eslint-disable-next-line jsx-a11y/click-events-have-key-events
       <div
         onClick={!disabled && this.handleClick}
         {...css(
@@ -775,7 +776,10 @@ export class Rheostat extends React.Component {
                 aria-valuenow={values[idx]}
                 aria-disabled={disabled}
                 data-handle-key={idx}
-                key={idx}
+                key={
+                  // eslint-disable-next-line react/no-array-index-key
+                  idx
+                }
                 orientation={orientation}
                 disabled={disabled}
                 onClick={this.killEvent}
@@ -796,7 +800,10 @@ export class Rheostat extends React.Component {
           }
           return (
             <ProgressBar
-              key={idx}
+              key={
+                // eslint-disable-next-line react/no-array-index-key
+                idx
+              }
               style={this.getProgressStyle(idx)}
               disabled={disabled}
             />

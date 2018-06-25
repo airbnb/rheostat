@@ -3,18 +3,17 @@ import React from 'react';
 
 import { withStyles, withStylesPropTypes } from 'react-with-styles';
 
-import { BACKGROUND_HEIGHT_UNITS } from './constants/SliderConstants';
-
 const propTypes = {
   ...withStylesPropTypes,
   orientation: PropTypes.string,
   disabled: PropTypes.bool,
-  style: PropTypes.object,
+  style: PropTypes.any,
 };
 
 const defaultProps = {
   orientation: 'horizontal',
   disabled: false,
+  style: {},
 };
 
 function DefaultProgressBar({

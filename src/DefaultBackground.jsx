@@ -1,7 +1,6 @@
 import React from 'react';
 import { withStyles, withStylesPropTypes } from 'react-with-styles';
 import {
-  BACKGROUND_HEIGHT_UNITS,
   HORIZONTAL,
   VERTICAL,
 } from './constants/SliderConstants';
@@ -21,10 +20,11 @@ function DefaultBackground({
   orientation,
   styles,
 }) {
-  console.log('foo');
   return (
     <div
-      {...css(orientation === VERTICAL ? styles.DefaulBackground_background__vertical : styles.DefaulBackground_background__horizontal)}
+      {...css(orientation === VERTICAL
+        ? styles.DefaulBackground_background__vertical
+        : styles.DefaulBackground_background__horizontal)}
     />
   );
 }

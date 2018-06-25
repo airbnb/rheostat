@@ -84,9 +84,11 @@ storiesOf('Slider', module)
     }
     MyHandle.propTypes = {
       style: PropTypes.object,
+      handleRef: PropTypes.any,
     };
     MyHandle.defaultProps = {
       style: null,
+      handleRef: '',
     };
 
     return (
