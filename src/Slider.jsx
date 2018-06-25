@@ -124,14 +124,15 @@ export class Rheostat extends React.Component {
     super(props);
 
     const {
+      algorithm,
       max,
       min,
       values,
     } = this.props;
+
     this.state = {
       handlePos: values.map(value => algorithm.getPosition(value, min, max)),
       handleDimensions: 0,
-      mousePos: null,
       slidingIndex: null,
       values,
     };
@@ -211,7 +212,12 @@ export class Rheostat extends React.Component {
   }
 
   getPublicState() {
-    const { min, max, values } = this.props;
+    const { values } = this.state;
+    const {
+      min,
+      max,
+    } = this.props;
+
     return {
       max,
       min,
@@ -411,12 +417,16 @@ export class Rheostat extends React.Component {
   }
 
   handleMouseSlide(ev) {
+    const { slidingIndex } = this.state;
+
     if (slidingIndex === null) return;
     this.handleSlide(ev.clientX, ev.clientY);
     killEvent(ev);
   }
 
   handleTouchSlide(ev) {
+    const { slidingIndex } = this.state;
+
     if (slidingIndex === null) return;
 
     if (ev.changedTouches.length > 1) {
@@ -431,6 +441,7 @@ export class Rheostat extends React.Component {
   }
 
   positionPercent(x, y, sliderBox) {
+    const { orientation } = this.state;
     if (orientation === VERTICAL) {
       return ((y - sliderBox.top) / sliderBox.height) * PERCENT_FULL;
     }
@@ -455,6 +466,10 @@ export class Rheostat extends React.Component {
 
   endSlide() {
     const { onSliderDragEnd } = this.props;
+    const {
+      slidingIndex,
+      handlePos,
+    } = this.state;
     const idx = slidingIndex;
 
     this.setState({ slidingIndex: null });
@@ -479,7 +494,10 @@ export class Rheostat extends React.Component {
       return;
     }
 
-    const { onClick } = this.props;
+    const {
+      onClick,
+      orientation,
+    } = this.props;
 
     // Calculate the position of the slider on the page so we can determine
     // the position where you click in relativity.
@@ -525,7 +543,12 @@ export class Rheostat extends React.Component {
   // Make sure the proposed position respects the bounds and
   // does not collide with other handles too much.
   validatePosition(idx, proposedPosition) {
-    const { handlePos, handleDimensions } = this.state;
+    const {
+      handlePos,
+      handleDimensions,
+    } = this.state;
+
+    const { orientation } = this.props;
     const sliderBox = this.getSliderBoundingBox();
 
     const handlePercentage = orientation === VERTICAL
@@ -563,7 +586,11 @@ export class Rheostat extends React.Component {
 
   // Can we move the slider to the given position?
   canMove(idx, proposedPosition) {
-    const { handlePos, handleDimensions } = this.state;
+    const {
+      handlePos,
+      handleDimensions,
+    } = this.state;
+    const { orientation } = this.props;
     const sliderBox = this.getSliderBoundingBox();
 
     const handlePercentage = orientation === VERTICAL
@@ -605,10 +632,11 @@ export class Rheostat extends React.Component {
 
   updateNewValues(nextProps) {
     // Don't update while the slider is sliding
+    const { slidingIndex } = this.state;
     if (slidingIndex !== null) {
       return;
     }
-
+    const { algorithm } = this.props;
     const { max, min, values } = nextProps;
 
     const nextValues = this.validateValues(values, nextProps);
@@ -637,6 +665,7 @@ export class Rheostat extends React.Component {
 
     const {
       handleDimensions,
+      handlePos,
       values,
     } = this.state;
 
@@ -660,7 +689,9 @@ export class Rheostat extends React.Component {
             styles.handleContainer,
             handleContainerStyle,
             styles.Rheostat_background,
-            orientation === VERTICAL ? styles.Rheostat_background__vertical : styles.Rheostat_background__horizontal,
+            orientation === VERTICAL
+            ? styles.Rheostat_background__vertical
+            : styles.Rheostat_background__horizontal,
           )}
         >
           {handlePos.map((pos, idx) => {
