@@ -97,20 +97,38 @@ const propTypes = {
   // a custom progress bar you can pass in
   progressBar: PropTypeReactComponent,
 
+  // should we snap?
+  snap: PropTypes.bool,
+  // the points we should snap to
+  snapPoints: PropTypeArrOfNumber,
+  // whether a proposed update is valid
+  getNextHandlePosition: PropTypes.func,
+
   // the values
   values: PropTypeArrOfNumber,
 };
 
 const defaultProps = {
   autoAdjustVerticalPosition: true,
+  children: null,
   className: '',
   algorithm: LinearScale,
   disabled: false,
   max: PERCENT_FULL,
   min: PERCENT_EMPTY,
   step: DEFAULT_STEP,
+  onClick: null,
+  onChange: null,
+  onKeyPress: null,
+  onSliderDragEnd: null,
+  onSliderDragMove: null,
+  onSliderDragStart: null,
+  onValuesUpdated: null,
   orientation: HORIZONTAL,
+  pitComponent: null,
   pitPoints: [],
+  snap: false,
+  snapPoints: [],
   handle: DefaultHandle,
   progressBar: DefaultProgressBar,
 
@@ -143,6 +161,7 @@ export class Rheostat extends React.Component {
     this.getMinValue = this.getMinValue.bind(this);
     this.getMaxValue = this.getMaxValue.bind(this);
     this.getHandleDimensions = this.getHandleDimensions.bind(this);
+    this.getClosestSnapPoint = this.getClosestSnapPoint.bind(this);
     this.getSnapPosition = this.getSnapPosition.bind(this);
     this.getNextPositionForKey = this.getNextPositionForKey.bind(this);
     this.getNextState = this.getNextState.bind(this);
@@ -162,6 +181,7 @@ export class Rheostat extends React.Component {
     this.fireChangeEvent = this.fireChangeEvent.bind(this);
     this.slideTo = this.slideTo.bind(this);
     this.updateNewValues = this.updateNewValues.bind(this);
+    this.setRef = this.setRef.bind(this);
     this.setHandleNode = this.setHandleNode.bind(this);
     this.setHandleContainerNode = this.setHandleContainerNode.bind(this);
     this.positionPercent = this.positionPercent.bind(this);
@@ -278,6 +298,15 @@ export class Rheostat extends React.Component {
       : max;
   }
 
+  getClosestSnapPoint(value) {
+    const { snapPoints } = this.props;
+    if (!snapPoints.length) return value;
+
+    return snapPoints.reduce((snapTo, snap) => (
+      Math.abs(snapTo - value) < Math.abs(snap - value) ? snapTo : snap
+    ));
+  }
+
   getHandleDimensions() {
     const { orientation } = this.props;
     return orientation === VERTICAL
@@ -287,58 +316,97 @@ export class Rheostat extends React.Component {
 
   getSnapPosition(positionPercent) {
     const {
-      algorithm, max, min, step,
+      algorithm,
+      max,
+      min,
+      step,
+      snap,
     } = this.props;
 
+    if (!snap) return positionPercent;
     if (step === 1) {
       return positionPercent;
     }
 
     const value = algorithm.getValue(positionPercent, min, max);
-
-    const stepAmount = Math.min(step, max - min);
-    const snapValue = min + (Math.round((value - min) / stepAmount) * stepAmount);
+    const snapValue = this.getClosestSnapPoint(value);
     return algorithm.getPosition(snapValue, min, max);
   }
 
   getNextPositionForKey(idx, keyCode) {
-    const { values } = this.state;
+    const { handlePos, values } = this.state;
     const {
       algorithm,
       max,
       min,
-      step,
+      snapPoints,
+      snap: shouldSnap,
     } = this.props;
 
     let proposedValue = values[idx];
+    let proposedPercentage = handlePos[idx];
+    const originalPercentage = proposedPercentage;
+    let stepValue = 1;
+
+    if (max >= 100) {
+      proposedPercentage = Math.round(proposedPercentage);
+    } else {
+      stepValue = 100 / (max - min);
+    }
+
+    let currentIndex = null;
+
+    if (shouldSnap) {
+      currentIndex = snapPoints.indexOf(this.getClosestSnapPoint(values[idx]));
+    }
 
     const stepMultiplier = {
       [KEYS.LEFT]: v => v * -1,
       [KEYS.RIGHT]: v => v * 1,
+      [KEYS.UP]: v => v * 1,
+      [KEYS.DOWN]: v => v * -1,
       [KEYS.PAGE_DOWN]: v => (v > 1 ? -v : v * -10),
       [KEYS.PAGE_UP]: v => (v > 1 ? v : v * 10),
     };
 
     if (has.call(stepMultiplier, keyCode)) {
-      proposedValue += stepMultiplier[keyCode](step);
+      proposedPercentage += stepMultiplier[keyCode](stepValue);
+
+      if (shouldSnap) {
+        if (proposedPercentage > originalPercentage) {
+          // move cursor right unless overflow
+          if (currentIndex < snapPoints.length - 1) {
+            proposedValue = snapPoints[currentIndex + 1];
+          }
+        // move cursor left unless there is overflow
+        } else if (currentIndex > 0) {
+          proposedValue = snapPoints[currentIndex - 1];
+        }
+      }
     } else if (keyCode === KEYS.HOME) {
-      proposedValue = algorithm.getValue(PERCENT_EMPTY, min, max);
+      proposedPercentage = PERCENT_EMPTY;
+
+      if (shouldSnap) {
+        ([proposedValue] = snapPoints);
+      }
     } else if (keyCode === KEYS.END) {
-      proposedValue = algorithm.getValue(PERCENT_FULL, min, max);
+      proposedPercentage = PERCENT_FULL;
+
+      if (shouldSnap) {
+        proposedValue = snapPoints[snapPoints.length - 1];
+      }
     } else {
       return null;
     }
 
-    return algorithm.getPosition(proposedValue, min, max);
+    return shouldSnap
+      ? algorithm.getPosition(proposedValue, min, max)
+      : proposedPercentage;
   }
 
   getNextState(idx, proposedPosition) {
     const { handlePos } = this.state;
-    const {
-      max,
-      min,
-      algorithm,
-    } = this.props;
+    const { max, min, algorithm } = this.props;
 
     const actualPosition = this.validatePosition(idx, proposedPosition);
 
@@ -346,12 +414,9 @@ export class Rheostat extends React.Component {
       index === idx ? actualPosition : pos
     ));
 
-
     return {
       handlePos: nextHandlePos,
-      values: nextHandlePos.map(pos => (
-        algorithm.getValue(pos, min, max)
-      )),
+      values: nextHandlePos.map(pos => algorithm.getValue(pos, min, max)),
     };
   }
 
@@ -379,6 +444,10 @@ export class Rheostat extends React.Component {
       handleDimensions: this.getHandleDimensions(ev, sliderBox),
       slidingIndex: getHandleFor(ev),
     });
+  }
+
+  setRef(ref) {
+    this.rheostat = ref;
   }
 
   startMouseSlide(ev) {
@@ -458,14 +527,16 @@ export class Rheostat extends React.Component {
     this.slideTo(idx, this.getSnapPosition(positionPercent));
 
     if (this.canMove(idx, positionPercent)) {
-      // update mouse positions
-      this.setState({ x, y });
       if (onSliderDragMove) onSliderDragMove();
     }
   }
 
   endSlide() {
-    const { onSliderDragEnd } = this.props;
+    const {
+      onSliderDragEnd,
+      snap,
+    } = this.props;
+
     const {
       slidingIndex,
       handlePos,
@@ -485,8 +556,12 @@ export class Rheostat extends React.Component {
     }
 
     if (onSliderDragEnd) onSliderDragEnd();
-    const positionPercent = this.getSnapPosition(handlePos[idx]);
-    this.slideTo(idx, positionPercent, () => this.fireChangeEvent());
+    if (snap) {
+      const positionPercent = this.getSnapPosition(handlePos[slidingIndex]);
+      this.slideTo(slidingIndex, positionPercent, () => this.fireChangeEvent());
+    } else {
+      this.fireChangeEvent();
+    }
   }
 
   handleClick(ev) {
