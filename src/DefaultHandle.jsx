@@ -33,7 +33,7 @@ function DefaultHandle({
       {...css(
         styles.DefaultHandle_handle,
         orientation === 'vertical' ? styles.DefaultHandle_handle__vertical : styles.DefaultHandle_handle__horizontal,
-        disabled && styles.handle_disabled,
+        disabled && styles.DefaultHandle_handle__disabled,
       )}
       {...rest}
     />
@@ -62,7 +62,14 @@ export default withStyles(({ color, unit }) => ({
       },
 
       ':after': {
-        content: '',
+        content: '""',
+        display: 'block',
+        position: 'absolute',
+        backgroundColor: '#dadfe8',
+      },
+
+      ':before': {
+        content: '""',
         display: 'block',
         position: 'absolute',
         backgroundColor: '#dadfe8',
@@ -70,12 +77,20 @@ export default withStyles(({ color, unit }) => ({
     },
 
   DefaultHandle_handle__horizontal: {
-    marginLeft: -(DEFAULT_HANDLE_WIDTH_UNITS / 2) * unit,
-    top: ((BACKGROUND_HEIGHT_UNITS / 2) - (DEFAULT_HANDLE_WIDTH_UNITS / 2)) * unit,
-    'handle': {
-      ':after': {
-        top: 10,
-      }
+    marginLeft: -12,
+    top: -5,
+    ':before': {
+      top: 700,
+      height: 10,
+      width: 1,
+      left: 10,
+    },
+
+    ':after': {
+      top: 7,
+      height: 10,
+      width: 1,
+      left: 13,
     },
 
     background: {
@@ -92,7 +107,7 @@ export default withStyles(({ color, unit }) => ({
     },
     handle: {
       left: -5,
-      'margin-top': -12,
+      marginTop: -12,
 
       ':before': {
         top: 10,
@@ -107,7 +122,7 @@ export default withStyles(({ color, unit }) => ({
     }
   },
 
-  handle_disabled: {
+  DefaultHandle_handle__disabled: {
     borderColor: color.buttons.defaultDisabledColor,
   },
 }))(DefaultHandle);

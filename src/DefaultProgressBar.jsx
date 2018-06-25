@@ -58,7 +58,7 @@ export default withStyles(({ color, unit }) => ({
     width: 24,
     height: '100%',
   },
-  
+
   DefaultProgressBar_progressBar: {
     backgroundColor: '#abc4e8',
     position: 'absolute',
@@ -70,7 +70,7 @@ export default withStyles(({ color, unit }) => ({
   },
 
   DefaultProgressBar_progressBar__horiztonal: {
-    height: 24,
+    height: 13,
     top: 2,
   },
 
