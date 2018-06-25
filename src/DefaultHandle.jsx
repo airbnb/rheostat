@@ -31,8 +31,8 @@ function DefaultHandle({
     <button
       ref={handleRef}
       {...css(
-        styles.handle,
-        orientation === 'vertical' ? styles.handle_vertical : styles.handle_horizontal,
+        styles.DefaultHandle_handle,
+        orientation === 'vertical' ? styles.DefaultHandle_handle__vertical : styles.DefaultHandle_handle__horizontal,
         disabled && styles.handle_disabled,
       )}
       {...rest}
@@ -46,7 +46,7 @@ DefaultHandle.propTypes = {
 DefaultHandle.defaultProps = defaultProps;
 
 export default withStyles(({ color, unit }) => ({
-  handle: {
+  DefaultHandle_handle: {
       width: DEFAULT_HANDLE_WIDTH_UNITS * unit,
       height: DEFAULT_HANDLE_WIDTH_UNITS * unit,
       borderWidth: 1,
@@ -69,7 +69,7 @@ export default withStyles(({ color, unit }) => ({
       }
     },
 
-  handle_horizontal: {
+  DefaultHandle_handle__horizontal: {
     marginLeft: -(DEFAULT_HANDLE_WIDTH_UNITS / 2) * unit,
     top: ((BACKGROUND_HEIGHT_UNITS / 2) - (DEFAULT_HANDLE_WIDTH_UNITS / 2)) * unit,
     'handle': {
@@ -83,7 +83,7 @@ export default withStyles(({ color, unit }) => ({
     }
   },
 
-  handle_vertical: {
+  DefaultHandle_handle__vertical: {
     marginTop: -(DEFAULT_HANDLE_WIDTH_UNITS / 2) * unit,
     left: ((BACKGROUND_HEIGHT_UNITS / 2) - (DEFAULT_HANDLE_WIDTH_UNITS / 2)) * unit,
     progress: {

@@ -28,18 +28,20 @@ function DefaultProgressBar({
   return (
     <div
       {...css(
-        styles.progressBar,
-        styles.progressBar_background,
+        styles.DefaultProgressBar_progressBar,
+
         ...(orientation === 'vertical'
           ?
             [
-              styles.progressBar_vertical,
-
+              styles.DefaultProgressBar_vertical,
+              styles.DefaultProgressBar_vertical__background,
+              styles.DefaultProgressBar_progressBar__vertical,
             ]
           :
             [
-              styles.progressBar_horizontal
-
+              styles.DefaultProgressBar_horiztonal,
+              styles.DefaultProgressBar_background__horizontal,
+              styles.DefaultProgressBar_progressBar__horizontal,
             ]),
 
         disabled && styles.progressBar_disabled
@@ -52,29 +54,34 @@ DefaultProgressBar.propTypes = propTypes;
 DefaultProgressBar.defaultProps = defaultProps;
 
 export default withStyles(({ color, unit }) => ({
-  progressBar: {
-    backgroundColor: color.core.babu,
+  DefaultProgressBar_vertical: {
+    width: 24,
+    height: '100%',
+  },
+  
+  DefaultProgressBar_progressBar: {
+    backgroundColor: '#abc4e8',
     position: 'absolute',
-    overflow: 'visible',
   },
 
-  progressBar_background: {
-    height: BACKGROUND_HEIGHT_UNITS * unit,
+  DefaultProgressBar_background__horizontal: {
+    height: 15,
     top: 0,
   },
 
-  progressBar_horizontal: {
-    height: 13,
+  DefaultProgressBar_progressBar__horiztonal: {
+    height: 24,
     top: 2,
   },
 
-  progressBar_vertical: {
-    left: 2,
-    width: 13,
+  DefaultProgressBar_progressBar__vertical: {
+    height: '100%',
+    width: 24,
   },
 
-  progressBar_disabled: {
-    backgroundColor: color.buttons.defaultDisabledColor,
+  DefaultProgressBar_background__vertical: {
+    height: '100%',
+    top: 0,
+    width: 15,
   },
-
 }))(DefaultProgressBar);

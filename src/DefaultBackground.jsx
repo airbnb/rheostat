@@ -26,7 +26,8 @@ function DefaultBackground({
     <div
       {...css(
         styles.background,
-        orientation === VERTICAL ? styles.background_vertical : styles.background_horizontal)}
+        orientation === VERTICAL ? styles.background_vertical : styles.background_horizontal
+      )}
     />
   );
 }
@@ -37,6 +38,7 @@ export default withStyles(({ color, unit }) => ({
   background: {
     backgroundColor: color.accent.lightGray,
     position: 'relative',
+    overflow: 'visible',
     borderRadius: BACKGROUND_HEIGHT_UNITS * unit,
   },
 
