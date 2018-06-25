@@ -319,15 +319,10 @@ export class Rheostat extends React.Component {
       algorithm,
       max,
       min,
-      step,
       snap,
     } = this.props;
 
     if (!snap) return positionPercent;
-    if (step === 1) {
-      return positionPercent;
-    }
-
     const value = algorithm.getValue(positionPercent, min, max);
     const snapValue = this.getClosestSnapPoint(value);
     return algorithm.getPosition(snapValue, min, max);
@@ -541,7 +536,6 @@ export class Rheostat extends React.Component {
       slidingIndex,
       handlePos,
     } = this.state;
-    const idx = slidingIndex;
 
     this.setState({ slidingIndex: null });
 
