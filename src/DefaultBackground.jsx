@@ -9,7 +9,6 @@ import OrientationPropType from './propTypes/OrientationPropType';
 
 const propTypes = {
   ...withStylesPropTypes,
-  // the orientation
   orientation: OrientationPropType,
 };
 

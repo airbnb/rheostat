@@ -136,7 +136,7 @@ export class Rheostat extends React.Component {
       values,
     } = this.props;
     this.state = {
-      handlePos: values.map(value => this.props.algorithm.getPosition(value, min, max)),
+      handlePos: values.map(value => algorithm.getPosition(value, min, max)),
       handleDimensions: 0,
       mousePos: null,
       slidingIndex: null,
@@ -198,12 +198,12 @@ export class Rheostat extends React.Component {
     } = this.state;
 
     const minMaxChanged = (
-      nextProps.min !== this.props.min || nextProps.max !== this.props.max
+      nextProps.min !== min || nextProps.max !== max
     );
 
     const valuesChanged = (
-      this.state.values.length !== nextProps.values.length ||
-      this.state.values.some((value, idx) => nextProps.values[idx] !== value)
+      values.length !== nextProps.values.length ||
+      values.some((value, idx) => nextProps.values[idx] !== value)
     );
 
     const orientationChanged = (
@@ -211,11 +211,11 @@ export class Rheostat extends React.Component {
       nextProps.orientation !== orientation
     );
 
-    const willBeDisabled = nextProps.disabled && !this.props.disabled;
+    const willBeDisabled = nextProps.disabled && !disabled;
 
     if (minMaxChanged || valuesChanged) this.updateNewValues(nextProps);
 
-    if (willBeDisabled && this.state.slidingIndex !== null) {
+    if (willBeDisabled && slidingIndex !== null) {
       this.endSlide();
     }
   }
@@ -228,9 +228,9 @@ export class Rheostat extends React.Component {
 
   getPublicState() {
     return {
-      max: this.props.max,
-      min: this.props.min,
-      values: this.state.values,
+      max,
+      min,
+      values,
     };
   }
 
@@ -243,7 +243,6 @@ export class Rheostat extends React.Component {
       top: rect.top,
       width: rect.width || this.handleContainerNode.clientWidth,
     };
-  }
 
   getProgressStyle(idx) {
     const { handlePos } = this.state;
@@ -251,7 +250,7 @@ export class Rheostat extends React.Component {
     const value = handlePos[idx];
 
     if (idx === 0) {
-      return this.props.orientation === VERTICAL
+      return orientation === VERTICAL
         ? { height: `${value}%`, top: 0 }
         : { left: 0, width: `${value}%` };
     }
@@ -259,25 +258,25 @@ export class Rheostat extends React.Component {
     const prevValue = handlePos[idx - 1];
     const diffValue = value - prevValue;
 
-    return this.props.orientation === VERTICAL
+    return orientation === VERTICAL
       ? { height: `${diffValue}%`, top: `${prevValue}%` }
       : { left: `${prevValue}%`, width: `${diffValue}%` };
   }
 
   getMinValue(idx) {
-    return this.state.values[idx - 1]
-      ? Math.max(this.props.min, this.state.values[idx - 1])
-      : this.props.min;
+    return values[idx - 1]
+      ? Math.max(min, values[idx - 1])
+      : min;
   }
 
   getMaxValue(idx) {
-    return this.state.values[idx + 1]
-      ? Math.min(this.props.max, this.state.values[idx + 1])
-      : this.props.max;
+    return values[idx + 1]
+      ? Math.min(max, values[idx + 1])
+      : max;
   }
 
   getHandleDimensions() {
-    return this.props.orientation === VERTICAL
+    return orientation === VERTICAL
       ? this.handleNode.clientHeight
       : this.handleNode.clientWidth;
   }
@@ -301,7 +300,10 @@ export class Rheostat extends React.Component {
   getNextPositionForKey(idx, keyCode) {
     const { values } = this.state;
     const {
-      algorithm, max, min, step,
+      algorithm,
+      max,
+      min,
+      step,
     } = this.props;
 
     let proposedValue = values[idx];
@@ -340,7 +342,7 @@ export class Rheostat extends React.Component {
     return {
       handlePos: nextHandlePos,
       values: nextHandlePos.map(pos => (
-        this.props.algorithm.getValue(pos, min, max)
+        algorithm.getValue(pos, min, max)
       )),
     };
   }
@@ -407,13 +409,13 @@ export class Rheostat extends React.Component {
   }
 
   handleMouseSlide(ev) {
-    if (this.state.slidingIndex === null) return;
+    if (slidingIndex === null) return;
     this.handleSlide(ev.clientX, ev.clientY);
     killEvent(ev);
   }
 
   handleTouchSlide(ev) {
-    if (this.state.slidingIndex === null) return;
+    if (slidingIndex === null) return;
 
     if (ev.changedTouches.length > 1) {
       this.endSlide();
@@ -427,7 +429,7 @@ export class Rheostat extends React.Component {
   }
 
   positionPercent(x, y, sliderBox) {
-    if (this.props.orientation === VERTICAL) {
+    if (orientation === VERTICAL) {
       return ((y - sliderBox.top) / sliderBox.height) * PERCENT_FULL;
     }
     const percent = ((x - sliderBox.left) / sliderBox.width) * PERCENT_FULL;
@@ -451,7 +453,7 @@ export class Rheostat extends React.Component {
 
   endSlide() {
     const { onSliderDragEnd } = this.props;
-    const idx = this.state.slidingIndex;
+    const idx = slidingIndex;
 
     this.setState({ slidingIndex: null });
 
@@ -466,7 +468,7 @@ export class Rheostat extends React.Component {
     }
 
     if (onSliderDragEnd) onSliderDragEnd();
-    const positionPercent = this.getSnapPosition(this.state.handlePos[idx]);
+    const positionPercent = this.getSnapPosition(handlePos[idx]);
     this.slideTo(idx, positionPercent, () => this.fireChangeEvent());
   }
 
@@ -481,7 +483,7 @@ export class Rheostat extends React.Component {
     // the position where you click in relativity.
     const sliderBox = this.getSliderBoundingBox();
 
-    const positionDecimal = this.props.orientation === VERTICAL
+    const positionDecimal = orientation === VERTICAL
       ? (ev.clientY - sliderBox.top) / sliderBox.height
       : (ev.clientX - sliderBox.left) / sliderBox.width;
 
@@ -524,7 +526,7 @@ export class Rheostat extends React.Component {
     const { handlePos, handleDimensions } = this.state;
     const sliderBox = this.getSliderBoundingBox();
 
-    const handlePercentage = this.props.orientation === VERTICAL
+    const handlePercentage = orientation === VERTICAL
       ? ((handleDimensions / sliderBox.height) * PERCENT_FULL) / 2
       : ((handleDimensions / sliderBox.width) * PERCENT_FULL) / 2;
 
@@ -562,7 +564,7 @@ export class Rheostat extends React.Component {
     const { handlePos, handleDimensions } = this.state;
     const sliderBox = this.getSliderBoundingBox();
 
-    const handlePercentage = this.props.orientation === VERTICAL
+    const handlePercentage = orientation === VERTICAL
       ? ((handleDimensions / sliderBox.height) * PERCENT_FULL) / 2
       : ((handleDimensions / sliderBox.width) * PERCENT_FULL) / 2;
 
@@ -601,7 +603,7 @@ export class Rheostat extends React.Component {
 
   updateNewValues(nextProps) {
     // Don't update while the slider is sliding
-    if (this.state.slidingIndex !== null) {
+    if (slidingIndex !== null) {
       return;
     }
 
@@ -609,7 +611,7 @@ export class Rheostat extends React.Component {
 
     const nextValues = this.validateValues(values, nextProps);
     this.setState({
-      handlePos: nextValues.map(value => this.props.algorithm.getPosition(value, min, max)),
+      handlePos: nextValues.map(value => algorithm.getPosition(value, min, max)),
       values: nextValues,
     }, () => this.fireChangeEvent());
   }
@@ -659,7 +661,7 @@ export class Rheostat extends React.Component {
             orientation === VERTICAL ? styles.Rheostat_background__vertical : styles.Rheostat_background__horizontal,
           )}
         >
-          {this.state.handlePos.map((pos, idx) => {
+          {handlePos.map((pos, idx) => {
             const handleStyle = orientation === VERTICAL
               ? { top: `${pos}%`, position: 'absolute' }
               : { left: `${pos}%`, position: 'absolute' };
@@ -668,7 +670,7 @@ export class Rheostat extends React.Component {
               <Handle
                 aria-valuemax={this.getMaxValue(idx)}
                 aria-valuemin={this.getMinValue(idx)}
-                aria-valuenow={this.state.values[idx]}
+                aria-valuenow={values[idx]}
                 aria-disabled={disabled}
                 data-handle-key={idx}
                 key={idx}
@@ -686,7 +688,7 @@ export class Rheostat extends React.Component {
             );
           })}
         </div>
-        {!!ProgressBar && this.state.handlePos.map((node, idx, arr) => {
+        {!!ProgressBar && handlePos.map((node, idx, arr) => {
           if (idx === 0 && arr.length > 1) {
             return null;
           }
