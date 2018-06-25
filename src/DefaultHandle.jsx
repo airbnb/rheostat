@@ -47,8 +47,8 @@ DefaultHandle.defaultProps = defaultProps;
 
 export default withStyles(({ color, unit }) => ({
   DefaultHandle_handle: {
-    width: DEFAULT_HANDLE_WIDTH_UNITS * unit,
-    height: DEFAULT_HANDLE_WIDTH_UNITS * unit,
+    width: DEFAULT_HANDLE_WIDTH_UNITS * 3.8 * unit,
+    height: DEFAULT_HANDLE_WIDTH_UNITS * 3.8 * unit,
     borderWidth: 1,
     borderStyle: 'solid',
     borderColor: color.grey,
@@ -99,8 +99,8 @@ export default withStyles(({ color, unit }) => ({
   },
 
   DefaultHandle_handle__vertical: {
-    marginTop: -(DEFAULT_HANDLE_WIDTH_UNITS / 2) * unit,
-    left: ((BACKGROUND_HEIGHT_UNITS / 2) - (DEFAULT_HANDLE_WIDTH_UNITS / 2)) * unit,
+    marginTop: -(DEFAULT_HANDLE_WIDTH_UNITS * 1.9) * unit,
+    left: ((BACKGROUND_HEIGHT_UNITS * 1.9) - (DEFAULT_HANDLE_WIDTH_UNITS * 1.9)) * unit,
     progress: {
       left: 2,
       width: 13,

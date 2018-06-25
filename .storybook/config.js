@@ -8,7 +8,7 @@ import '../css/slider-vertical.css';
 
 /* Register react with styles interface */
 ThemedStyleSheet.registerTheme({
-  unit: 30,
+  unit: 8,
   responsive: {},
   color: {
     black: 'black',
