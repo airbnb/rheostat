@@ -44,7 +44,7 @@ function DefaultProgressBar({
               styles.DefaultProgressBar_progressBar__horizontal,
             ]),
 
-        disabled && styles.progressBar_disabled
+        disabled && styles.progressBar_disabled,
       )}
       {...passProps}
     />

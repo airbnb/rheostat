@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import LinearScale from './algorithms/linear';
 import DefaultHandle from './DefaultHandle';
-import DefaultProgressBar from './DefaultProgressBar'
+import DefaultProgressBar from './DefaultProgressBar';
 
 import { withStyles, withStylesPropTypes } from 'react-with-styles';
 
@@ -22,12 +22,10 @@ const has = Object.prototype.hasOwnProperty;
 const PropTypeArrOfNumber = PropTypes.arrayOf(PropTypes.number);
 const PropTypeReactComponent = PropTypes.oneOfType([PropTypes.func, PropTypes.string]);
 
-/* istanbul ignore next */
 function getHandleFor(ev) {
   return Number(ev.currentTarget.getAttribute('data-handle-key'));
 }
 
-/* istanbul ignore next */
 function killEvent(ev) {
   ev.stopPropagation();
   ev.preventDefault();
@@ -39,7 +37,6 @@ class Button extends React.Component {
   }
 }
 
-/* istanbul ignore next */
 const propTypes = {
   ...withStylesPropTypes,
 
@@ -111,7 +108,6 @@ const propTypes = {
   values: PropTypeArrOfNumber,
 };
 
-/* istanbul ignore next */
 const defaultProps = {
   autoAdjustVerticalPosition: true,
   className: '',
@@ -130,7 +126,6 @@ const defaultProps = {
   ],
 };
 
-/* istanbul ignore next */
 export class Rheostat extends React.Component {
   constructor(props) {
     super(props);
@@ -239,16 +234,15 @@ export class Rheostat extends React.Component {
     };
   }
 
-  // istanbul ignore next
   getSliderBoundingBox() {
     const rect = this.handleContainerNode.getBoundingClientRect();
-      return {
-        height: rect.height || this.handleContainerNode.clientHeight,
-        left: rect.left,
-        right: rect.right,
-        top: rect.top,
-        width: rect.width || this.handleContainerNode.clientWidth,
-      };
+    return {
+      height: rect.height || this.handleContainerNode.clientHeight,
+      left: rect.left,
+      right: rect.right,
+      top: rect.top,
+      width: rect.width || this.handleContainerNode.clientWidth,
+    };
   }
 
   getProgressStyle(idx) {
@@ -282,7 +276,6 @@ export class Rheostat extends React.Component {
       : this.props.max;
   }
 
-  // istanbul ignore next
   getHandleDimensions() {
     return this.props.orientation === VERTICAL
       ? this.handleNode.clientHeight
@@ -370,7 +363,6 @@ export class Rheostat extends React.Component {
     this.handleContainerNode = node;
   }
 
-  // istanbul ignore next
   setStartSlide(ev) {
     const sliderBox = this.getSliderBoundingBox();
     this.setState({
@@ -379,7 +371,6 @@ export class Rheostat extends React.Component {
     });
   }
 
-  // istanbul ignore next
   startMouseSlide(ev) {
     const { onSliderDragStart } = this.props;
 
@@ -398,7 +389,6 @@ export class Rheostat extends React.Component {
     killEvent(ev);
   }
 
-  // istanbul ignore next
   startTouchSlide(ev) {
     const { onSliderDragStart } = this.props;
 
@@ -416,14 +406,12 @@ export class Rheostat extends React.Component {
     killEvent(ev);
   }
 
-  // istanbul ignore next
   handleMouseSlide(ev) {
     if (this.state.slidingIndex === null) return;
     this.handleSlide(ev.clientX, ev.clientY);
     killEvent(ev);
   }
 
-  // istanbul ignore next
   handleTouchSlide(ev) {
     if (this.state.slidingIndex === null) return;
 
@@ -446,7 +434,6 @@ export class Rheostat extends React.Component {
     return percent;
   }
 
-  // istanbul ignore next
   handleSlide(x, y) {
     const { onSliderDragMove } = this.props;
     const { slidingIndex: idx } = this.state;
@@ -462,7 +449,6 @@ export class Rheostat extends React.Component {
     }
   }
 
-  // istanbul ignore next
   endSlide() {
     const { onSliderDragEnd } = this.props;
     const idx = this.state.slidingIndex;
@@ -484,7 +470,6 @@ export class Rheostat extends React.Component {
     this.slideTo(idx, positionPercent, () => this.fireChangeEvent());
   }
 
-  // istanbul ignore next
   handleClick(ev) {
     if (ev.target.getAttribute('data-handle-key')) {
       return;
@@ -512,7 +497,6 @@ export class Rheostat extends React.Component {
     if (onClick) onClick();
   }
 
-  // istanbul ignore next
   handleKeydown(ev) {
     const { onKeyPress } = this.props;
     const idx = getHandleFor(ev);
@@ -544,7 +528,7 @@ export class Rheostat extends React.Component {
       ? ((handleDimensions / sliderBox.height) * PERCENT_FULL) / 2
       : ((handleDimensions / sliderBox.width) * PERCENT_FULL) / 2;
 
-    const a =  Math.max(
+    const a = Math.max(
       Math.min(
         proposedPosition,
         handlePos[idx + 1] !== undefined
@@ -600,13 +584,11 @@ export class Rheostat extends React.Component {
     return true;
   }
 
-  // istanbul ignore next
   fireChangeEvent() {
     const { onChange } = this.props;
     if (onChange) onChange(this.getPublicState());
   }
 
-  // istanbul ignore next
   slideTo(idx, proposedPosition, onAfterSet) {
     const { onValuesUpdated } = this.props;
     const nextState = this.getNextState(idx, proposedPosition);
@@ -617,7 +599,6 @@ export class Rheostat extends React.Component {
     });
   }
 
-  // istanbul ignore next
   updateNewValues(nextProps) {
     // Don't update while the slider is sliding
     if (this.state.slidingIndex !== null) {
@@ -735,7 +716,6 @@ export class Rheostat extends React.Component {
 Rheostat.propTypes = propTypes;
 Rheostat.defaultProps = defaultProps;
 
-/* istanbul ignore next */
 export default withStyles(({ unit, responsive }) => ({
   rheostat: {
     position: 'relative',

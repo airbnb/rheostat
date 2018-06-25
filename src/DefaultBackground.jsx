@@ -22,12 +22,10 @@ function DefaultBackground({
   orientation,
   styles,
 }) {
-  console.log("foo");
+  console.log('foo');
   return (
     <div
-      {...css(
-        orientation === VERTICAL ? styles.DefaulBackground_background__vertical : styles.DefaulBackground_background__horizontal,
-      )}
+      {...css(orientation === VERTICAL ? styles.DefaulBackground_background__vertical : styles.DefaulBackground_background__horizontal)}
     />
   );
 }

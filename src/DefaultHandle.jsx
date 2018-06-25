@@ -47,34 +47,34 @@ DefaultHandle.defaultProps = defaultProps;
 
 export default withStyles(({ color, unit }) => ({
   DefaultHandle_handle: {
-      width: DEFAULT_HANDLE_WIDTH_UNITS * unit,
-      height: DEFAULT_HANDLE_WIDTH_UNITS * unit,
-      borderWidth: 1,
-      borderStyle: 'solid',
-      borderColor: color.grey,
-      backgroundColor: color.white,
-      borderRadius: '20%',
-      outline: 'none',
-      zIndex: 2,
-      boxShadow: `0 ${unit / 4}px ${unit / 4}px ${color.textDisabled}`,
-      ':focus': {
-        boxShadow: `${color.focus} 0 0 2px 2px`,
-      },
-
-      ':after': {
-        content: '""',
-        display: 'block',
-        position: 'absolute',
-        backgroundColor: '#dadfe8',
-      },
-
-      ':before': {
-        content: '""',
-        display: 'block',
-        position: 'absolute',
-        backgroundColor: '#dadfe8',
-      }
+    width: DEFAULT_HANDLE_WIDTH_UNITS * unit,
+    height: DEFAULT_HANDLE_WIDTH_UNITS * unit,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: color.grey,
+    backgroundColor: color.white,
+    borderRadius: '20%',
+    outline: 'none',
+    zIndex: 2,
+    boxShadow: `0 ${unit / 4}px ${unit / 4}px ${color.textDisabled}`,
+    ':focus': {
+      boxShadow: `${color.focus} 0 0 2px 2px`,
     },
+
+    ':after': {
+      content: '""',
+      display: 'block',
+      position: 'absolute',
+      backgroundColor: '#dadfe8',
+    },
+
+    ':before': {
+      content: '""',
+      display: 'block',
+      position: 'absolute',
+      backgroundColor: '#dadfe8',
+    },
+  },
 
   DefaultHandle_handle__horizontal: {
     marginLeft: -12,
@@ -95,7 +95,7 @@ export default withStyles(({ color, unit }) => ({
 
     background: {
       borderRadius: 15,
-    }
+    },
   },
 
   DefaultHandle_handle__vertical: {
@@ -118,8 +118,8 @@ export default withStyles(({ color, unit }) => ({
         left: 8,
         height: 1,
         width: 10,
-      }
-    }
+      },
+    },
   },
 
   DefaultHandle_handle__disabled: {
