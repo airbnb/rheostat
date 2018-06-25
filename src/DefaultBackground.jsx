@@ -43,13 +43,13 @@ export default withStyles(({ color, unit }) => ({
   },
 
   DefaulBackground_background__horizontal: {
-    height: BACKGROUND_HEIGHT_UNITS * unit,
+    height: 15,
     top: 0,
     width: '100%',
   },
 
   DefaulBackground_background__vertical: {
-    width: BACKGROUND_HEIGHT_UNITS * unit,
+    width: 15,
     top: 0,
     height: '100%',
   },

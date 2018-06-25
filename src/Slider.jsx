@@ -728,6 +728,7 @@ export class Rheostat extends React.Component {
             />
           );
         })}
+        {PitComponent && <br/>}
         {PitComponent && pitPoints.map((n) => {
           const pos = algorithm.getPosition(n, min, max);
           const pitStyle = orientation === VERTICAL
