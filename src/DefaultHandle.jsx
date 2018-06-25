@@ -1,9 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { forbidExtraProps } from 'airbnb-prop-types';
 
 import { withStyles, withStylesPropTypes } from 'react-with-styles';
 
-import { DEFAULT_HANDLE_WIDTH_UNITS, BACKGROUND_HEIGHT_UNITS } from './constants/SliderConstants';
+import {
+  DEFAULT_HANDLE_WIDTH_UNITS,
+  BACKGROUND_HEIGHT_UNITS,
+  VERTICAL,
+} from './constants/SliderConstants';
+
 import handlePropTypes, { handleDefaultProps } from './propTypes/HandlePropTypes';
 
 export const propTypes = {
@@ -11,37 +17,41 @@ export const propTypes = {
   ...handlePropTypes,
   'aria-valuetext': PropTypes.string,
   'aria-label': PropTypes.string,
-  getLabel: PropTypes.func,
 };
 
-const defaultProps = {
+const defaultProps = forbidExtraProps({
   ...handleDefaultProps,
   'aria-valuetext': undefined,
   'aria-label': undefined,
-  getLabel: undefined,
-};
+});
 
 function DefaultHandle({
-  css, styles, orientation, disabled, ...passProps
+  css,
+  styles,
+  orientation,
+  disabled,
+  ...passProps
 }) {
   const {
-    handleRef, theme, getLabel, ...rest
+    handleRef,
+    theme,
+    ...rest
   } = passProps; // eslint-disable-line no-unused-vars
   return (
     <button
       ref={handleRef}
       {...css(
         styles.DefaultHandle_handle,
-        orientation === 'vertical' ? styles.DefaultHandle_handle__vertical : styles.DefaultHandle_handle__horizontal,
+        orientation === VERTICAL
+        ? styles.DefaultHandle_handle__vertical
+        : styles.DefaultHandle_handle__horizontal,
         disabled && styles.DefaultHandle_handle__disabled,
       )}
       {...rest}
     />
   );
 }
-DefaultHandle.propTypes = {
-  ...propTypes,
-};
+DefaultHandle.propTypes = propTypes;
 
 DefaultHandle.defaultProps = defaultProps;
 
