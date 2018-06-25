@@ -27,14 +27,6 @@ function getHandleFor(ev) {
   return Number(ev.currentTarget.getAttribute('data-handle-key'));
 }
 
-function getClassName(props) {
-  const orientation = props.orientation === 'vertical'
-    ? 'rheostat-vertical'
-    : 'rheostat-horizontal';
-
-  return ['rheostat', orientation].concat(props.className.split(' ')).join(' ');
-}
-
 /* istanbul ignore next */
 function killEvent(ev) {
   ev.stopPropagation();
@@ -149,7 +141,6 @@ export class Rheostat extends React.Component {
       values,
     } = this.props;
     this.state = {
-      className: getClassName(this.props),
       handlePos: values.map(value => this.props.algorithm.getPosition(value, min, max)),
       handleDimensions: 0,
       mousePos: null,
@@ -224,12 +215,6 @@ export class Rheostat extends React.Component {
       nextProps.className !== className ||
       nextProps.orientation !== orientation
     );
-
-    if (orientationChanged) {
-      this.setState({
-        className: getClassName(nextProps),
-      });
-    }
 
     const willBeDisabled = nextProps.disabled && !this.props.disabled;
 
