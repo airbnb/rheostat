@@ -23,8 +23,8 @@ function DefaultBackground({
   return (
     <div
       {...css(orientation === VERTICAL
-        ? styles.DefaulBackground_background__vertical
-        : styles.DefaulBackground_background__horizontal)}
+        ? styles.DefaultBackground_background__vertical
+        : styles.DefaultBackground_background__horizontal)}
     />
   );
 }
@@ -38,13 +38,13 @@ export default withStyles(({ color, unit }) => ({
     position: 'relative',
   },
 
-  DefaulBackground_background__horizontal: {
+  DefaultBackground_background__horizontal: {
     height: 15,
     top: 0,
     width: '100%',
   },
 
-  DefaulBackground_background__vertical: {
+  DefaultBackground_background__vertical: {
     width: 15,
     top: 0,
     height: '100%',
