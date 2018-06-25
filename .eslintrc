@@ -1,5 +1,21 @@
 {
   "extends": "airbnb",
+  "ecmaFeatures": {
+    "jsx": true
+  },
+
+ "globals": {
+      "React": true
+  },
+
+  "plugins": [
+    "react"
+  ],
+
+  "env": {
+    "browser": true,
+  },
+
   "rules": {
     "react/forbid-prop-types": 1,
     "react/no-multi-comp": 0,

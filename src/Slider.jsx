@@ -1,10 +1,9 @@
+import { withStyles, withStylesPropTypes } from 'react-with-styles';
 import PropTypes from 'prop-types';
 import React from 'react';
 import LinearScale from './algorithms/linear';
 import DefaultHandle from './DefaultHandle';
 import DefaultProgressBar from './DefaultProgressBar';
-
-import { withStyles, withStylesPropTypes } from 'react-with-styles';
 
 import OrientationPropType from './propTypes/OrientationPropType';
 
@@ -31,12 +30,6 @@ function killEvent(ev) {
   ev.preventDefault();
 }
 
-class Button extends React.Component {
-  render() {
-    return <button {...this.props} type="button" />;
-  }
-}
-
 const propTypes = {
   ...withStylesPropTypes,
 
@@ -50,7 +43,7 @@ const propTypes = {
   }),
 
   // any children you pass in
-  children: PropTypes.any,
+  children: PropTypes.node,
 
   // class name prop
   className: PropTypes.string,
@@ -183,13 +176,9 @@ export class Rheostat extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const {
-      className,
       disabled,
       min,
       max,
-      orientation,
-      pitPoints,
-      algorithm,
     } = this.props;
 
     const {
@@ -204,11 +193,6 @@ export class Rheostat extends React.Component {
     const valuesChanged = (
       values.length !== nextProps.values.length ||
       values.some((value, idx) => nextProps.values[idx] !== value)
-    );
-
-    const orientationChanged = (
-      nextProps.className !== className ||
-      nextProps.orientation !== orientation
     );
 
     const willBeDisabled = nextProps.disabled && !disabled;
@@ -227,6 +211,7 @@ export class Rheostat extends React.Component {
   }
 
   getPublicState() {
+    const { min, max, values } = this.props;
     return {
       max,
       min,
@@ -243,8 +228,11 @@ export class Rheostat extends React.Component {
       top: rect.top,
       width: rect.width || this.handleContainerNode.clientWidth,
     };
+  }
+
 
   getProgressStyle(idx) {
+    const { orientation } = this.props;
     const { handlePos } = this.state;
 
     const value = handlePos[idx];
@@ -264,18 +252,28 @@ export class Rheostat extends React.Component {
   }
 
   getMinValue(idx) {
+    const {
+      values,
+      min,
+    } = this.props;
+
     return values[idx - 1]
       ? Math.max(min, values[idx - 1])
       : min;
   }
 
   getMaxValue(idx) {
+    const {
+      values,
+      max,
+    } = this.props;
     return values[idx + 1]
       ? Math.min(max, values[idx + 1])
       : max;
   }
 
   getHandleDimensions() {
+    const { orientation } = this.props;
     return orientation === VERTICAL
       ? this.handleNode.clientHeight
       : this.handleNode.clientWidth;
@@ -330,7 +328,11 @@ export class Rheostat extends React.Component {
 
   getNextState(idx, proposedPosition) {
     const { handlePos } = this.state;
-    const { max, min } = this.props;
+    const {
+      max,
+      min,
+      algorithm,
+    } = this.props;
 
     const actualPosition = this.validatePosition(idx, proposedPosition);
 
@@ -715,6 +717,7 @@ export class Rheostat extends React.Component {
     );
   }
 }
+
 Rheostat.propTypes = propTypes;
 Rheostat.defaultProps = defaultProps;
 

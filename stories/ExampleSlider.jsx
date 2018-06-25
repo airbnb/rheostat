@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { storiesOf } from '@kadira/storybook';
 
-import Rheostat from '../src/Slider'; // TODO PW: Change back to ../
+import Rheostat from '../src/Slider';
 import log10 from '../src/algorithms/log10';
 
 class LabeledSlider extends React.Component {
