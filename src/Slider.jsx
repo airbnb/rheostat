@@ -671,8 +671,12 @@ export class Rheostat extends React.Component {
       >
         <div
           ref={this.setHandleContainerNode}
-          {...css(styles.handleContainer, handleContainerStyle)}
-          className="rheostat-background"
+          {...css(
+            styles.handleContainer,
+            handleContainerStyle,
+            styles.Rheostat_background,
+            orientation === VERTICAL ? styles.Rheostat_background__vertical : styles.Rheostat_background__horizontal,
+          )}
         >
           {this.state.handlePos.map((pos, idx) => {
             const handleStyle = orientation === VERTICAL
@@ -752,5 +756,25 @@ export default withStyles(({ unit, responsive }) => ({
   handleContainer: {
     position: 'absolute',
     top: '50%',
+  },
+
+  Rheostat_background: {
+    backgroundColor: '#fcfcfc',
+    border: '1px solid #d8d8d8',
+    position: 'relative',
+  },
+
+  Rheostat_background__horizontal: {
+    height: 15,
+    top: -2,
+    left: -2,
+    bottom: 4,
+    width: '100%',
+  },
+
+  Rheostat_background__vertical: {
+    width: 15,
+    top: 0,
+    height: '100%',
   },
 }))(Rheostat);

@@ -80,7 +80,7 @@ export default withStyles(({ color, unit }) => ({
     marginLeft: -12,
     top: -5,
     ':before': {
-      top: 700,
+      top: 7,
       height: 10,
       width: 1,
       left: 10,

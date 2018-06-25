@@ -65,7 +65,7 @@ export default withStyles(({ color, unit }) => ({
   },
 
   DefaultProgressBar_background__horizontal: {
-    height: 15,
+    height: 13,
     top: 0,
   },
 

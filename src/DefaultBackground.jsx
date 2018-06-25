@@ -22,11 +22,11 @@ function DefaultBackground({
   orientation,
   styles,
 }) {
+  console.log("foo");
   return (
     <div
       {...css(
-        styles.DefaultBackground_background,
-        orientation === VERTICAL ? styles.DefaulBackground_background__vertical : styles.DefaulBackground_background__horizontal
+        orientation === VERTICAL ? styles.DefaulBackground_background__vertical : styles.DefaulBackground_background__horizontal,
       )}
     />
   );
@@ -36,11 +36,9 @@ DefaultBackground.defaultProps = defaultProps;
 
 export default withStyles(({ color, unit }) => ({
   DefaultBackground_background: {
-    background: color.accent.lightGray,
-    border: '1px solid red',
+    backgroundColor: '#fcfcfc',
+    border: '5px solid #d8d8d8',
     position: 'relative',
-    overflow: 'visible',
-    borderRadius: BACKGROUND_HEIGHT_UNITS * unit,
   },
 
   DefaulBackground_background__horizontal: {
