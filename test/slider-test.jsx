@@ -5,15 +5,20 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 import sinon from 'sinon';
 import { assert } from 'chai';
+import DirectionProvider, { DIRECTIONS } from 'react-with-direction/dist/DirectionProvider';
 import has from 'has';
+import ThemedStyleSheet from 'react-with-styles/lib/ThemedStyleSheet';
+import aphroditeInterface from 'react-with-styles-interface-aphrodite';
+
+import DefaultTheme from '../src/themes/DefaultTheme';
 
 import Slider from '../src/Slider';
-import { KEYS } from '../lib/constants/SliderConstants';
+import DefaultHandle from '../src/DefaultHandle';
+import { KEYS } from '../src/constants/SliderConstants';
 
 const { WITH_DOM } = process.env;
 
 const describeWithDOM = WITH_DOM === '1' ? describe : describe.skip;
-
 function testKeys(slider, tests) {
   Object.keys(tests).forEach((key) => {
     const keyCode = KEYS[key];
@@ -22,18 +27,20 @@ function testKeys(slider, tests) {
   });
 }
 
+ThemedStyleSheet.registerTheme(DefaultTheme);
+ThemedStyleSheet.registerInterface(aphroditeInterface);
 const newSlider = props => new Slider({ ...Slider.defaultProps, ...props });
 
 describeWithDOM('<Slider />', () => {
   describe('render', () => {
     it('should render the slider with one handle by default', () => {
       const wrapper = shallow(<Slider />);
-      assert(wrapper.find('.rheostat-handle').length === 1, 'no values one handle');
+      assert(wrapper.find(DefaultHandle).length === 1, 'no values one handle');
     });
 
     it('should render the slider with a single handle', () => {
-      const wrapper = shallow(<Slider values={[1]} />);
-      assert(wrapper.find('.rheostat-handle').length === 1, 'one handle is present');
+      const wrapper = shallow(<Slider values={[1]} handle={DefaultHandle} />);
+      assert(wrapper.find(DefaultHandle).length === 1, 'one handle is present');
     });
 
     it('should render the slider with as many handles as values', () => {
@@ -260,7 +267,7 @@ describeWithDOM('<Slider />', () => {
 
 describe('Slider API', () => {
   describe('getPublicState', () => {
-    it('should only return min, max, and values from public state', () => {
+    it.only('should only return min, max, and values from public state', () => {
       const slider = newSlider();
       const state = slider.getPublicState();
 

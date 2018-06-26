@@ -62,7 +62,7 @@ export default withStyles(({ color, unit }) => ({
   },
 
   DefaultProgressBar_background__horizontal: {
-    height: (2 * unit) - 2,
+    height: (2 * unit) - 3,
     top: 0,
   },
 
