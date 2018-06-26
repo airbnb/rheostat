@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { forbidExtraProps } from 'airbnb-prop-types';
-
 import { withStyles, withStylesPropTypes } from 'react-with-styles';
 
 import {
@@ -19,11 +17,11 @@ export const propTypes = {
   'aria-label': PropTypes.string,
 };
 
-const defaultProps = forbidExtraProps({
+const defaultProps = {
   ...handleDefaultProps,
   'aria-valuetext': undefined,
   'aria-label': undefined,
-});
+};
 
 function DefaultHandle({
   css,
