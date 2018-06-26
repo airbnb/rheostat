@@ -132,7 +132,6 @@ const defaultProps = {
   snapPoints: [],
   handle: DefaultHandle,
   progressBar: DefaultProgressBar,
-
   values: [
     PERCENT_EMPTY,
   ],
@@ -279,10 +278,8 @@ class Rheostat extends React.Component {
   }
 
   getMinValue(idx) {
-    const {
-      values,
-      min,
-    } = this.props;
+    const { min } = this.props;
+    const { values } = this.state;
 
     return values[idx - 1]
       ? Math.max(min, values[idx - 1])
@@ -290,10 +287,10 @@ class Rheostat extends React.Component {
   }
 
   getMaxValue(idx) {
-    const {
-      values,
-      max,
-    } = this.props;
+    const { max } = this.props;
+
+    const { values } = this.state;
+
     return values[idx + 1]
       ? Math.min(max, values[idx + 1])
       : max;
@@ -828,7 +825,7 @@ class Rheostat extends React.Component {
 Rheostat.propTypes = propTypes;
 Rheostat.defaultProps = defaultProps;
 
-export default withStyles(({ unit, responsive }) => ({
+export default withStyles(({ color, unit, responsive }) => ({
   rheostat: {
     position: 'relative',
     overflow: 'visible',
@@ -850,13 +847,13 @@ export default withStyles(({ unit, responsive }) => ({
   },
 
   Rheostat_background: {
-    backgroundColor: '#fcfcfc',
-    border: '1px solid #d8d8d8',
+    backgroundColor: color.white,
+    border: `1px solid ${color.grey}`,
     position: 'relative',
   },
 
   Rheostat_background__horizontal: {
-    height: 15,
+    height: (2 * unit) - 1,
     top: -2,
     left: -2,
     bottom: 4,
@@ -864,7 +861,7 @@ export default withStyles(({ unit, responsive }) => ({
   },
 
   Rheostat_background__vertical: {
-    width: 15,
+    width: (2 * unit) - 1,
     top: 0,
     height: '100%',
   },

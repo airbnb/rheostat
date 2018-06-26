@@ -39,7 +39,6 @@ function DefaultProgressBar({
           :
             [
               styles.DefaultProgressBar_background__horizontal,
-              styles.DefaultProgressBar_progressBar__horizontal,
             ]),
 
         disabled && styles.progressBar_disabled,
@@ -53,33 +52,28 @@ DefaultProgressBar.defaultProps = defaultProps;
 
 export default withStyles(({ color, unit }) => ({
   DefaultProgressBar__vertical: {
-    width: 24,
+    width: 3 * unit,
     height: '100%',
   },
 
   DefaultProgressBar_progressBar: {
-    backgroundColor: '#abc4e8',
+    backgroundColor: color.babu,
     position: 'absolute',
   },
 
   DefaultProgressBar_background__horizontal: {
-    height: 13,
+    height: (2 * unit) - 2,
     top: 0,
-  },
-
-  DefaultProgressBar_progressBar__horizontal: {
-    height: 13,
-    top: 2,
   },
 
   DefaultProgressBar_progressBar__vertical: {
     height: '100%',
-    width: 24,
+    width: 3 * unit,
   },
 
   DefaultProgressBar_background__vertical: {
     height: '100%',
     top: 0,
-    width: 15,
+    width: (2 * unit) - 1,
   },
 }))(DefaultProgressBar);

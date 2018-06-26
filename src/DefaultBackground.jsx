@@ -1,6 +1,5 @@
 import React from 'react';
 import { forbidExtraProps } from 'airbnb-prop-types';
-
 import { withStyles, withStylesPropTypes } from 'react-with-styles';
 import {
   HORIZONTAL,
@@ -35,19 +34,19 @@ DefaultBackground.defaultProps = defaultProps;
 
 export default withStyles(({ color, unit }) => ({
   DefaultBackground_background: {
-    backgroundColor: '#fcfcfc',
-    border: '5px solid #d8d8d8',
+    backgroundColor: color.white,
+    border: `5px solid ${color.grey}`,
     position: 'relative',
   },
 
   DefaultBackground_background__horizontal: {
-    height: 15,
+    height: (2 * unit) - 1,
     top: 0,
     width: '100%',
   },
 
   DefaultBackground_background__vertical: {
-    width: 15,
+    width: (2 * unit) - 1,
     top: 0,
     height: '100%',
   },

@@ -54,7 +54,7 @@ LabeledSlider.propTypes = {
   formatValue: PropTypes.func,
 };
 LabeledSlider.defaultProps = {
-  values: [],
+  values: null,
   formatValue: null,
 };
 
