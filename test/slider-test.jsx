@@ -387,13 +387,7 @@ describe('Slider API', () => {
   });
 
   describe('getNextPositionForKey', () => {
-    /*
-      There seems to be an issue with keyboard accessibility.
-      Right/Up should be updating slider value -- this is a bug
-      in the internal version of Rheostat. Will fix in seperate PR.
-      TODO: Philip and Maja
-    */
-    it.skip('should try to advance 1% when pressing left, right, up or down', () => {
+    it('should try to advance 1% when pressing left, right, up or down', () => {
       const slider = shallow(<Slider values={[50]} />).dive().instance();
 
       testKeys(slider, {

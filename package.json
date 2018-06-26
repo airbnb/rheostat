@@ -9,7 +9,6 @@
     "clean": "rimraf lib",
     "prepublish": "npm run build",
     "lint": "eslint --ext .js,.jsx src test stories",
-    "eslint-fix": "eslint --ext .js,.jsx src --fix",
     "storybook": "start-storybook -p 9001",
     "pretest": "npm run build && npm run lint",
     "test": "nyc npm run test:all",

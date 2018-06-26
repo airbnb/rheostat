@@ -34,7 +34,7 @@ function DefaultHandle({
     handleRef,
     theme,
     ...rest
-  } = passProps; // eslint-disable-line no-unused-vars
+  } = passProps;
   return (
     <button
       ref={handleRef}
