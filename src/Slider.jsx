@@ -399,6 +399,7 @@ class Rheostat extends React.Component {
 
   getNextState(idx, proposedPosition) {
     const { handlePos } = this.state;
+
     const { max, min, algorithm } = this.props;
 
     const actualPosition = this.validatePosition(idx, proposedPosition);
