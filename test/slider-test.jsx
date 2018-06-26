@@ -2,18 +2,15 @@ import { shallow, mount } from 'enzyme';
 import React from 'react';
 import createReactClass from 'create-react-class';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import { StyleSheetTestUtils } from 'aphrodite';
 
 import sinon from 'sinon';
 import { assert } from 'chai';
-import DirectionProvider, { DIRECTIONS } from 'react-with-direction/dist/DirectionProvider';
 import has from 'has';
-import ThemedStyleSheet from 'react-with-styles/lib/ThemedStyleSheet';
-import aphroditeInterface from 'react-with-styles-interface-aphrodite';
-
-import DefaultTheme from '../src/themes/DefaultTheme';
-
 import Slider from '../src/Slider';
 import DefaultHandle from '../src/DefaultHandle';
+import DefaultProgressBar from '../src/DefaultProgressBar';
+
 import { KEYS } from '../src/constants/SliderConstants';
 
 const { WITH_DOM } = process.env;
@@ -27,30 +24,36 @@ function testKeys(slider, tests) {
   });
 }
 
-ThemedStyleSheet.registerTheme(DefaultTheme);
-ThemedStyleSheet.registerInterface(aphroditeInterface);
 const newSlider = props => new Slider({ ...Slider.defaultProps, ...props });
 
 describeWithDOM('<Slider />', () => {
+  beforeEach(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
+  });
+
+  afterEach(() => {
+    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+  });
+
   describe('render', () => {
     it('should render the slider with one handle by default', () => {
-      const wrapper = shallow(<Slider />);
+      const wrapper = shallow(<Slider />).dive();
       assert(wrapper.find(DefaultHandle).length === 1, 'no values one handle');
     });
 
     it('should render the slider with a single handle', () => {
-      const wrapper = shallow(<Slider values={[1]} handle={DefaultHandle} />);
+      const wrapper = shallow(<Slider values={[1]} handle={DefaultHandle} />).dive();
       assert(wrapper.find(DefaultHandle).length === 1, 'one handle is present');
     });
 
     it('should render the slider with as many handles as values', () => {
-      const wrapper = shallow(<Slider values={[0, 25, 50, 75, 100]} />);
-      assert(wrapper.find('.rheostat-handle').length === 5, 'five handles are present');
+      const wrapper = shallow(<Slider values={[0, 25, 50, 75, 100]} />).dive();
+      assert(wrapper.find(DefaultHandle).length === 5, 'five handles are present');
     });
 
     it('should render the slider with a bar', () => {
-      const wrapper = shallow(<Slider />);
-      assert(wrapper.find('.rheostat-progress').length === 1, 'the bar is present');
+      const wrapper = shallow(<Slider />).dive();
+      assert(wrapper.find(DefaultProgressBar).length === 1, 'the bar is present');
     });
 
     it('renders pits if they are provided', () => {
@@ -88,8 +91,11 @@ describeWithDOM('<Slider />', () => {
         render: pitRender,
       });
 
-      const slider = mount(<Slider pitComponent={PitComponent} pitPoints={[20]} />);
-      slider.setProps({ values: [10] });
+      mount(<Slider
+        pitComponent={PitComponent}
+        pitPoints={[20]}
+        values={[10]}
+      />);
 
       assert.isTrue(pitRender.calledOnce, 'one pit was rendered only once');
     });
@@ -101,20 +107,20 @@ describeWithDOM('<Slider />', () => {
 
     it('should pass undefined to key and mouse event handlers on disabled', () => {
       const slider = mount(<Slider disabled />);
-      assert.isUndefined(slider.find('.rheostat-handle').first().props().onKeyDown, 'onKeyDown is undefined');
-      assert.isUndefined(slider.find('.rheostat-handle').first().props().onMouseDown, 'onMouseDown is undefined');
-      assert.isUndefined(slider.find('.rheostat-handle').first().props().onTouchStart, 'onTouchStart is undefined');
+      assert.isUndefined(slider.find(DefaultHandle).first().props().onKeyDown, 'onKeyDown is undefined');
+      assert.isUndefined(slider.find(DefaultHandle).first().props().onMouseDown, 'onMouseDown is undefined');
+      assert.isUndefined(slider.find(DefaultHandle).first().props().onTouchStart, 'onTouchStart is undefined');
     });
 
     it('should pass functions to key and mouse event handlers', () => {
       const slider = mount(<Slider />);
-      assert.isFunction(slider.find('.rheostat-handle').first().props().onKeyDown, 'onKeyDown is function');
-      assert.isFunction(slider.find('.rheostat-handle').first().props().onMouseDown, 'onMouseDown is function');
-      assert.isFunction(slider.find('.rheostat-handle').first().props().onTouchStart, 'onTouchStart is function');
+      assert.isFunction(slider.find(DefaultHandle).first().props().onKeyDown, 'onKeyDown is function');
+      assert.isFunction(slider.find(DefaultHandle).first().props().onMouseDown, 'onMouseDown is function');
+      assert.isFunction(slider.find(DefaultHandle).first().props().onTouchStart, 'onTouchStart is function');
     });
   });
 
-  describe('componentWillReceiveProps', () => {
+  describe.only('componentWillReceiveProps', () => {
     it('should re-evaluate the orientation when props change', () => {
       const slider = mount(<Slider />);
       assert(slider.props().orientation === 'horizontal', 'slider is horizontal');
@@ -236,21 +242,21 @@ describeWithDOM('<Slider />', () => {
     });
 
     it('should move the values if the min is changed to be larger', () => {
-      const slider = shallow(<Slider values={[50]} />);
+      const slider = shallow(<Slider values={[50]} />).dive();
       slider.setProps({ min: 80 });
 
       assert.include(slider.state('values'), 80, 'values was updated');
     });
 
     it('should move the values if the max is changed to be smaller', () => {
-      const slider = shallow(<Slider values={[50]} />);
+      const slider = shallow(<Slider values={[50]} />).dive();
       slider.setProps({ max: 20 });
 
       assert.include(slider.state('values'), 20, 'values was updated');
     });
 
     it('should add handles', () => {
-      const slider = shallow(<Slider />);
+      const slider = shallow(<Slider />).dive();
       assert(slider.state('values').length === 1, 'one handle exists');
       assert(slider.state('handlePos').length === 1, 'one handle exists');
 
@@ -267,8 +273,8 @@ describeWithDOM('<Slider />', () => {
 
 describe('Slider API', () => {
   describe('getPublicState', () => {
-    it.only('should only return min, max, and values from public state', () => {
-      const slider = newSlider();
+    it('should only return min, max, and values from public state', () => {
+      const slider = shallow(<Slider />).dive();
       const state = slider.getPublicState();
 
       assert.isTrue(has(state, 'max'), 'max exists');
