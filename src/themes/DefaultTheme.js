@@ -4,6 +4,7 @@ const DefaultTheme = {
   color: {
     black: 'black',
     white: '#fcfcfc',
+    offwhite: '#dadfe8',
     grey: '#d8d8d8',
     babu: '#abc4e8',
 

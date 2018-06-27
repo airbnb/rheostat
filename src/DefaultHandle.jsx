@@ -53,8 +53,8 @@ DefaultHandle.defaultProps = defaultProps;
 
 export default withStyles(({ color, unit }) => ({
   DefaultHandle_handle: {
-    width: DEFAULT_HANDLE_WIDTH_UNITS * 3.8 * unit,
-    height: DEFAULT_HANDLE_WIDTH_UNITS * 3.8 * unit,
+    width: DEFAULT_HANDLE_WIDTH_UNITS * 2 * unit,
+    height: DEFAULT_HANDLE_WIDTH_UNITS * 2 * unit,
     borderWidth: 1,
     borderStyle: 'solid',
     borderColor: color.grey,
@@ -64,21 +64,21 @@ export default withStyles(({ color, unit }) => ({
     zIndex: 2,
     boxShadow: `0 ${unit / 4}px ${unit / 4}px ${color.textDisabled}`,
     ':focus': {
-      boxShadow: `${color.focus} 0 0 2px 2px`,
+      boxShadow: `${color.focus} 0 0 ${unit / 4}px ${unit / 4}px`,
     },
 
     ':after': {
       content: '""',
       display: 'block',
       position: 'absolute',
-      backgroundColor: '#dadfe8',
+      backgroundColor: color.offwhite,
     },
 
     ':before': {
       content: '""',
       display: 'block',
       position: 'absolute',
-      backgroundColor: '#dadfe8',
+      backgroundColor: color.offwhite,
     },
   },
 
@@ -105,8 +105,8 @@ export default withStyles(({ color, unit }) => ({
   },
 
   DefaultHandle_handle__vertical: {
-    marginTop: -(DEFAULT_HANDLE_WIDTH_UNITS * 1.9) * unit,
-    left: ((BACKGROUND_HEIGHT_UNITS * 1.9) - (DEFAULT_HANDLE_WIDTH_UNITS * 1.9)) * unit,
+    marginTop: -(DEFAULT_HANDLE_WIDTH_UNITS) * unit,
+    left: (BACKGROUND_HEIGHT_UNITS - DEFAULT_HANDLE_WIDTH_UNITS) * unit,
     progress: {
       left: 2,
       width: 13,
