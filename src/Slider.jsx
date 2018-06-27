@@ -609,6 +609,25 @@ class Rheostat extends React.Component {
     killEvent(ev);
   }
 
+  // Apply user adjustments to position
+  userAdjustPosition(idx, proposedPosition) {
+    const { getNextHandlePosition } = this.props;
+    let nextPosition = proposedPosition;
+    if (getNextHandlePosition) {
+      nextPosition = parseFloat(getNextHandlePosition(idx, proposedPosition));
+
+      if (
+        Number.isNaN(nextPosition)
+        || nextPosition < PERCENT_EMPTY
+        || nextPosition > PERCENT_FULL
+      ) {
+        throw new TypeError('getNextHandlePosition returned invalid position. Valid positions are floats between 0 and 100');
+      }
+    }
+
+    return nextPosition;
+  }
+
   // Make sure the proposed position respects the bounds and
   // does not collide with other handles too much.
   validatePosition(idx, proposedPosition) {
@@ -616,6 +635,8 @@ class Rheostat extends React.Component {
       handlePos,
       handleDimensions,
     } = this.state;
+
+    const nextPosition = this.userAdjustPosition(idx, proposedPosition);
 
     const { orientation } = this.props;
     const sliderBox = this.getSliderBoundingBox();
@@ -626,7 +647,7 @@ class Rheostat extends React.Component {
 
     const a = Math.max(
       Math.min(
-        proposedPosition,
+        nextPosition,
         handlePos[idx + 1] !== undefined
           ? handlePos[idx + 1] - handlePercentage
           : PERCENT_FULL, // 100% is the highest value
