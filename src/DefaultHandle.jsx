@@ -29,13 +29,10 @@ function DefaultHandle({
   styles,
   orientation,
   disabled,
+  handleRef,
+  theme,
   ...passProps
 }) {
-  const {
-    handleRef,
-    theme,
-    ...rest
-  } = passProps;
   return (
     <button
       ref={handleRef}
@@ -46,7 +43,7 @@ function DefaultHandle({
         : styles.DefaultHandle_handle__horizontal,
         disabled && styles.DefaultHandle_handle__disabled,
       )}
-      {...rest}
+      {...passProps}
     />
   );
 }
