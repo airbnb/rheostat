@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types';
+import { forbidExtraProps } from 'airbnb-prop-types';
 import React from 'react';
 
 import { withStyles, withStylesPropTypes } from 'react-with-styles';
 
-const propTypes = {
+const propTypes = forbidExtraProps({
   ...withStylesPropTypes,
   orientation: PropTypes.string,
   disabled: PropTypes.bool,
   style: PropTypes.any,
-};
+});
 
 const defaultProps = {
   orientation: 'horizontal',

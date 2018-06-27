@@ -23,9 +23,11 @@ function DefaultBackground({
 }) {
   return (
     <div
-      {...css(orientation === VERTICAL
-        ? styles.DefaultBackground_background__vertical
-        : styles.DefaultBackground_background__horizontal)}
+      {...css((
+        orientation === VERTICAL
+          ? styles.DefaultBackground_background__vertical
+          : styles.DefaultBackground_background__horizontal
+        ))}
     />
   );
 }

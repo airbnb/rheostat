@@ -228,6 +228,7 @@ class Rheostat extends React.Component {
   componentWillUnmount() {
     if (this.handleDimensionsTimeout) {
       clearTimeout(this.handleDimensionsTimeout);
+      this.handleDimensionsTimeout = null;
     }
   }
 
@@ -699,8 +700,9 @@ class Rheostat extends React.Component {
   }
 
   updateNewValues(nextProps) {
-    // Don't update while the slider is sliding
     const { slidingIndex } = this.state;
+
+    // Don't update while the slider is sliding
     if (slidingIndex !== null) {
       return;
     }
@@ -756,10 +758,10 @@ class Rheostat extends React.Component {
           {...css(
             styles.handleContainer,
             handleContainerStyle,
-            styles.Rheostat_background,
+            styles.rheostat_background,
             orientation === VERTICAL
-            ? styles.Rheostat_background__vertical
-            : styles.Rheostat_background__horizontal,
+              ? styles.rheostat_background__vertical
+              : styles.rheostat_background__horizontal,
           )}
         >
           {handlePos.map((pos, idx) => {
@@ -774,10 +776,7 @@ class Rheostat extends React.Component {
                 aria-valuenow={values[idx]}
                 aria-disabled={disabled}
                 data-handle-key={idx}
-                key={
-                  // eslint-disable-next-line react/no-array-index-key
-                  idx
-                }
+                key={idx /* eslint-disable-line react/no-array-index-key */}
                 orientation={orientation}
                 disabled={disabled}
                 onClick={this.killEvent}
@@ -798,10 +797,7 @@ class Rheostat extends React.Component {
           }
           return (
             <ProgressBar
-              key={
-                // eslint-disable-next-line react/no-array-index-key
-                idx
-              }
+              key={idx /* eslint-disable-line react/no-array-index-key */}
               style={this.getProgressStyle(idx)}
               disabled={disabled}
             />
@@ -847,13 +843,13 @@ export default withStyles(({ color, unit, responsive }) => ({
     top: '50%',
   },
 
-  Rheostat_background: {
+  rheostat_background: {
     backgroundColor: color.white,
     border: `1px solid ${color.grey}`,
     position: 'relative',
   },
 
-  Rheostat_background__horizontal: {
+  rheostat_background__horizontal: {
     height: (2 * unit) - 1,
     top: -2,
     left: -2,
@@ -861,7 +857,7 @@ export default withStyles(({ color, unit, responsive }) => ({
     width: '100%',
   },
 
-  Rheostat_background__vertical: {
+  rheostat_background__vertical: {
     width: (2 * unit) - 1,
     top: 0,
     height: '100%',

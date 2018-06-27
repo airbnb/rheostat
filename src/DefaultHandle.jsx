@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { forbidExtraProps } from 'airbnb-prop-types';
 import { withStyles, withStylesPropTypes } from 'react-with-styles';
 
 import {
@@ -10,12 +11,12 @@ import {
 
 import handlePropTypes, { handleDefaultProps } from './propTypes/HandlePropTypes';
 
-export const propTypes = {
+export const propTypes = forbidExtraProps({
   ...withStylesPropTypes,
   ...handlePropTypes,
   'aria-valuetext': PropTypes.string,
   'aria-label': PropTypes.string,
-};
+});
 
 const defaultProps = {
   ...handleDefaultProps,

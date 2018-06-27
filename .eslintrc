@@ -4,6 +4,11 @@
     "jsx": true
   },
 
+  "env": {
+    "browser": true,
+    "node": true
+  },
+
   "rules": {
     "react/forbid-prop-types": 1,
     "react/no-multi-comp": 0,
