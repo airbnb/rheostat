@@ -1,0 +1,104 @@
+.DefaultProgressBar__vertical {
+  width: 24px;
+  height: 100%
+}
+.DefaultProgressBar_progressBar {
+  background-color: #abc4e8;
+  position: absolute
+}
+.DefaultProgressBar_background__horizontal {
+  height: 13px;
+  top: 0px
+}
+.DefaultProgressBar_progressBar__vertical {
+  height: 100%;
+  width: 24px
+}
+.DefaultProgressBar_background__vertical {
+  height: 100%;
+  top: 0px;
+  width: 15px
+}
+.DefaultHandle_handle {
+  width: 24.32px;
+  height: 24.32px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d8d8d8;
+  background-color: #fcfcfc;
+  border-radius: 20%;
+  outline: none;
+  z-index: 2;
+  box-shadow: 0 2px 2px #DBDBDB
+}
+.DefaultHandle_handle:focus {
+  box-shadow: #abc4e8 0 0 2px 2px
+}
+.DefaultHandle_handle:after {
+  content: "";
+  display: block;
+  position: absolute;
+  background-color: #dadfe8
+}
+.DefaultHandle_handle:before {
+  content: "";
+  display: block;
+  position: absolute;
+  background-color: #dadfe8
+}
+.DefaultHandle_handle__horizontal {
+  margin-left: -12px;
+  top: -5px
+}
+.DefaultHandle_handle__horizontal:before {
+  top: 7px;
+  height: 10px;
+  width: 1px;
+  left: 10px
+}
+.DefaultHandle_handle__horizontal:after {
+  top: 7px;
+  height: 10px;
+  width: 1px;
+  left: 13px
+}
+.DefaultHandle_handle__vertical {
+  margin-top: -12.16px;
+  left: -4.5600000000000005px
+}
+.DefaultHandle_handle__disabled {
+  border-color: blue
+}
+.rheostat {
+  position: relative;
+  overflow: visible
+}
+@media (min-width: 1128px) {
+  .autoAdjustVerticalPosition {
+    top: 12px
+  }
+}
+.rheostat_vertical {
+  height: 100%
+}
+.handleContainer {
+  position: absolute;
+  top: 50%
+}
+.rheostat_background {
+  background-color: #fcfcfc;
+  border: 1px solid #d8d8d8;
+  position: relative
+}
+.rheostat_background__horizontal {
+  height: 15px;
+  top: -2px;
+  left: -2px;
+  bottom: 4px;
+  width: 100%
+}
+.rheostat_background__vertical {
+  width: 15px;
+  top: 0px;
+  height: 100%
+}

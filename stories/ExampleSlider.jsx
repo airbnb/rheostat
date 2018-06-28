@@ -1,11 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { PropTypes } from 'react';
 import { storiesOf } from '@kadira/storybook';
 
-import Rheostat from '..';
-import log10 from '../lib/algorithms/log10';
+import Rheostat from '../src/Slider';
+import log10 from '../src/algorithms/log10';
 
-class LabeledSlider extends React.Component {
+export default class LabeledSlider extends React.Component {
   constructor(props) {
     super(props);
 
@@ -24,7 +23,6 @@ class LabeledSlider extends React.Component {
 
   render() {
     const { formatValue } = this.props;
-    const { values } = this.state;
 
     return (
       <div
@@ -37,11 +35,11 @@ class LabeledSlider extends React.Component {
         <Rheostat
           {...this.props}
           onValuesUpdated={this.updateValue}
-          values={values}
+          values={this.state.values}
         />
         <ol>
           <lh>Values</lh>
-          {values.map(value => (
+          {this.state.values.map(value => (
             <li key={value}>
               {formatValue ? formatValue(value) : value}
             </li>
@@ -56,7 +54,7 @@ LabeledSlider.propTypes = {
   formatValue: PropTypes.func,
 };
 LabeledSlider.defaultProps = {
-  values: [],
+  values: null,
   formatValue: null,
 };
 
@@ -65,9 +63,10 @@ storiesOf('Slider', module)
     <LabeledSlider />
   ))
   .add('Custom Handle', () => {
-    function MyHandle({ style, ...passProps }) {
+    function MyHandle({ style, handleRef, ...passProps }) {
       return (
         <div
+          ref={handleRef}
           {...passProps}
           style={{
             ...style,
@@ -85,9 +84,11 @@ storiesOf('Slider', module)
     }
     MyHandle.propTypes = {
       style: PropTypes.object,
+      handleRef: PropTypes.any,
     };
     MyHandle.defaultProps = {
       style: null,
+      handleRef: '',
     };
 
     return (
@@ -106,11 +107,9 @@ storiesOf('Slider', module)
       const rem = n < 10 || n > 20 ? n % 10 : 0;
       if (rem === 1) {
         return `${n}st`;
-      }
-      if (rem === 2) {
+      } else if (rem === 2) {
         return `${n}nd`;
-      }
-      if (rem === 3) {
+      } else if (rem === 3) {
         return `${n}rd`;
       }
       return `${n}th`;
