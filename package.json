@@ -61,7 +61,7 @@
   },
   "dependencies": {
     "object.assign": "^4.1.0",
-    "prop-types": "^15.6.0"
+    "prop-types": "^15.6.2"
   },
   "jest": {
     "testMatch": [
