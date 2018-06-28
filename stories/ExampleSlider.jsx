@@ -1,9 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { storiesOf } from '@kadira/storybook';
+import PropTypes from 'prop-types';
 
-import Rheostat from '..';
-import log10 from '../lib/algorithms/log10';
+import Rheostat from '../src/Slider';
+import log10 from '../src/algorithms/log10';
+
 
 class LabeledSlider extends React.Component {
   constructor(props) {
@@ -23,7 +24,7 @@ class LabeledSlider extends React.Component {
   }
 
   render() {
-    const { formatValue } = this.props;
+    const { formatValue, ...passProps } = this.props;
     const { values } = this.state;
 
     return (
@@ -35,7 +36,7 @@ class LabeledSlider extends React.Component {
         }}
       >
         <Rheostat
-          {...this.props}
+          {...passProps}
           onValuesUpdated={this.updateValue}
           values={values}
         />
@@ -56,7 +57,7 @@ LabeledSlider.propTypes = {
   formatValue: PropTypes.func,
 };
 LabeledSlider.defaultProps = {
-  values: [],
+  values: null,
   formatValue: null,
 };
 
@@ -65,9 +66,10 @@ storiesOf('Slider', module)
     <LabeledSlider />
   ))
   .add('Custom Handle', () => {
-    function MyHandle({ style, ...passProps }) {
+    function MyHandle({ style, handleRef, ...passProps }) {
       return (
         <div
+          ref={handleRef}
           {...passProps}
           style={{
             ...style,
@@ -85,9 +87,11 @@ storiesOf('Slider', module)
     }
     MyHandle.propTypes = {
       style: PropTypes.object,
+      handleRef: PropTypes.any,
     };
     MyHandle.defaultProps = {
       style: null,
+      handleRef: '',
     };
 
     return (
@@ -107,12 +111,15 @@ storiesOf('Slider', module)
       if (rem === 1) {
         return `${n}st`;
       }
+
       if (rem === 2) {
         return `${n}nd`;
       }
+
       if (rem === 3) {
         return `${n}rd`;
       }
+
       return `${n}th`;
     }
 

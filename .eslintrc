@@ -1,5 +1,10 @@
 {
   "extends": "airbnb",
+  "env": {
+    "browser": true,
+    "node": true
+  },
+
   "rules": {
     "react/jsx-one-expression-per-line": 0,
     "react/forbid-prop-types": 1,
