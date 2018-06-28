@@ -8,7 +8,8 @@ export default {
 
     if (pos === 0) {
       return min;
-    } else if (pos === 100) {
+    }
+    if (pos === 100) {
       return max;
     }
 

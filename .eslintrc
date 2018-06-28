@@ -1,6 +1,7 @@
 {
   "extends": "airbnb",
   "rules": {
+    "react/jsx-one-expression-per-line": 0,
     "react/forbid-prop-types": 1,
     "react/no-multi-comp": 0,
     "react/prefer-es6-class": 0,

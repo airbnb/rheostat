@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { storiesOf } from '@kadira/storybook';
 
-import Rheostat from '../';
+import Rheostat from '..';
 import log10 from '../lib/algorithms/log10';
 
 class LabeledSlider extends React.Component {
@@ -23,6 +24,7 @@ class LabeledSlider extends React.Component {
 
   render() {
     const { formatValue } = this.props;
+    const { values } = this.state;
 
     return (
       <div
@@ -35,11 +37,11 @@ class LabeledSlider extends React.Component {
         <Rheostat
           {...this.props}
           onValuesUpdated={this.updateValue}
-          values={this.state.values}
+          values={values}
         />
         <ol>
           <lh>Values</lh>
-          {this.state.values.map(value => (
+          {values.map(value => (
             <li key={value}>
               {formatValue ? formatValue(value) : value}
             </li>
@@ -104,9 +106,11 @@ storiesOf('Slider', module)
       const rem = n < 10 || n > 20 ? n % 10 : 0;
       if (rem === 1) {
         return `${n}st`;
-      } else if (rem === 2) {
+      }
+      if (rem === 2) {
         return `${n}nd`;
-      } else if (rem === 3) {
+      }
+      if (rem === 3) {
         return `${n}rd`;
       }
       return `${n}th`;

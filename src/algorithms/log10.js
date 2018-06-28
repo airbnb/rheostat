@@ -14,7 +14,8 @@ export default {
 
     if (positionPercent === 0) {
       return min;
-    } else if (positionPercent === 100) {
+    }
+    if (positionPercent === 100) {
       return max;
     }
 

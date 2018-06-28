@@ -182,13 +182,13 @@ class Rheostat extends React.Component {
     const minMaxChanged = (nextProps.min !== min || nextProps.max !== max);
 
     const valuesChanged = (
-      values.length !== nextProps.values.length ||
-      values.some((value, idx) => nextProps.values[idx] !== value)
+      values.length !== nextProps.values.length
+      || values.some((value, idx) => nextProps.values[idx] !== value)
     );
 
     const orientationChanged = (
-      nextProps.className !== className ||
-      nextProps.orientation !== orientation
+      nextProps.className !== className
+      || nextProps.orientation !== orientation
     );
 
     const algorithmChanged = nextProps.algorithm !== algorithm;
@@ -273,7 +273,8 @@ class Rheostat extends React.Component {
 
     if (!handleNode) return 0;
 
-    return this.props.orientation === 'vertical'
+    const { orientation } = this.props;
+    return orientation === 'vertical'
       ? ((handleNode.clientHeight / sliderBox.height) * SliderConstants.PERCENT_FULL) / 2
       : ((handleNode.clientWidth / sliderBox.width) * SliderConstants.PERCENT_FULL) / 2;
   }

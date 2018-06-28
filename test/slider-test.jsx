@@ -599,8 +599,9 @@ describe('Slider API', () => {
       const LEFT_HANDLE_IDX = 0;
       const slider = newSlider({
         values: [30],
-        getNextHandlePosition: (idx, pos) =>
-          (idx === LEFT_HANDLE_IDX && pos > LEFT_MAX ? LEFT_MAX : pos),
+        getNextHandlePosition: (idx, pos) => (
+          (idx === LEFT_HANDLE_IDX && pos > LEFT_MAX) ? LEFT_MAX : pos
+        ),
       });
 
 
