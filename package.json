@@ -12,7 +12,7 @@
     "storybook": "start-storybook -p 9001",
     "pretest": "npm run build && npm run lint",
     "test": "nyc npm run test:all",
-    "tests-only": "npm run build && npm run test:all",
+    "tests-only": "npm run test:all",
     "pretest:all": "npm run react",
     "test:all": "npm run test:node && npm run test:dom",
     "test:node": "npm run jest -- --testEnvironment=node",

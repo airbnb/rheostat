@@ -15,7 +15,8 @@ before_install:
 install:
   - 'if [ "${TRAVIS_NODE_VERSION}" = "0.6" ] || [ "${TRAVIS_NODE_VERSION}" = "0.9" ]; then nvm install --latest-npm 0.8 && npm install && nvm use "${TRAVIS_NODE_VERSION}"; else npm install; fi;'
 script:
-  - 'if [ -n "${PRETEST-}" ]; then npm run pretest ; fi'
+  - 'if [ -n "${LINT-}" ]; then npm run lint ; fi'
+  - 'if [ -n "${BUILD-}" ]; then npm run build ; fi'
   - 'if [ -n "${POSTTEST-}" ]; then npm run posttest ; fi'
   - 'if [ -n "${COVERAGE-}" ]; then npm run test ; fi'
   - 'if [ -n "${TEST-}" ]; then npm run tests-only ; fi'
@@ -29,7 +30,9 @@ matrix:
   fast_finish: true
   include:
     - node_js: "lts/*"
-      env: PRETEST=true
+      env: LINT=true
+    - node_js: "lts/*"
+      env: BUILD=true
     - node_js: "lts/*"
       env: COVERAGE=true
   allow_failures:
