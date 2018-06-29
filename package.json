@@ -5,7 +5,11 @@
   "main": "lib/Slider",
   "jsnext:main": "src/Slider.jsx",
   "scripts": {
-    "build": "npm run clean && babel src -d lib",
+    "prebuild": "npm run clean",
+    "build": "npm run build:js && npm run build:css",
+    "build:js": "babel src -d lib",
+    "prebuild:css": "rimraf lib/css && mkdir -p lib/css",
+    "build:css": "node scripts/buildCSS.js",
     "clean": "rimraf lib",
     "prepublish": "in-publish && safe-publish-latest && npm run build || not-in-publish",
     "lint": "eslint --ext .js,.jsx src test stories",
@@ -38,6 +42,7 @@
     "casual": "^1.5.19",
     "chai": "^4.1.2",
     "chai-enzyme": "^1.0.0-beta.1",
+    "clean-css": "^4.1.11",
     "create-react-class": "^15.6.3",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-helper": "^1.2.3",
@@ -55,6 +60,7 @@
     "react-addons-pure-render-mixin": "^15.6.2",
     "react-dom": "^15.6.2",
     "react-with-styles-interface-aphrodite": "^5.0.0",
+    "react-with-styles-interface-css-compiler": "^1.1.2",
     "rimraf": "^2.6.2",
     "safe-publish-latest": "^1.1.1",
     "sinon": "^5.0.7",
@@ -67,7 +73,8 @@
     "airbnb-prop-types": "^2.10.0",
     "object.assign": "^4.1.0",
     "prop-types": "^15.6.2",
-    "react-with-styles": "^3.2.0"
+    "react-with-styles": "^3.2.0",
+    "react-with-styles-interface-css": "^4.0.2"
   },
   "jest": {
     "testMatch": [

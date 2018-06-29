@@ -5,6 +5,7 @@ node_modules
 npm-debug.log
 coverage
 build
+css/rheostat.css
 .nyc_output
 
 # Only apps should have lockfiles
