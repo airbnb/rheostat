@@ -71,6 +71,7 @@
   },
   "dependencies": {
     "airbnb-prop-types": "^2.10.0",
+    "clean-css": "^4.1.11",
     "object.assign": "^4.1.0",
     "prop-types": "^15.6.2",
     "react-with-styles": "^3.2.0",
