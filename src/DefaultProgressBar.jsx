@@ -60,7 +60,7 @@ export default withStyles(({ color, unit }) => ({
   },
 
   DefaultProgressBar_progressBar: {
-    backgroundColor: color.teal,
+    backgroundColor: color.progressBar,
     position: 'absolute',
   },
 
