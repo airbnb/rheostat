@@ -7,7 +7,7 @@
   "scripts": {
     "build": "npm run clean && babel src -d lib",
     "clean": "rimraf lib",
-    "prepublish": "npm run build",
+    "prepublish": "in-publish && safe-publish-latest && npm run build || not-in-publish",
     "lint": "eslint --ext .js,.jsx src test stories",
     "storybook": "start-storybook -p 9001",
     "pretest": "npm run build && npm run lint",
@@ -47,6 +47,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.10.0",
     "has": "^1.0.3",
+    "in-publish": "^2.0.0",
     "jest": "^21.2.1",
     "nyc": "^11.8.0",
     "raw-loader": "^0.5.1",
@@ -55,6 +56,7 @@
     "react-dom": "^15.6.2",
     "react-with-styles-interface-aphrodite": "^5.0.0",
     "rimraf": "^2.6.2",
+    "safe-publish-latest": "^1.1.1",
     "sinon": "^5.0.7",
     "style-loader": "^0.17.0"
   },
