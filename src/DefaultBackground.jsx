@@ -36,7 +36,7 @@ DefaultBackground.defaultProps = defaultProps;
 
 export default withStyles(({ color, unit }) => ({
   DefaultBackground_background: {
-    backgroundColor: 'color.white',
+    backgroundColor: color.white,
     border: `5px solid ${color.grey}`,
     position: 'relative',
   },
