@@ -5,8 +5,7 @@ import PropTypes from 'prop-types';
 import Rheostat from '../src/Slider';
 import log10 from '../src/algorithms/log10';
 
-
-class LabeledSlider extends React.Component {
+export default class LabeledSlider extends React.Component {
   constructor(props) {
     super(props);
 

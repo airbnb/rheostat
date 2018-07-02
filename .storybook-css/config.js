@@ -1,11 +1,12 @@
 import { configure } from '@kadira/storybook';
 import ThemedStyleSheet from 'react-with-styles/lib/ThemedStyleSheet';
 import aphroditeInterface from 'react-with-styles-interface-aphrodite';
-import DefaultTheme from '../src/themes/DefaultTheme';
-import registerInterfaceWithDefaultTheme from '../scripts/utils/registerInterfaceWithDefaultTheme';
+import '../css/rheostat.css';
+import registerCSSInterfaceWithDefaultTheme from '../scripts/utils/registerCSSInterfaceWithDefaultTheme';
+
 
 /* Register react with styles interface */
-registerInterfaceWithDefaultTheme(aphroditeInterface);
+registerCSSInterfaceWithDefaultTheme();
 
 function loadStories() {
   require('../stories/ExampleSlider');
