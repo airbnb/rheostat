@@ -14,8 +14,7 @@
     "prepublish": "in-publish && safe-publish-latest && npm run build || not-in-publish",
     "lint": "eslint --ext .js,.jsx src test stories",
     "storybook": "start-storybook -p 9001",
-    "prestorybook:css": "npm run build:css",
-    "storybook:css": "start-storybook -p 6006 -c .storybook-css",
+    "storybook:css": "npm run build:css && start-storybook -p 6006 -c .storybook-css",
     "pretest": "npm run build && npm run lint",
     "test": "nyc npm run test:all",
     "tests-only": "npm run test:all",
@@ -73,7 +72,6 @@
   },
   "dependencies": {
     "airbnb-prop-types": "^2.10.0",
-    "clean-css": "^4.1.11",
     "object.assign": "^4.1.0",
     "prop-types": "^15.6.2",
     "react-with-styles": "^3.2.0",
