@@ -747,14 +747,9 @@ class Rheostat extends React.Component {
     } = this.props;
 
     const {
-      handleDimensions,
       handlePos,
       values,
     } = this.state;
-
-    const handleContainerStyle = orientation === VERTICAL
-      ? { left: 0, bottom: handleDimensions / 2, top: handleDimensions / 2 }
-      : { top: 0, left: handleDimensions / 2, right: handleDimensions / 2 };
 
     return (
       // eslint-disable-next-line jsx-a11y/click-events-have-key-events
@@ -770,7 +765,6 @@ class Rheostat extends React.Component {
           ref={this.setHandleContainerNode}
           {...css(
             styles.handleContainer,
-            handleContainerStyle,
             styles.rheostat_background,
             orientation === VERTICAL
               ? styles.rheostat_background__vertical
