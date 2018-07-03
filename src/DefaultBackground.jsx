@@ -23,11 +23,12 @@ function DefaultBackground({
 }) {
   return (
     <div
-      {...css((
-        orientation === VERTICAL
+      {...css(
+        styles.DefaultBackground,
+        (orientation === VERTICAL
           ? styles.DefaultBackground_background__vertical
-          : styles.DefaultBackground_background__horizontal
-      ))}
+          : styles.DefaultBackground_background__horizontal),
+      )}
     />
   );
 }
@@ -35,15 +36,19 @@ DefaultBackground.propTypes = propTypes;
 DefaultBackground.defaultProps = defaultProps;
 
 export default withStyles(({ rheostat: { color, unit } }) => ({
-  DefaultBackground_background: {
+  DefaultBackground: {
     backgroundColor: color.white,
-    border: `5px solid ${color.grey}`,
+    height: (2 * unit) - 1,
+    width: '100%',
+    border: `1px solid ${color.grey}`,
     position: 'relative',
   },
 
   DefaultBackground_background__horizontal: {
     height: (2 * unit) - 1,
-    top: 0,
+    top: -2,
+    left: -2,
+    bottom: 4,
     width: '100%',
   },
 
