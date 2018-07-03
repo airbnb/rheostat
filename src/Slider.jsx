@@ -308,7 +308,13 @@ class Rheostat extends React.Component {
       : this.handleNode.clientWidth;
   }
 
-  getSnapPosition(positionPercent) {
+  /*
+    During snap point animation, the actual position of the slider is required,
+    even though snap is labelled as true. Because of this, there is a
+    second param to optionally return the actual slider position, rather than
+    the closest snap point.
+  */
+  getSnapPosition(positionPercent, ignoreSnap = false) {
     const {
       algorithm,
       max,
@@ -316,7 +322,7 @@ class Rheostat extends React.Component {
       snap,
     } = this.props;
 
-    if (!snap) return positionPercent;
+    if (!snap || ignoreSnap) return positionPercent;
     const value = algorithm.getValue(positionPercent, min, max);
     const snapValue = this.getClosestSnapPoint(value);
     return algorithm.getPosition(snapValue, min, max);
@@ -513,7 +519,7 @@ class Rheostat extends React.Component {
     const sliderBox = this.getSliderBoundingBox();
     const positionPercent = this.positionPercent(x, y, sliderBox);
 
-    this.slideTo(idx, this.getSnapPosition(positionPercent));
+    this.slideTo(idx, this.getSnapPosition(positionPercent, true));
 
     if (this.canMove(idx, positionPercent)) {
       if (onSliderDragMove) onSliderDragMove();
