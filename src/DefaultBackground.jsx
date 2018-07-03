@@ -34,7 +34,7 @@ function DefaultBackground({
 DefaultBackground.propTypes = propTypes;
 DefaultBackground.defaultProps = defaultProps;
 
-export default withStyles(({ color, unit }) => ({
+export default withStyles(({ rheostat: { color, unit } }) => ({
   DefaultBackground_background: {
     backgroundColor: color.white,
     border: `5px solid ${color.grey}`,
