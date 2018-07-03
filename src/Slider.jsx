@@ -837,7 +837,7 @@ class Rheostat extends React.Component {
 Rheostat.propTypes = propTypes;
 Rheostat.defaultProps = defaultProps;
 
-export default withStyles(({ color, unit, responsive }) => ({
+export default withStyles(({ rheostat: { color, unit, responsive } }) => ({
   rheostat: {
     position: 'relative',
     overflow: 'visible',
