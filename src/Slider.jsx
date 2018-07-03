@@ -6,7 +6,7 @@ import React from 'react';
 import LinearScale from './algorithms/linear';
 import DefaultHandle from './DefaultHandle';
 import DefaultProgressBar from './DefaultProgressBar';
-
+import DefaultBackground from './DefaultBackground';
 import OrientationPropType from './propTypes/OrientationPropType';
 
 import {
@@ -43,6 +43,8 @@ const propTypes = forbidExtraProps({
     getValue: PropTypes.func,
     getPosition: PropTypes.func,
   }),
+
+  background: PropTypeReactComponent,
 
   // any children you pass in
   children: PropTypes.node,
@@ -128,6 +130,7 @@ const defaultProps = {
   pitPoints: [],
   snap: false,
   snapPoints: [],
+  background: DefaultBackground,
   handle: DefaultHandle,
   progressBar: DefaultProgressBar,
   values: [
@@ -748,6 +751,7 @@ class Rheostat extends React.Component {
       orientation,
       pitComponent: PitComponent,
       pitPoints,
+      background: Background,
       progressBar: ProgressBar,
       styles,
     } = this.props;
@@ -767,14 +771,17 @@ class Rheostat extends React.Component {
           orientation === VERTICAL && styles.rheostat__vertical,
         )}
       >
+        {
+          !!Background && (
+            <Background
+              orientation={orientation}
+            />
+          )
+        }
         <div
           ref={this.setHandleContainerNode}
           {...css(
             styles.handleContainer,
-            styles.rheostat_background,
-            orientation === VERTICAL
-              ? styles.rheostat_background__vertical
-              : styles.rheostat_background__horizontal,
           )}
         >
           {handlePos.map((pos, idx) => {
@@ -854,8 +861,12 @@ export default withStyles(({ rheostat: { color, unit, responsive } }) => ({
   },
 
   handleContainer: {
+    height: (2 * unit) - 1,
+    top: -2,
+    left: -2,
+    bottom: 4,
+    width: '100%',
     position: 'absolute',
-    top: '50%',
   },
 
   rheostat_background: {
