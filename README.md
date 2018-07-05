@@ -8,6 +8,10 @@
 
 `npm install rheostat`
 
+## Initialize
+
+As of v3.0.0, the `rheostat` project relies on `react-with-styles`. If you want to continue using CSS stylesheets and classes, there is a little bit of extra set-up required to get things going. As such, you need to rheostat/initialize to set up class names on our components. This import should go at the top of your application as you won't be able to import `rheostat` with it. 
+
 ## Props
 
 The algorithm, by default [`linear`](src/algorithms/linear.js), the slider will use. Feel free to write
@@ -120,6 +124,46 @@ ReactDOM.render((
   />
 ), document.getElementById('slider-root'));
 ```
+
+### Interfaces
+
+The `rheostat/initialize` script actually relies on [react-with-styles-interface-css](https://github.com/airbnb/react-with-styles-interface-css) under the hood. If you are interested in a different solution for styling in your project, you can do your own initialization of a another [interface](https://github.com/airbnb/react-with-styles/blob/master/README.md#interfaces). At Airbnb, for instance, we rely on [Aphrodite](https://github.com/Khan/aphrodite) under the hood and therefore use the Aphrodite interface for `react-with-styles`. If you want to do the same, you would use the following pattern:
+```js
+import ThemedStyleSheet from 'react-with-styles/lib/ThemedStyleSheet';
+import aphroditeInterface from 'react-with-styles-interface-aphrodite';
+import DefaultTheme from 'rheostat/lib/themes/DefaultTheme';
+
+ThemedStyleSheet.registerInterface(aphroditeInterface);
+ThemedStyleSheet.registerTheme(DefaultTheme);
+```
+
+The above code has to be run before any `rheostat` component is imported. Otherwise, you will get an error. Also note that if you register any custom interface manually, you *must* also manually register a theme.
+
+### Theming
+`rheostat` also now supports a different way to theme. You can see the default theme values in [this file](https://github.com/airbnb/rheostat/blob/master/src/themes/DefaultTheme.js) and you would override them in the following manner:
+```js
+import ThemedStyleSheet from 'react-with-styles/lib/ThemedStyleSheet';
+import aphroditeInterface from 'react-with-styles-interface-aphrodite';
+import DefaultTheme from 'rheostat/lib/themes/DefaultTheme';
+
+ThemedStyleSheet.registerInterface(aphroditeInterface);
+ThemedStyleSheet.registerTheme({
+  rheostat: {
+    ...DefaultTheme.rheostat,
+    color: {
+      ...DefaultTheme.rheostat.color,
+      progressBar: 'red',
+      },
+    },
+  },
+});
+```
+
+The above code would make the default progress bar red, instead of light blue. Note that you *must* register an interface if you manually register a theme. One will not work without the other.
+
+#### A note on using `react-with-styles-interface-css`
+The default interface that `rheostat` ships with is the [CSS interface](https://github.com/airbnb/react-with-styles-interface-css). If you want to use this interface along with the theme registration method, you will need to rebuild the core `rheostat.css` file. We do not currently expose a utility method to build this file, but you can follow along with the code in https://github.com/airbnb/rheostat/blob/master/scripts/buildCSS.js to build your own custom themed CSS file.
+
 
 ## Live Playground
 
