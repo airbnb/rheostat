@@ -10,7 +10,11 @@
 
 ## Initialize
 
-As of v3.0.0, the `rheostat` project relies on `react-with-styles`. If you want to continue using CSS stylesheets and classes, there is a little bit of extra set-up required to get things going. As such, you need to use `rheostat/initialize` to set up class names on your components. This import should go at the top of your application as you won't be able to import `rheostat` with it. 
+As of v3.0.0, the `rheostat` project relies on `react-with-styles`. If you want to continue using CSS stylesheets and classes, there is a little bit of extra set-up required to get things going. As such, you need to use to use `rheostat/initialize` to set up class names on your components. 
+
+    import 'rheostat/initialize';
+
+For example, the above import should go at the top of your application as you won't be able to import `rheostat` with it. 
 
 ## Props
 
@@ -125,7 +129,7 @@ ReactDOM.render((
 ), document.getElementById('slider-root'));
 ```
 
-### Interfaces
+### Advanced Styling
 
 The `rheostat/initialize` script actually relies on [react-with-styles-interface-css](https://github.com/airbnb/react-with-styles-interface-css) under the hood. If you are interested in a different solution for styling in your project, you can do your own initialization of a another [interface](https://github.com/airbnb/react-with-styles/blob/master/README.md#interfaces). At Airbnb, for instance, we rely on [Aphrodite](https://github.com/Khan/aphrodite) under the hood and therefore use the Aphrodite interface for `react-with-styles`. If you want to do the same, you would use the following pattern:
 ```js
@@ -153,7 +157,6 @@ ThemedStyleSheet.registerTheme({
     color: {
       ...DefaultTheme.rheostat.color,
       progressBar: 'red',
-      },
     },
   },
 });
