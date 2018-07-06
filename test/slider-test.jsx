@@ -384,6 +384,22 @@ describe('Slider API', () => {
       assert(slider.getSnapPosition(96) === 100, 'position is at 100%');
       assert(slider.getSnapPosition(55) === 50, 'position is at 50%');
     });
+
+    /*
+      During slide, the animation requires getSnapPosition to not return
+      the position of the point, but rather the actual position of the slider.
+      This is accomplished with an extra arg to getSnapPosition.
+    */
+    it('should not return snap point when flag passed in', () => {
+      const slider = shallow(<Slider
+        snap
+        snapPoints={[0, 25, 50, 75, 100]}
+      />).dive().instance();
+
+      assert(slider.getSnapPosition(20, true) === 20, 'position is at 25%');
+      assert(slider.getSnapPosition(96, true) === 96, 'position is at 100%');
+      assert(slider.getSnapPosition(55, true) === 55, 'position is at 50%');
+    });
   });
 
   describe('getNextPositionForKey', () => {

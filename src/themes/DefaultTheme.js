@@ -7,26 +7,28 @@ const core = {
 };
 
 const DefaultTheme = {
-  unit: 8,
+  rheostat: {
+    unit: 8,
 
-  responsive: {
-    mediumAndAbove: '@media (min-width: 744px)',
-    largeAndAbove: '@media (min-width: 1128px)',
-  },
+    responsive: {
+      mediumAndAbove: '@media (min-width: 744px)',
+      largeAndAbove: '@media (min-width: 1128px)',
+    },
 
-  constants: {
-    DEFAULT_HANDLE_WIDTH: 1.5,
-    BACKGROUND_HEIGHT: 0.25,
-  },
+    constants: {
+      DEFAULT_HANDLE_WIDTH: 1.5,
+      BACKGROUND_HEIGHT: 0.25,
+    },
 
-  color: {
-    ...core,
-    progressBar: core.teal,
-    focus: core.teal,
-    textDisabled: core.lightgrey,
+    color: {
+      ...core,
+      progressBar: core.teal,
+      focus: core.teal,
+      textDisabled: core.lightgrey,
 
-    buttons: {
-      defaultDisabledColor: core.lightgrey,
+      buttons: {
+        defaultDisabledColor: core.lightgrey,
+      },
     },
   },
 };

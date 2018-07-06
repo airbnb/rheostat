@@ -48,7 +48,7 @@ DefaultHandle.propTypes = propTypes;
 
 DefaultHandle.defaultProps = defaultProps;
 
-export default withStyles(({ color, unit, constants }) => ({
+export default withStyles(({ rheostat: { color, unit, constants } }) => ({
   DefaultHandle_handle: {
     width: 2 * constants.DEFAULT_HANDLE_WIDTH * unit,
     height: 2 * constants.DEFAULT_HANDLE_WIDTH * unit,

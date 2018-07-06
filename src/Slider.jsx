@@ -6,7 +6,7 @@ import React from 'react';
 import LinearScale from './algorithms/linear';
 import DefaultHandle from './DefaultHandle';
 import DefaultProgressBar from './DefaultProgressBar';
-
+import DefaultBackground from './DefaultBackground';
 import OrientationPropType from './propTypes/OrientationPropType';
 
 import {
@@ -43,6 +43,8 @@ const propTypes = forbidExtraProps({
     getValue: PropTypes.func,
     getPosition: PropTypes.func,
   }),
+
+  background: PropTypeReactComponent,
 
   // any children you pass in
   children: PropTypes.node,
@@ -128,6 +130,7 @@ const defaultProps = {
   pitPoints: [],
   snap: false,
   snapPoints: [],
+  background: DefaultBackground,
   handle: DefaultHandle,
   progressBar: DefaultProgressBar,
   values: [
@@ -308,7 +311,13 @@ class Rheostat extends React.Component {
       : this.handleNode.clientWidth;
   }
 
-  getSnapPosition(positionPercent) {
+  /*
+    During snap point animation, the actual position of the slider is required,
+    even though snap is labelled as true. Because of this, there is a
+    second param to optionally return the actual slider position, rather than
+    the closest snap point.
+  */
+  getSnapPosition(positionPercent, ignoreSnap = false) {
     const {
       algorithm,
       max,
@@ -316,7 +325,7 @@ class Rheostat extends React.Component {
       snap,
     } = this.props;
 
-    if (!snap) return positionPercent;
+    if (!snap || ignoreSnap) return positionPercent;
     const value = algorithm.getValue(positionPercent, min, max);
     const snapValue = this.getClosestSnapPoint(value);
     return algorithm.getPosition(snapValue, min, max);
@@ -513,7 +522,7 @@ class Rheostat extends React.Component {
     const sliderBox = this.getSliderBoundingBox();
     const positionPercent = this.positionPercent(x, y, sliderBox);
 
-    this.slideTo(idx, this.getSnapPosition(positionPercent));
+    this.slideTo(idx, this.getSnapPosition(positionPercent, true));
 
     if (this.canMove(idx, positionPercent)) {
       if (onSliderDragMove) onSliderDragMove();
@@ -742,6 +751,7 @@ class Rheostat extends React.Component {
       orientation,
       pitComponent: PitComponent,
       pitPoints,
+      background: Background,
       progressBar: ProgressBar,
       styles,
     } = this.props;
@@ -761,14 +771,17 @@ class Rheostat extends React.Component {
           orientation === VERTICAL && styles.rheostat__vertical,
         )}
       >
+        {
+          !!Background && (
+            <Background
+              orientation={orientation}
+            />
+          )
+        }
         <div
           ref={this.setHandleContainerNode}
           {...css(
             styles.handleContainer,
-            styles.rheostat_background,
-            orientation === VERTICAL
-              ? styles.rheostat_background__vertical
-              : styles.rheostat_background__horizontal,
           )}
         >
           {handlePos.map((pos, idx) => {
@@ -831,7 +844,7 @@ class Rheostat extends React.Component {
 Rheostat.propTypes = propTypes;
 Rheostat.defaultProps = defaultProps;
 
-export default withStyles(({ color, unit, responsive }) => ({
+export default withStyles(({ rheostat: { color, unit, responsive } }) => ({
   rheostat: {
     position: 'relative',
     overflow: 'visible',
@@ -848,8 +861,12 @@ export default withStyles(({ color, unit, responsive }) => ({
   },
 
   handleContainer: {
+    height: (2 * unit) - 1,
+    top: -2,
+    left: -2,
+    bottom: 4,
+    width: '100%',
     position: 'absolute',
-    top: '50%',
   },
 
   rheostat_background: {

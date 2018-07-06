@@ -53,7 +53,7 @@ function DefaultProgressBar({
 DefaultProgressBar.propTypes = propTypes;
 DefaultProgressBar.defaultProps = defaultProps;
 
-export default withStyles(({ color, unit }) => ({
+export default withStyles(({ rheostat: { color, unit } }) => ({
   DefaultProgressBar__vertical: {
     width: 3 * unit,
     height: '100%',
