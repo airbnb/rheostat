@@ -11,6 +11,5 @@ export const KEYS = {
 };
 export const PERCENT_EMPTY = 0;
 export const PERCENT_FULL = 100;
-export const DEFAULT_STEP = 1;
 export const HORIZONTAL = 'horizontal';
 export const VERTICAL = 'vertical';

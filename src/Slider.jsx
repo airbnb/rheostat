@@ -1,6 +1,6 @@
 import { withStyles, withStylesPropTypes } from 'react-with-styles';
 import PropTypes from 'prop-types';
-import { nonNegativeNumber, forbidExtraProps } from 'airbnb-prop-types';
+import { forbidExtraProps } from 'airbnb-prop-types';
 import React from 'react';
 
 import LinearScale from './algorithms/linear';
@@ -14,7 +14,6 @@ import {
   VERTICAL,
   PERCENT_FULL,
   PERCENT_EMPTY,
-  DEFAULT_STEP,
   KEYS,
 } from './constants/SliderConstants';
 
@@ -60,9 +59,6 @@ const propTypes = forbidExtraProps({
 
   // the minimum possible value
   min: PropTypes.number,
-
-  // step value
-  step: nonNegativeNumber(),
 
   // called on click
   onClick: PropTypes.func,
@@ -117,7 +113,6 @@ const defaultProps = {
   getNextHandlePosition: null,
   max: PERCENT_FULL,
   min: PERCENT_EMPTY,
-  step: DEFAULT_STEP,
   onClick: null,
   onChange: null,
   onKeyPress: null,
@@ -186,6 +181,9 @@ class Rheostat extends React.Component {
     this.setHandleNode = this.setHandleNode.bind(this);
     this.setHandleContainerNode = this.setHandleContainerNode.bind(this);
     this.positionPercent = this.positionPercent.bind(this);
+    this.invalidatePitStyleCache = this.invalidatePitStyleCache.bind(this);
+
+    this.pitStyleCache = {};
   }
 
   componentDidMount() {
@@ -201,6 +199,9 @@ class Rheostat extends React.Component {
       disabled,
       min,
       max,
+      orientation,
+      pitPoints,
+      algorithm,
     } = this.props;
 
     const {
@@ -215,12 +216,22 @@ class Rheostat extends React.Component {
       || values.some((value, idx) => nextProps.values[idx] !== value)
     );
 
+    const orientationChanged = nextProps.orientation !== orientation;
+
+    const algorithmChanged = nextProps.algorithm !== algorithm;
+
+    const pitPointsChanged = nextProps.pitPoints !== pitPoints;
+
     const willBeDisabled = nextProps.disabled && !disabled;
 
     if (minMaxChanged || valuesChanged) this.updateNewValues(nextProps);
 
     if (willBeDisabled && slidingIndex !== null) {
       this.endSlide();
+    }
+
+    if (minMaxChanged || pitPointsChanged || orientationChanged || algorithmChanged) {
+      this.invalidatePitStyleCache();
     }
   }
 
@@ -306,18 +317,14 @@ class Rheostat extends React.Component {
 
   getHandleDimensions() {
     const { orientation } = this.props;
+    if (!this.handleNode) return 0;
+
     return orientation === VERTICAL
       ? this.handleNode.clientHeight
       : this.handleNode.clientWidth;
   }
 
-  /*
-    During snap point animation, the actual position of the slider is required,
-    even though snap is labelled as true. Because of this, there is a
-    second param to optionally return the actual slider position, rather than
-    the closest snap point.
-  */
-  getSnapPosition(positionPercent, ignoreSnap = false) {
+  getSnapPosition(positionPercent) {
     const {
       algorithm,
       max,
@@ -325,7 +332,7 @@ class Rheostat extends React.Component {
       snap,
     } = this.props;
 
-    if (!snap || ignoreSnap) return positionPercent;
+    if (!snap) return positionPercent;
     const value = algorithm.getValue(positionPercent, min, max);
     const snapValue = this.getClosestSnapPoint(value);
     return algorithm.getPosition(snapValue, min, max);
@@ -522,7 +529,7 @@ class Rheostat extends React.Component {
     const sliderBox = this.getSliderBoundingBox();
     const positionPercent = this.positionPercent(x, y, sliderBox);
 
-    this.slideTo(idx, this.getSnapPosition(positionPercent, true));
+    this.slideTo(idx, positionPercent);
 
     if (this.canMove(idx, positionPercent)) {
       if (onSliderDragMove) onSliderDragMove();
@@ -738,6 +745,10 @@ class Rheostat extends React.Component {
     }, () => this.fireChangeEvent());
   }
 
+  invalidatePitStyleCache() {
+    this.pitStyleCache = {};
+  }
+
   render() {
     const {
       css,
@@ -824,10 +835,15 @@ class Rheostat extends React.Component {
           );
         })}
         {PitComponent && pitPoints.map((n) => {
-          const pos = algorithm.getPosition(n, min, max);
-          const pitStyle = orientation === VERTICAL
-            ? { top: `${pos}%`, position: 'absolute' }
-            : { left: `${pos}%`, position: 'absolute' };
+          let pitStyle = this.pitStyleCache[n];
+
+          if (!pitStyle) {
+            const pos = algorithm.getPosition(n, min, max);
+            pitStyle = orientation === 'vertical'
+              ? { top: `${pos}%`, position: 'absolute' }
+              : { left: `${pos}%`, position: 'absolute' };
+            this.pitStyleCache[n] = pitStyle;
+          }
 
           return (
             <PitComponent key={n} style={pitStyle}>
