@@ -26,7 +26,7 @@ const DefaultTheme = {
     textDisabled: core.lightgrey,
 
     buttons: {
-      defaultDisabledColor: 'blue',
+      defaultDisabledColor: core.lightgrey,
     },
   },
 };
