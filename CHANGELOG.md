@@ -5,7 +5,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-- [Breaking] drop v0.13 support
+## [3.0.0] - 2018-07-05
+- [breaking] drop v0.13 support
+- [breaking] Upgrade `rheostat` to use `react-with-styles` (#161, #162, #163, #164, #166, #168, #172)
 
 ## [2.2.0] - 2018-05-21
 
