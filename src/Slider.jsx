@@ -317,18 +317,14 @@ class Rheostat extends React.Component {
 
   getHandleDimensions() {
     const { orientation } = this.props;
+    if (!this.handleNode) return 0;
+
     return orientation === VERTICAL
       ? this.handleNode.clientHeight
       : this.handleNode.clientWidth;
   }
 
-  /*
-    During snap point animation, the actual position of the slider is required,
-    even though snap is labelled as true. Because of this, there is a
-    second param to optionally return the actual slider position, rather than
-    the closest snap point.
-  */
-  getSnapPosition(positionPercent, ignoreSnap = false) {
+  getSnapPosition(positionPercent) {
     const {
       algorithm,
       max,
@@ -336,7 +332,7 @@ class Rheostat extends React.Component {
       snap,
     } = this.props;
 
-    if (!snap || ignoreSnap) return positionPercent;
+    if (!snap) return positionPercent;
     const value = algorithm.getValue(positionPercent, min, max);
     const snapValue = this.getClosestSnapPoint(value);
     return algorithm.getPosition(snapValue, min, max);
@@ -533,7 +529,7 @@ class Rheostat extends React.Component {
     const sliderBox = this.getSliderBoundingBox();
     const positionPercent = this.positionPercent(x, y, sliderBox);
 
-    this.slideTo(idx, this.getSnapPosition(positionPercent, true));
+    this.slideTo(idx, positionPercent);
 
     if (this.canMove(idx, positionPercent)) {
       if (onSliderDragMove) onSliderDragMove();
