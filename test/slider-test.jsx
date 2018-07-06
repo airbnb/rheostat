@@ -514,39 +514,137 @@ describe('Slider API', () => {
     });
   });
 
-  /*
-    Note: Skipping this test because it requires the handle's ref to
-    be executed, which requires a mount, as well as access to the instance
-    methods of slider. Please feel free to re-write or remove test, as desired.
-    TODO: Philip and Maja
-  */
-  describe.skip('getNextState', () => {
-    it('should return the next state given a position and index', () => {
-      const slider = mount(<Slider values={[0]} />).instance();
-      const nextState = slider.getNextState(0, 50);
-      assert(nextState.handlePos[0] === 50, 'handle is at 50%');
-      assert(nextState.values[0] === 50, 'the value is 50');
+  describe('need slider bounding box defined', () => {
+    const sliderBoundingBox = {
+      height: 15,
+      left: 145,
+      right: 423,
+      top: 53.59375,
+      width: 278,
+    };
+
+    describe('getNextState', () => {
+      it('should return the next state given a position and index', () => {
+        const slider = shallow(<Slider values={[0]} />).dive().instance();
+        sinon.stub(slider, 'getSliderBoundingBox').returns(sliderBoundingBox);
+        const nextState = slider.getNextState(0, 50);
+        assert(nextState.handlePos[0] === 50, 'handle is at 50%');
+        assert(nextState.values[0] === 50, 'the value is 50');
+      });
+
+      it('should return correct validated state given two handles and overflow', () => {
+        const slider = shallow(<Slider values={[0, 20]} />).dive().instance();
+        sinon.stub(slider, 'getSliderBoundingBox').returns(sliderBoundingBox);
+        const nextState = slider.getNextState(0, 50);
+        assert(nextState.handlePos[0] === 20, 'handle is at 20%');
+        assert(nextState.values[0] === 20, 'the value is 20');
+      });
+
+      it('should not overflow the boundaries', () => {
+        const slider = shallow(<Slider values={[20]} />).dive().instance();
+        sinon.stub(slider, 'getSliderBoundingBox').returns(sliderBoundingBox);
+
+        let nextState = slider.getNextState(0, -20);
+
+        assert(nextState.handlePos[0] === 0, 'handle is at 0%');
+        assert(nextState.values[0] === 0, 'the value is 0');
+
+        nextState = slider.getNextState(0, 120);
+
+        assert(nextState.handlePos[0] === 100, 'handle is at 100%');
+        assert(nextState.values[0] === 100, 'the value is 100');
+      });
     });
 
-    it('should return correct validated state given two handles and overflow', () => {
-      const slider = shallow(<Slider values={[0, 20]} />).dive().instance();
-      const nextState = slider.getNextState(0, 50);
-      assert(nextState.handlePos[0] === 20, 'handle is at 20%');
-      assert(nextState.values[0] === 20, 'the value is 20');
+    describe('validatePosition', () => {
+      it('should make sure that handles respect bounds', () => {
+        const slider = shallow(<Slider values={[50]} />).dive().instance();
+        sinon.stub(slider, 'getSliderBoundingBox').returns(sliderBoundingBox);
+
+        assert(slider.validatePosition(0, -20) === 0, 'the handle was set to the min');
+        assert(slider.validatePosition(0, 120) === 100, 'the handle was set to the max');
+        assert(slider.validatePosition(0, 25) === 25, 'the correct position is returned');
+      });
+
+      it('should verify that two handles do not overlap', () => {
+        const slider = shallow(<Slider values={[25, 75]} />).dive().instance();
+        sinon.stub(slider, 'getSliderBoundingBox').returns(sliderBoundingBox);
+
+        assert(slider.validatePosition(0, 90) === 75, 'the handle reached its own max');
+        assert(slider.validatePosition(1, 20) === 25, 'the handle reached its own min');
+      });
+
+      it('should honor getNextHandlePosition precondition', () => {
+        const LEFT_MAX = 40;
+        const LEFT_HANDLE_IDX = 0;
+
+        const slider = shallow(<Slider
+          values={[30]}
+          getNextHandlePosition={
+            (idx, pos) => (idx === LEFT_HANDLE_IDX && pos > LEFT_MAX ? LEFT_MAX : pos)
+          }
+        />).dive().instance();
+        sinon.stub(slider, 'getSliderBoundingBox').returns(sliderBoundingBox);
+
+        assert(slider.validatePosition(0, 90) === 40, 'it honors the validatePosition override');
+        assert(slider.validatePosition(0, 39) === 39, 'accepts the default value when condition is not triggered');
+      });
+
+      it('should throw if getNextHandlePosition returns invalid input', () => {
+        const nanSlider = shallow((
+          <Slider
+            values={[30]}
+            getNextHandlePosition={() => NaN}
+          />
+        )).dive().instance();
+        sinon.stub(nanSlider, 'getSliderBoundingBox').returns(sliderBoundingBox);
+
+        assert.throws(
+          () => nanSlider.validatePosition(0, 100),
+          TypeError,
+          'getNextHandlePosition returned invalid position. Valid positions are floats between 0 and 100',
+          'it throws if a non - float is returns from getNextHandlePosition',
+        );
+
+        const outOfBoundsSlider = shallow((
+          <Slider
+            values={[30]}
+            getNextHandlePosition={() => -100}
+          />)).dive().instance();
+        sinon.stub(outOfBoundsSlider, 'getSliderBoundingBox').returns(sliderBoundingBox);
+
+        assert.throws(
+          () => outOfBoundsSlider.validatePosition(0, 100),
+          TypeError,
+          'getNextHandlePosition returned invalid position. Valid positions are floats between 0 and 100',
+          'it throws if getNextHandlePosition returns out of bounds',
+        );
+      });
     });
 
-    it('should not overflow the boundaries', () => {
-      const slider = shallow(<Slider values={[20]} />).dive().instance();
+    describe('canMove', () => {
+      it('should confirm that we can move to the proposed position', () => {
+        const slider = shallow(<Slider values={[50]} />).dive().instance();
+        sinon.stub(slider, 'getSliderBoundingBox').returns(sliderBoundingBox);
 
-      let nextState = slider.getNextState(0, -20);
+        assert.isFalse(slider.canMove(0, 120), 'cannot overflow max');
+        assert.isFalse(slider.canMove(0, -20), 'cannot overflow min');
+      });
 
-      assert(nextState.handlePos[0] === 0, 'handle is at 0%');
-      assert(nextState.values[0] === 0, 'the value is 0');
+      it('should not overflow the position of another handle', () => {
+        const slider = shallow(<Slider values={[20, 60]} />).dive().instance();
+        sinon.stub(slider, 'getSliderBoundingBox').returns(sliderBoundingBox);
 
-      nextState = slider.getNextState(0, 120);
+        assert.isFalse(slider.canMove(0, 80), 'cannot overflow second handle');
+        assert.isFalse(slider.canMove(1, 10), 'cannot overflow first handle');
+      });
 
-      assert(nextState.handlePos[0] === 100, 'handle is at 100%');
-      assert(nextState.values[0] === 100, 'the value is 100');
+      it('should return true if it can move to the position', () => {
+        const slider = shallow(<Slider values={[25]} />).dive().instance();
+        sinon.stub(slider, 'getSliderBoundingBox').returns(sliderBoundingBox);
+
+        assert.isTrue(slider.canMove(0, 40), 'sure you can move here');
+      });
     });
   });
 
@@ -556,73 +654,6 @@ describe('Slider API', () => {
       assert(slider.getClosestHandle(55) === 2, 'the index of the handle at 50% is 2');
       assert(slider.getClosestHandle(89) === 4, 'the index of the handle at 100% is 4');
       assert(slider.getClosestHandle(4) === 0, 'the index of the handle at 0% is 0');
-    });
-  });
-
-  /*
-    Note: Skipping validate position tests because they require the handle's ref to
-    be executed, which requires a mount, as well as access to the instance
-    methods of slider. To be re-written in upcoming PR.
-    TODO: Philip and Maja
-  */
-  describe.skip('validatePosition', () => {
-    it('should make sure that handles respect bounds', () => {
-      const slider = shallow(<Slider values={[50]} />).dive().instance();
-
-      assert(slider.validatePosition(0, -20) === 0, 'the handle was set to the min');
-      assert(slider.validatePosition(0, 120) === 100, 'the handle was set to the max');
-      assert(slider.validatePosition(0, 25) === 25, 'the correct position is returned');
-    });
-
-    it('should verify that two handles do not overlap', () => {
-      const slider = shallow(<Slider values={[25, 50]} />).dive().instance();
-
-      assert(slider.validatePosition(0, 90) === 75, 'the handle reached its own max');
-      assert(slider.validatePosition(1, 20) === 25, 'the handle reached its own min');
-    });
-
-    it('should honor getNextHandlePosition precondition', () => {
-      const LEFT_MAX = 40;
-      const LEFT_HANDLE_IDX = 0;
-
-      const slider = shallow(<Slider
-        values={[30]}
-        getNextHandlePosition={
-          (idx, pos) => (idx === LEFT_HANDLE_IDX && pos > LEFT_MAX ? LEFT_MAX : pos)
-        }
-      />).dive().instance();
-
-      assert(slider.validatePosition(0, 90) === 40, 'it honors the validatePosition override');
-      assert(slider.validatePosition(0, 39) === 39, 'accepts the default value when condition is not triggered');
-    });
-
-    it('should throw if getNextHandlePosition returns invalid input', () => {
-      const nanSlider = shallow((
-        <Slider
-          values={[30]}
-          getNextHandlePosition={() => NaN}
-        />
-      )).dive().instance();
-
-      assert.throws(
-        () => nanSlider.validatePosition(0, 100),
-        TypeError,
-        'getNextHandlePosition returned invalid position. Valid positions are floats between 0 and 100',
-        'it throws if a non - float is returns from getNextHandlePosition',
-      );
-
-      const outOfBoundsSlider = shallow((
-        <Slider
-          values={[30]}
-          getNextHandlePosition={() => -100}
-        />)).dive().instance();
-
-      assert.throws(
-        () => outOfBoundsSlider.validatePosition(0, 100),
-        TypeError,
-        'getNextHandlePosition returned invalid position. Valid positions are floats between 0 and 100',
-        'it throws if getNextHandlePosition returns out of bounds',
-      );
     });
   });
 
@@ -641,34 +672,6 @@ describe('Slider API', () => {
 
       assert(newValues[0] === 80, 'the first value is 80');
       assert(newValues[1] === 80, 'the second value is 80');
-    });
-  });
-
-  /*
-    Note: Skipping validate position tests because they require the handle's ref to
-    be executed, which requires a mount, as well as access to the instance
-    methods of slider. To be re-written in upcoming PR.
-    TODO: Philip and Maja
-  */
-  describe.skip('canMove', () => {
-    it('should confirm that we can move to the proposed position', () => {
-      const slider = shallow(<Slider values={[50]} />).dive().instance();
-
-      assert.isFalse(slider.canMove(0, 120), 'cannot overflow max');
-      assert.isFalse(slider.canMove(0, -20), 'cannot overflow min');
-    });
-
-    it('should not overflow the position of another handle', () => {
-      const slider = shallow(<Slider values={[20, 60]} />).dive().instance();
-
-      assert.isFalse(slider.canMove(0, 80), 'cannot overflow second handle');
-      assert.isFalse(slider.canMove(1, 10), 'cannot overflow first handle');
-    });
-
-    it('should return true if it can move to the position', () => {
-      const slider = shallow(<Slider values={[25]} />).dive().instance();
-
-      assert.isTrue(slider.canMove(0, 40), 'sure you can move here');
     });
   });
 });
