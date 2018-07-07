@@ -7,7 +7,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [3.0.0] - 2018-07-05
 - [breaking] drop v0.13 support
-- [breaking] Upgrade `rheostat` to use `react-with-styles` (#161, #162, #163, #164, #166, #168, #172)
+- [breaking] Upgrade `rheostat` to use `react-with-styles` ([#161](https://github.com/airbnb/rheostat/pull/161), [#162](https://github.com/airbnb/rheostat/pull/162), [#163](https://github.com/airbnb/rheostat/pull/163), [#164](https://github.com/airbnb/rheostat/pull/164), [#166](https://github.com/airbnb/rheostat/pull/166), [#168](https://github.com/airbnb/rheostat/pull/168), [#172](https://github.com/airbnb/rheostat/pull/172))
+- [breaking] Do not call `onChange` when values are manually updated ([#178](https://github.com/airbnb/rheostat/pull/178))
 
 ## [2.2.0] - 2018-05-21
 
