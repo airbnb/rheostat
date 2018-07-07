@@ -155,12 +155,9 @@ describeWithDOM('<Slider />', () => {
     });
 
     it('should update values when they change', () => {
-      const onChange = sinon.spy();
-      const slider = shallow(<Slider onChange={onChange} values={[50]} />).dive();
+      const slider = shallow(<Slider values={[50]} />).dive();
 
       slider.setProps({ values: [80] });
-
-      assert.isTrue(onChange.calledOnce, 'updateNewValues was called');
 
       assert.include(slider.state('values'), 80, 'new value is reflected in state');
     });
