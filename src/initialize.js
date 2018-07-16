@@ -1,3 +1,3 @@
-import registerCSSInterfaceWithDefaultTheme from '../scripts/utils/registerCSSInterfaceWithDefaultTheme';
+import registerCSSInterfaceWithDefaultTheme from './utils/registerCSSInterfaceWithDefaultTheme';
 
 registerCSSInterfaceWithDefaultTheme();
