@@ -5,6 +5,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.1] - 2018-07-17
+- [fix] Transpile initialize script ([#182](https://github.com/airbnb/rheostat/pull/182))
+
 ## [3.0.0] - 2018-07-05
 - [breaking] drop v0.13 support
 - [breaking] Upgrade `rheostat` to use `react-with-styles` ([#161](https://github.com/airbnb/rheostat/pull/161), [#162](https://github.com/airbnb/rheostat/pull/162), [#163](https://github.com/airbnb/rheostat/pull/163), [#164](https://github.com/airbnb/rheostat/pull/164), [#166](https://github.com/airbnb/rheostat/pull/166), [#168](https://github.com/airbnb/rheostat/pull/168), [#172](https://github.com/airbnb/rheostat/pull/172))
