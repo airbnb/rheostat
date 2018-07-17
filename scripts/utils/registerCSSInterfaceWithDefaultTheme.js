@@ -1,7 +1,5 @@
-import CSSInterface from 'react-with-styles-interface-css';
+/* This file should be removed in the next major version update of Rheostat */
 
-import registerInterfaceWithDefaultTheme from './registerInterfaceWithDefaultTheme';
+import registerCSSInterfaceWithDefaultTheme from '../../lib/utils/registerCSSInterfaceWithDefaultTheme';
 
-export default function registerCSSInterfaceWithDefaultTheme() {
-  registerInterfaceWithDefaultTheme(CSSInterface);
-}
+export default registerCSSInterfaceWithDefaultTheme;
