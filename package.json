@@ -33,6 +33,7 @@
   "license": "MIT",
   "devDependencies": {
     "@kadira/storybook": "^2.35.3",
+    "airbnb-browser-shims": "^3.0.0",
     "aphrodite": "^2.2.2",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
