@@ -39,7 +39,7 @@
     "babel-core": "^6.26.3",
     "babel-jest": "^21.2.0",
     "babel-plugin-transform-replace-object-assign": "^1.0.0",
-    "babel-preset-airbnb": "^2.6.0",
+    "babel-preset-airbnb": "^3.0.0",
     "babel-register": "^6.26.0",
     "casual": "^1.5.19",
     "chai": "^4.1.2",
