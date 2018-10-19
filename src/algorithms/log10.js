@@ -1,17 +1,17 @@
 export default {
   getPosition(value, min, max) {
-    const minv = isFinite(Math.log(min)) ? Math.log(min) : 0;
-    const maxv = isFinite(Math.log(max)) ? Math.log(max) : 0;
+    const minv = Number.isFinite(Math.log(min)) ? Math.log(min) : 0;
+    const maxv = Number.isFinite(Math.log(max)) ? Math.log(max) : 0;
 
     const scale = (maxv - minv) / 100;
     const position = (Math.log(value) - minv) / scale;
 
-    return isFinite(position) ? position : 0;
+    return Number.isFinite(position) ? position : 0;
   },
 
   getValue(positionPercent, min, max) {
-    const minv = isFinite(Math.log(min)) ? Math.log(min) : 0;
-    const maxv = isFinite(Math.log(max)) ? Math.log(max) : 0;
+    const minv = Number.isFinite(Math.log(min)) ? Math.log(min) : 0;
+    const maxv = Number.isFinite(Math.log(max)) ? Math.log(max) : 0;
 
     if (positionPercent === 0) {
       return min;
