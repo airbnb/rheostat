@@ -33,6 +33,8 @@
   "license": "MIT",
   "devDependencies": {
     "@kadira/storybook": "^2.35.3",
+    "acorn": "^6.0.2",
+    "acorn-jsx": "^5.0.0",
     "airbnb-browser-shims": "^3.0.0",
     "aphrodite": "^2.2.3",
     "babel-cli": "^6.26.0",
@@ -53,6 +55,7 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.11.1",
+    "espree": "^4.1.0",
     "has": "^1.0.3",
     "in-publish": "^2.0.0",
     "jest": "^21.2.1",
