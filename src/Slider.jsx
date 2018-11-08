@@ -516,7 +516,7 @@ class Rheostat extends React.Component {
   }
 
   positionPercent(x, y, sliderBox) {
-    const { orientation } = this.state;
+    const { orientation } = this.props;
     if (orientation === VERTICAL) {
       return ((y - sliderBox.top) / sliderBox.height) * PERCENT_FULL;
     }
