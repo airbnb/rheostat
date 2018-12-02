@@ -671,4 +671,36 @@ describe('Slider API', () => {
       assert(newValues[1] === 80, 'the second value is 80');
     });
   });
+
+  describe('positionPercent', () => {
+    it('should return correct position for horizontal orientation', () => {
+      const box = {
+        height: 10,
+        left: 150,
+        right: 200,
+        top: 50,
+        width: 300,
+      };
+      const slider = shallow(<Slider />).dive().instance();
+
+      assert.equal(slider.positionPercent(box.left, 55, box), 0, 'check returns min value');
+      assert.equal(slider.positionPercent(box.left + box.width / 2, 55, box), 50, 'check returns middle value');
+      assert.equal(slider.positionPercent(box.left + box.width, 55, box), 100, 'check returns max value');
+    });
+
+    it('should return correct position for vertical orientation', () => {
+      const box = {
+        height: 200,
+        left: 50,
+        right: 100,
+        top: 50,
+        width: 20,
+      };
+      const slider = shallow(<Slider orientation="vertical" />).dive().instance();
+
+      assert.equal(slider.positionPercent(55, box.top, box), 0, 'check returns min value');
+      assert.equal(slider.positionPercent(55, box.top + box.height / 2, box), 50, 'check returns middle value');
+      assert.equal(slider.positionPercent(55, box.top + box.height, box), 100, 'check returns max value');
+    });
+  });
 });
