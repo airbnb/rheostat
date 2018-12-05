@@ -100,6 +100,32 @@ storiesOf('Slider', module)
       />
     );
   })
+  .add('Custom Background', () => {
+    function MyBackground({ style }) {
+      return (
+        <div
+          style={{
+            ...style,
+            backgroundColor: '#000',
+            height: 13,
+          }}
+        />
+      );
+    }
+    MyBackground.propTypes = {
+      style: PropTypes.object,
+    };
+    MyBackground.defaultProps = {
+      style: null,
+    };
+
+    return (
+      <LabeledSlider
+        background={MyBackground}
+        values={[30]}
+      />
+    );
+  })
   .add('Dates', () => {
     const startDate = new Date('01-01-2015').valueOf();
     const endDate = new Date('12-31-2015').valueOf();
