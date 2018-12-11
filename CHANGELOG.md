@@ -5,6 +5,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.2] - 2018-12-10
+- [fix] Fix position calculations for 'vertical' mode ([#199](https://github.com/airbnb/rheostat/pull/199))
+
 ## [3.0.1] - 2018-07-17
 - [fix] Transpile initialize script ([#182](https://github.com/airbnb/rheostat/pull/182))
 
