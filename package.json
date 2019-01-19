@@ -68,7 +68,7 @@
     "react-with-styles-interface-css-compiler": "^1.1.2",
     "rimraf": "^2.6.2",
     "safe-publish-latest": "^1.1.2",
-    "sinon": "^5.1.1",
+    "sinon": "^7.2.3",
     "style-loader": "^0.17.0"
   },
   "peerDependencies": {
