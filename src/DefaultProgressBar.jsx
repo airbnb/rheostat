@@ -28,6 +28,7 @@ function DefaultProgressBar({
   theme,
   orientation,
   disabled,
+  style,
   ...passProps
 }) {
   return (
@@ -45,6 +46,7 @@ function DefaultProgressBar({
           ]),
 
         disabled && styles.progressBar_disabled,
+        style,
       )}
       {...passProps}
     />

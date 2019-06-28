@@ -1,6 +1,8 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import PropTypes from 'prop-types';
+import DirectionProvider, { DIRECTIONS } from 'react-with-direction/dist/DirectionProvider';
+import { withStyles, withStylesPropTypes } from 'react-with-styles';
 
 import Rheostat from '../src/Slider';
 import log10 from '../src/algorithms/log10';
@@ -241,4 +243,90 @@ storiesOf('Slider', module)
   ))
   .add('Disabled', () => (
     <LabeledSlider disabled />
-  ));
+  ))
+  .add('RTL', () => (
+    <DirectionProvider direction={DIRECTIONS.RTL}>
+      <LabeledSlider />
+    </DirectionProvider>
+  ))
+  .add('RTL Multiple Handle', () => (
+    <DirectionProvider direction={DIRECTIONS.RTL}>
+      <LabeledSlider values={[0, 100]} />
+    </DirectionProvider>
+  ))
+  .add('RTL Pits', () => {
+    function PitComponent({ style, children }) {
+      return (
+        <div
+          style={{
+            ...style,
+            background: '#a2a2a2',
+            width: 1,
+            height: children % 10 === 0 ? 12 : 8,
+            top: 20,
+          }}
+        />
+      );
+    }
+    PitComponent.propTypes = {
+      style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+      children: PropTypes.number,
+    };
+    PitComponent.defaultProps = {
+      style: null,
+      children: null,
+    };
+
+    return (
+      <DirectionProvider direction={DIRECTIONS.RTL}>
+        <LabeledSlider
+          pitComponent={PitComponent}
+          pitPoints={[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]} // eslint-disable-line max-len
+          snap
+          snapPoints={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
+          values={[40, 80]}
+        />
+      </DirectionProvider>
+    );
+  })
+  .add('RTL Custom Handle', () => {
+    function MyHandle({
+      styles, css, style, handleRef, ...passProps
+    }) {
+      return (
+        <div
+          ref={handleRef}
+          {...css(styles.handle, style)}
+          {...passProps}
+        />
+      );
+    }
+    MyHandle.propTypes = {
+      ...withStylesPropTypes,
+      style: PropTypes.object,
+      handleRef: PropTypes.any,
+    };
+    MyHandle.defaultProps = {
+      style: null,
+      handleRef: '',
+    };
+
+    const StyledMyHandle = withStyles(() => ({
+      handle: {
+        backgroundColor: 'rgba(137, 15, 0, 0.5)',
+        border: '1px solid #890f00',
+        borderRadius: '100%',
+        cursor: 'ew-resize',
+        marginLeft: -13,
+        height: 24,
+        width: 24,
+        zIndex: 3,
+      },
+    }))(MyHandle);
+
+    return (
+      <DirectionProvider direction={DIRECTIONS.RTL}>
+        <LabeledSlider handle={StyledMyHandle} values={[0, 100]} />
+      </DirectionProvider>
+    );
+  });

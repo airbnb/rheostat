@@ -1,4 +1,5 @@
 import { withStyles, withStylesPropTypes } from 'react-with-styles';
+import withDirection, { withDirectionPropTypes, DIRECTIONS } from 'react-with-direction';
 import PropTypes from 'prop-types';
 import { forbidExtraProps } from 'airbnb-prop-types';
 import React from 'react';
@@ -32,6 +33,7 @@ function killEvent(ev) {
 }
 
 const propTypes = forbidExtraProps({
+  ...withDirectionPropTypes,
   ...withStylesPropTypes,
 
   // Automatically adds a top position for large when enabled
@@ -516,11 +518,14 @@ class Rheostat extends React.Component {
   }
 
   positionPercent(x, y, sliderBox) {
-    const { orientation } = this.props;
+    const { orientation, direction } = this.props;
     if (orientation === VERTICAL) {
       return ((y - sliderBox.top) / sliderBox.height) * PERCENT_FULL;
     }
-    return ((x - sliderBox.left) / sliderBox.width) * PERCENT_FULL;
+    if (direction === DIRECTIONS.RTL) {
+      return 100 - (((x - sliderBox.left) / sliderBox.width) * PERCENT_FULL);
+    }
+    return (((x - sliderBox.left) / sliderBox.width) * PERCENT_FULL);
   }
 
   handleSlide(x, y) {
@@ -860,7 +865,7 @@ class Rheostat extends React.Component {
 Rheostat.propTypes = propTypes;
 Rheostat.defaultProps = defaultProps;
 
-export default withStyles(({ rheostat: { color, unit, responsive } }) => ({
+export default withDirection(withStyles(({ rheostat: { color, unit, responsive } }) => ({
   rheostat: {
     position: 'relative',
     overflow: 'visible',
@@ -904,4 +909,4 @@ export default withStyles(({ rheostat: { color, unit, responsive } }) => ({
     top: 0,
     height: '100%',
   },
-}))(Rheostat);
+}))(Rheostat));
