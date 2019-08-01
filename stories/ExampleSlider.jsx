@@ -291,7 +291,11 @@ storiesOf('Slider', module)
   })
   .add('RTL Custom Handle', () => {
     function MyHandle({
-      styles, css, style, handleRef, ...passProps
+      styles,
+      css,
+      style,
+      handleRef,
+      ...passProps
     }) {
       return (
         <div
