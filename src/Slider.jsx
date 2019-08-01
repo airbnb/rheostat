@@ -522,10 +522,11 @@ class Rheostat extends React.Component {
     if (orientation === VERTICAL) {
       return ((y - sliderBox.top) / sliderBox.height) * PERCENT_FULL;
     }
+    const horizontalPercentage = ((x - sliderBox.left) / sliderBox.width) * PERCENT_FULL;
     if (direction === DIRECTIONS.RTL) {
-      return 100 - (((x - sliderBox.left) / sliderBox.width) * PERCENT_FULL);
+      return 100 - horizontalPercentage;
     }
-    return (((x - sliderBox.left) / sliderBox.width) * PERCENT_FULL);
+    return horizontalPercentage;
   }
 
   handleSlide(x, y) {
