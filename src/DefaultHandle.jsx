@@ -27,6 +27,7 @@ function DefaultHandle({
   disabled,
   handleRef,
   theme,
+  style,
   ...passProps
 }) {
   return (
@@ -39,6 +40,7 @@ function DefaultHandle({
           ? styles.DefaultHandle_handle__vertical
           : styles.DefaultHandle_handle__horizontal,
         disabled && styles.DefaultHandle_handle__disabled,
+        style,
       )}
       {...passProps}
     />

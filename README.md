@@ -168,6 +168,9 @@ The above code would make the default progress bar red, instead of light blue. N
 #### A note on using `react-with-styles-interface-css`
 The default interface that `rheostat` ships with is the [CSS interface](https://github.com/airbnb/react-with-styles-interface-css). If you want to use this interface along with the theme registration method, you will need to rebuild the core `rheostat.css` file. We do not currently expose a utility method to build this file, but you can follow along with the code in https://github.com/airbnb/rheostat/blob/master/scripts/buildCSS.js to build your own custom themed CSS file.
 
+### RTL Support
+
+`rheostat` now supports automatic RTL rendering through [`react-with-direction`](https://github.com/airbnb/react-with-direction).
 
 ## Live Playground
 
