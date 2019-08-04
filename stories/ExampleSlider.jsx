@@ -129,8 +129,8 @@ storiesOf('Slider', module)
     );
   })
   .add('Dates', () => {
-    const startDate = new Date(2015, 1, 1).valueOf();
-    const endDate = new Date(2015, 12, 31).valueOf();
+    const startDate = new Date(2015, 0, 1).valueOf();
+    const endDate = new Date(2015, 11, 31).valueOf();
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     function ordinal(n) {
