@@ -76,11 +76,11 @@
     "react": ">=0.14"
   },
   "dependencies": {
-    "airbnb-prop-types": "^2.11.0",
+    "airbnb-prop-types": "^2.15.0",
     "object.assign": "^4.1.0",
-    "prop-types": "^15.6.2",
+    "prop-types": "^15.7.2",
     "react-with-direction": "^1.3.0",
-    "react-with-styles": "^3.2.1",
+    "react-with-styles": "^3.2.3",
     "react-with-styles-interface-css": "^4.0.3"
   },
   "jest": {
