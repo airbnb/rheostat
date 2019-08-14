@@ -43,7 +43,7 @@ export default class LabeledSlider extends React.Component {
         />
         <ol>
           <lh>Values</lh>
-          {values.map(value => (
+          {values.map((value) => (
             <li key={value}>
               {formatValue ? formatValue(value) : value}
             </li>

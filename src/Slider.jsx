@@ -147,7 +147,7 @@ class Rheostat extends React.Component {
     } = this.props;
 
     this.state = {
-      handlePos: values.map(value => algorithm.getPosition(value, min, max)),
+      handlePos: values.map((value) => algorithm.getPosition(value, min, max)),
       handleDimensions: 0,
       slidingIndex: null,
       values,
@@ -368,12 +368,12 @@ class Rheostat extends React.Component {
     }
 
     const stepMultiplier = {
-      [KEYS.LEFT]: v => v * -1,
-      [KEYS.RIGHT]: v => v * 1,
-      [KEYS.UP]: v => v * 1,
-      [KEYS.DOWN]: v => v * -1,
-      [KEYS.PAGE_DOWN]: v => (v > 1 ? -v : v * -10),
-      [KEYS.PAGE_UP]: v => (v > 1 ? v : v * 10),
+      [KEYS.LEFT]: (v) => v * -1,
+      [KEYS.RIGHT]: (v) => v * 1,
+      [KEYS.UP]: (v) => v * 1,
+      [KEYS.DOWN]: (v) => v * -1,
+      [KEYS.PAGE_DOWN]: (v) => (v > 1 ? -v : v * -10),
+      [KEYS.PAGE_UP]: (v) => (v > 1 ? v : v * 10),
     };
 
     if (has.call(stepMultiplier, keyCode)) {
@@ -424,7 +424,7 @@ class Rheostat extends React.Component {
 
     return {
       handlePos: nextHandlePos,
-      values: nextHandlePos.map(pos => algorithm.getValue(pos, min, max)),
+      values: nextHandlePos.map((pos) => algorithm.getValue(pos, min, max)),
     };
   }
 
@@ -746,7 +746,7 @@ class Rheostat extends React.Component {
 
     const nextValues = this.validateValues(values, nextProps);
     this.setState({
-      handlePos: nextValues.map(value => algorithm.getPosition(value, min, max)),
+      handlePos: nextValues.map((value) => algorithm.getPosition(value, min, max)),
       values: nextValues,
     });
   }

@@ -1,7 +1,8 @@
 {
   "rules": {
+    "react/jsx-props-no-spreading": 0,
     "import/no-extraneous-dependencies": [2, {
       "devDependencies": true
-    }]
-  }
+    }],
+  },
 }
