@@ -25,5 +25,5 @@ if (!fs.existsSync(dir)) {
   fs.mkdirSync(dir);
 }
 
-const outputFilePath = optimizeForProduction ? `${dir}/rheostat.css` : `${dir}/rheostat.css`;
+const outputFilePath = `${dir}/rheostat.css`;
 fs.writeFileSync(outputFilePath, formattedCSS, 'utf8');

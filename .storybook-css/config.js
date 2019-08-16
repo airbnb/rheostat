@@ -1,9 +1,7 @@
-import { configure } from '@kadira/storybook';
-import ThemedStyleSheet from 'react-with-styles/lib/ThemedStyleSheet';
-import aphroditeInterface from 'react-with-styles-interface-aphrodite';
-import '../css/rheostat.css';
+import { configure } from '@storybook/react';
 import registerCSSInterfaceWithDefaultTheme from '../src/utils/registerCSSInterfaceWithDefaultTheme';
 
+import '../css/rheostat.css';
 
 /* Register react with styles interface */
 registerCSSInterfaceWithDefaultTheme();
