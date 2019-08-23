@@ -7,10 +7,3 @@ configure();
 
 ThemedStyleSheet.registerTheme(DefaultTheme);
 ThemedStyleSheet.registerInterface(aphroditeInterface);
-
-function skipError(arg) {
-  return arg && /^Warning: componentWillReceiveProps has been renamed,/.test(arg);
-}
-
-console.error = (arg) => { if (!skipError(arg)) { throw new Error(arg); } };
-console.warn = (arg) => { if (!skipError(arg)) { throw new Error(arg); } };

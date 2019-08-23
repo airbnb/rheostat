@@ -196,7 +196,7 @@ class Rheostat extends React.Component {
     }, 0);
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const {
       disabled,
       min,
