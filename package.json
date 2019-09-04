@@ -69,7 +69,7 @@
     "react": "^16.8.6",
     "react-addons-pure-render-mixin": "^15.6.2",
     "react-dom": "^16.8.6",
-    "react-with-styles-interface-aphrodite": "^5.0.1",
+    "react-with-styles-interface-aphrodite": "^6.0.0",
     "react-with-styles-interface-css-compiler": "^1.1.2",
     "rimraf": "~2.6.0",
     "safe-publish-latest": "^1.1.3",
