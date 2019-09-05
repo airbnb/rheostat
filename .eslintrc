@@ -1,9 +1,16 @@
 {
-  "extends": "airbnb",
+  "root": true,
+
+  "extends": [
+    "airbnb",
+  ],
+
   "env": {
     "browser": true,
     "node": true
   },
+
+  "parser": "babel-eslint",
 
   "rules": {
     "react/jsx-one-expression-per-line": 0,

@@ -3,6 +3,7 @@ import React from 'react';
 import createReactClass from 'create-react-class';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import { StyleSheetTestUtils } from 'aphrodite';
+import { StyleSheetTestUtils as NoImportantStyleSheetTestUtils } from 'aphrodite/no-important';
 
 import sinon from 'sinon';
 import { assert } from 'chai';
@@ -31,11 +32,18 @@ function testKeys(slider, tests) {
 describeWithDOM('<Slider />', () => {
   beforeEach(() => {
     StyleSheetTestUtils.suppressStyleInjection();
+    NoImportantStyleSheetTestUtils.suppressStyleInjection();
   });
 
   afterEach(() => {
-    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+    jest.runAllTimers();
   });
+
+  afterEach(() => new Promise((resolve) => {
+    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+    NoImportantStyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+    return process.nextTick(resolve);
+  }));
 
   describe('render', () => {
     it('should render the slider with one handle by default', () => {
