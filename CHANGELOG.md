@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [4.0.0] - 2019-09-09
 - [new][Deps] Update `react-with-styles` ^3.2.3 -> ^4.0.0
 - [breaking][deps] babel 7, and other deps (drops node < 6)
 - [new][Deps] update `airbnb-prop-types`, `prop-types`, `react-with-styles`
