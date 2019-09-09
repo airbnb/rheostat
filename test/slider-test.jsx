@@ -2,7 +2,6 @@ import { shallow, mount } from 'enzyme';
 import React from 'react';
 import createReactClass from 'create-react-class';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
-import { StyleSheetTestUtils } from 'aphrodite';
 
 import sinon from 'sinon';
 import { assert } from 'chai';
@@ -29,14 +28,6 @@ function testKeys(slider, tests) {
 }
 
 describeWithDOM('<Slider />', () => {
-  beforeEach(() => {
-    StyleSheetTestUtils.suppressStyleInjection();
-  });
-
-  afterEach(() => {
-    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
-  });
-
   describe('render', () => {
     it('should render the slider with one handle by default', () => {
       const wrapper = shallow(<Slider />).dive().dive();
@@ -252,13 +243,6 @@ describeWithDOM('<Slider />', () => {
 });
 
 describe('Slider API', () => {
-  beforeEach(() => {
-    StyleSheetTestUtils.suppressStyleInjection();
-  });
-
-  afterEach(() => {
-    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
-  });
   describe('getPublicState', () => {
     it('should only return min, max, and values from public state', () => {
       const slider = shallow(<Slider />).dive().dive().instance();

@@ -1,3 +1,0 @@
---compilers js:babel-register
---require airbnb-browser-shims
---require test/_setup

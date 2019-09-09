@@ -17,7 +17,15 @@ const format = new CleanCSS({
   format: 'beautify',
   inline: ['none'],
 });
+
 const CSS = compileCSS('./scripts/renderAllComponents.jsx');
+
+if (CSS === '') {
+  throw new Error('Failed to build rheostat.css');
+} else {
+  console.log('CSS compilation complete.');
+}
+
 const formattedCSS = `${format.minify(CSS).styles} \n`;
 const dir = optimizeForProduction ? './lib/css' : './css';
 
