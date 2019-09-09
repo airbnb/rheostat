@@ -10,7 +10,7 @@
     "build:js": "babel src -d lib",
     "prebuild:css": "rimraf lib/css && mkdirp lib/css",
     "build:css": "node scripts/buildCSS.js",
-    "clean": "rimraf lib",
+    "clean": "rimraf lib && rimraf css",
     "prepublish": "in-publish && safe-publish-latest && npm run build || not-in-publish",
     "lint": "eslint --ext .js,.jsx src test stories",
     "storybook": "start-storybook -p 9001 -c .storybook",
