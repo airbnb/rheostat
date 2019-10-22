@@ -1,6 +1,6 @@
 {
   "name": "rheostat",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "description": "Rheostat is a www, mobile, and accessible slider component built with React",
   "main": "lib/Slider",
   "jsnext:main": "src/Slider.jsx",

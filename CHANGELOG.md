@@ -3,9 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [4.1.0] - 2019-10-21
+- [new][Deps] Update `react-with-styles` ^4.0.1 -> ^4.1.0
 
-## [4.0.1] - 2019-90-11
+## [4.0.1] - 2019-09-11
 - [fix][Deps] Update `react-with-styles` ^4.0.0 -> ^4.0.1
 
 ## [4.0.0] - 2019-09-09
