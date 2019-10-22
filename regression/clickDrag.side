@@ -1,0 +1,99 @@
+{
+  "id": "9816fe84-6631-46e8-8f6e-889b68ef49c4",
+  "version": "2.0",
+  "name": "rheostat",
+  "url": "http://localhost:9001/?selectedKind=Slider&selectedStory=Custom%20Background&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel",
+  "tests": [{
+    "id": "dd3d92b5-8bc5-42da-b078-bbd3d326c3a0",
+    "name": "t1",
+    "commands": [{
+      "id": "91294a95-24f6-4a79-9d40-78e309fcd58b",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:9001/?selectedKind=Slider&selectedStory=Custom%20Background&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ff06f202-3156-4c81-a2a2-74f2227b68a7",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "885x691",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "19954adc-2090-4d02-a6f7-23d2bc44565d",
+      "comment": "",
+      "command": "selectFrame",
+      "target": "index=0",
+      "targets": [
+        ["index=0"]
+      ],
+      "value": ""
+    }, {
+      "id": "21f915c6-6997-475c-bfbd-469dfef04619",
+      "comment": "",
+      "command": "mouseDownAt",
+      "target": "css=.DefaultProgressBar_progressBar_14rw1eg-o_O-DefaultProgressBar_background__horizontal_6x83ex",
+      "targets": [
+        ["css=.DefaultProgressBar_progressBar_14rw1eg-o_O-DefaultProgressBar_background__horizontal_6x83ex", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div[3]", "xpath:idRelative"],
+        ["xpath=//div[3]", "xpath:position"]
+      ],
+      "value": "125.25,11.100006103515625"
+    }, {
+      "id": "1534ed72-ee9a-41ae-9595-20bd8dab0fa6",
+      "comment": "",
+      "command": "mouseMoveAt",
+      "target": "css=.DefaultProgressBar_progressBar_14rw1eg-o_O-DefaultProgressBar_background__horizontal_6x83ex",
+      "targets": [
+        ["css=.DefaultProgressBar_progressBar_14rw1eg-o_O-DefaultProgressBar_background__horizontal_6x83ex", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div[3]", "xpath:idRelative"],
+        ["xpath=//div[3]", "xpath:position"]
+      ],
+      "value": "120.25,8.100006103515625"
+    }, {
+      "id": "c62bd3b0-2e43-4cec-8538-a8e840ea57d7",
+      "comment": "",
+      "command": "mouseMoveAt",
+      "target": "css=.DefaultProgressBar_progressBar_14rw1eg-o_O-DefaultProgressBar_background__horizontal_6x83ex",
+      "targets": [
+        ["css=.DefaultProgressBar_progressBar_14rw1eg-o_O-DefaultProgressBar_background__horizontal_6x83ex", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div[3]", "xpath:idRelative"],
+        ["xpath=//div[3]", "xpath:position"]
+      ],
+      "value": "0.25,8.100006103515625"
+    }, {
+      "id": "8902c659-a97a-4c17-88a0-3b26aa4cf384",
+      "comment": "",
+      "command": "mouseMoveAt",
+      "target": "css=.DefaultProgressBar_progressBar_14rw1eg-o_O-DefaultProgressBar_background__horizontal_6x83ex",
+      "targets": [
+        ["css=.DefaultProgressBar_progressBar_14rw1eg-o_O-DefaultProgressBar_background__horizontal_6x83ex", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div[3]", "xpath:idRelative"],
+        ["xpath=//div[3]", "xpath:position"]
+      ],
+      "value": "30.25,8.100006103515625"
+    }, {
+      "id": "aae43dca-31e8-4ca8-872c-e7df002a153b",
+      "comment": "",
+      "command": "mouseUpAt",
+      "target": "css=.DefaultProgressBar_progressBar_14rw1eg-o_O-DefaultProgressBar_background__horizontal_6x83ex",
+      "targets": [
+        ["css=.DefaultProgressBar_progressBar_14rw1eg-o_O-DefaultProgressBar_background__horizontal_6x83ex", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div[3]", "xpath:idRelative"],
+        ["xpath=//div[3]", "xpath:position"]
+      ],
+      "value": "30.25,8.100006103515625"
+    }]
+  }],
+  "suites": [{
+    "id": "13a6b094-877c-4b45-8340-9154800d3eaf",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["dd3d92b5-8bc5-42da-b078-bbd3d326c3a0"]
+  }],
+  "urls": ["http://localhost:9001/", "http://localhost:9001/?selectedKind=Slider&selectedStory=Custom%20Background&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel"],
+  "plugins": []
+}

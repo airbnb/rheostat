@@ -531,9 +531,9 @@ class Rheostat extends React.Component {
 
   handleSlide(x, y) {
     const { onSliderDragMove } = this.props;
-    const { slidingIndex: idx } = this.state;
     const sliderBox = this.getSliderBoundingBox();
     const positionPercent = this.positionPercent(x, y, sliderBox);
+    const idx = this.getClosestHandle(positionPercent);
 
     this.slideTo(idx, positionPercent);
 
@@ -781,8 +781,12 @@ class Rheostat extends React.Component {
     return (
       // eslint-disable-next-line jsx-a11y/click-events-have-key-events
       <div
-        onClick={disabled ? undefined : this.handleClick}
-        {...css(
+        disabled={disabled}
+        onClick={this.killEvent}
+        tabIndex={-1}
+        onKeyDown={disabled ? undefined : this.handleKeydown}
+        onMouseDown={disabled ? undefined : this.startMouseSlide}
+        onTouchStart={disabled ? undefined : this.startTouchSlide}        {...css(
           styles.rheostat,
           autoAdjustVerticalPosition && styles.autoAdjustVerticalPosition,
           orientation === VERTICAL && styles.rheostat__vertical,
@@ -797,6 +801,12 @@ class Rheostat extends React.Component {
         }
         <div
           ref={this.setHandleContainerNode}
+          disabled={disabled}
+          onClick={this.killEvent}
+          tabIndex={-1}
+          onKeyDown={disabled ? undefined : this.handleKeydown}
+          onMouseDown={disabled ? undefined : this.startMouseSlide}
+          onTouchStart={disabled ? undefined : this.startTouchSlide}
           {...css(
             styles.handleContainer,
           )}
