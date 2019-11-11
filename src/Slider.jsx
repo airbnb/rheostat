@@ -464,14 +464,14 @@ class Rheostat extends React.Component {
     this.setStartSlide(ev, ev.clientX, ev.clientY);
 
     if (typeof document.addEventListener === 'function') {
-      document.addEventListener('mousemove', this.handleMouseSlide, false);
-      document.addEventListener('mouseup', this.endSlide, false);
+      document.addEventListener('mousemove', this.handleMouseSlide, {passive: false});
+      document.addEventListener('mouseup', this.endSlide, {passive: false});
     } else {
       document.attachEvent('onmousemove', this.handleMouseSlide);
       document.attachEvent('onmouseup', this.endSlide);
     }
 
-    if (onSliderDragStart) onSliderDragStart();
+    if (onSliderDragStart) onSliderDragStart(ev);
 
     killEvent(ev);
   }
@@ -485,10 +485,10 @@ class Rheostat extends React.Component {
 
     this.setStartSlide(ev, touch.clientX, touch.clientY);
 
-    document.addEventListener('touchmove', this.handleTouchSlide, false);
-    document.addEventListener('touchend', this.endSlide, false);
+    document.addEventListener('touchmove', this.handleTouchSlide, {passive: false});
+    document.addEventListener('touchend', this.endSlide, {passive: false});
 
-    if (onSliderDragStart) onSliderDragStart();
+    if (onSliderDragStart) onSliderDragStart(ev);
 
     killEvent(ev);
   }
