@@ -259,6 +259,10 @@ class Rheostat extends React.Component {
   }
 
   getSliderBoundingBox() {
+    if (!this.handleContainerNode) {
+      return null;
+    }
+
     const rect = this.handleContainerNode.getBoundingClientRect();
     return {
       height: rect.height || this.handleContainerNode.clientHeight,
@@ -448,6 +452,10 @@ class Rheostat extends React.Component {
 
   setStartSlide(ev) {
     const sliderBox = this.getSliderBoundingBox();
+    if (!sliderBox) {
+      return;
+    }
+
     this.setState({
       handleDimensions: this.getHandleDimensions(ev, sliderBox),
       slidingIndex: getHandleFor(ev),
@@ -532,7 +540,12 @@ class Rheostat extends React.Component {
   handleSlide(x, y) {
     const { onSliderDragMove } = this.props;
     const { slidingIndex: idx } = this.state;
+
     const sliderBox = this.getSliderBoundingBox();
+    if (!sliderBox) {
+      return;
+    }
+
     const positionPercent = this.positionPercent(x, y, sliderBox);
 
     this.slideTo(idx, positionPercent);
@@ -587,6 +600,9 @@ class Rheostat extends React.Component {
     // Calculate the position of the slider on the page so we can determine
     // the position where you click in relativity.
     const sliderBox = this.getSliderBoundingBox();
+    if (!sliderBox) {
+      return;
+    }
 
     const positionDecimal = orientation === VERTICAL
       ? (ev.clientY - sliderBox.top) / sliderBox.height
@@ -696,6 +712,9 @@ class Rheostat extends React.Component {
     } = this.state;
     const { orientation } = this.props;
     const sliderBox = this.getSliderBoundingBox();
+    if (!sliderBox) {
+      return false;
+    }
 
     const handlePercentage = orientation === VERTICAL
       ? ((handleDimensions / sliderBox.height) * PERCENT_FULL) / 2

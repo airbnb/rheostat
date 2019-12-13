@@ -240,6 +240,13 @@ describeWithDOM('<Slider />', () => {
       assert(slider.state('handlePos').length === 2, 'two handles exist');
     });
   });
+
+  describe('getSliderBoundingBox', () => {
+    it('returns null if the ref to the handle container node is not yet set', () => {
+      const slider = shallow(<Slider />).dive().dive().instance();
+      assert.isNull(slider.getSliderBoundingBox(), 'handle container ref is not yet set');
+    });
+  });
 });
 
 describe('Slider API', () => {
@@ -626,6 +633,12 @@ describe('Slider API', () => {
         sinon.stub(slider, 'getSliderBoundingBox').returns(sliderBoundingBox);
 
         assert.isTrue(slider.canMove(0, 40), 'sure you can move here');
+      });
+
+      it('should return false if the ref to the handle container node is not yet set', () => {
+        const slider = shallow(<Slider values={[50]} />).dive().dive().instance();
+        assert.isUndefined(slider.handleContainerNode, 'ref is not available');
+        assert.isFalse(slider.canMove(0, 40), 'ref is not available');
       });
     });
   });
