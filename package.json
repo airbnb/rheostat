@@ -74,7 +74,7 @@
     "in-publish": "^2.0.0",
     "jest": "^24.9.0",
     "mkdirp": "^0.5.1",
-    "nyc": "^11.9.0",
+    "nyc": "^15.0.0",
     "raw-loader": "^0.5.1",
     "react": "^16.8.6",
     "react-addons-pure-render-mixin": "^15.6.2",
