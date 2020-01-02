@@ -39,6 +39,9 @@ const propTypes = forbidExtraProps({
   // Automatically adds a top position for large when enabled
   autoAdjustVerticalPosition: PropTypes.bool,
 
+  // Automatically sets focus on handle
+  autoFocus: PropTypes.bool,
+
   // the algorithm to use
   algorithm: PropTypes.shape({
     getValue: PropTypes.func,
@@ -109,6 +112,7 @@ const propTypes = forbidExtraProps({
 
 const defaultProps = {
   autoAdjustVerticalPosition: false,
+  autoFocus: false,
   children: null,
   algorithm: LinearScale,
   disabled: false,
@@ -778,6 +782,7 @@ class Rheostat extends React.Component {
     const {
       css,
       autoAdjustVerticalPosition,
+      autoFocus,
       algorithm,
       children,
       disabled,
@@ -831,6 +836,7 @@ class Rheostat extends React.Component {
                 aria-valuemin={this.getMinValue(idx)}
                 aria-valuenow={values[idx]}
                 aria-disabled={disabled}
+                autoFocus={autoFocus && idx === 0}
                 data-handle-key={idx}
                 key={idx /* eslint-disable-line react/no-array-index-key */}
                 orientation={orientation}

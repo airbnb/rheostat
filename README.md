@@ -28,6 +28,12 @@ your own as long as it conforms to the shape.
   })
 ```
 
+AutoFocus on handle. If multiple handles are used, it focuses on the first one.
+
+```js
+  autoFocus: PropTypes.bool
+```
+
 Custom class name that will be applied to the root of Rheostat.
 
 ```js
