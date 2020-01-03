@@ -93,6 +93,20 @@ describeWithDOM('<Slider />', () => {
       assert.isTrue(pitRender.calledOnce, 'one pit was rendered only once');
     });
 
+    it('should set focus on handle if autoFocus prop is true', () => {
+      const wrapper = mount(<Slider autoFocus />);
+      const focusedElement = document.activeElement.outerHTML;
+      const elem = wrapper.find('button').html();
+      assert.equal(elem, focusedElement, 'Slider\'s handle is focused');
+    });
+
+    it('should set focus on first handle when multiple handles are available', () => {
+      const wrapper = mount(<Slider values={[0, 50, 100]} autoFocus />);
+      const focusedElement = document.activeElement.outerHTML;
+      const elem = wrapper.find('button').first().html();
+      assert.equal(elem, focusedElement, 'Slider\'s first handle is focused');
+    });
+
     it('should not throw react errors on disabled', () => {
       const slider = mount(<Slider />);
       slider.setProps({ disabled: true });
