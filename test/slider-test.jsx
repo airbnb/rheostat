@@ -1,5 +1,6 @@
 import { shallow, mount } from 'enzyme';
 import React from 'react';
+import PropTypes from 'prop-types';
 import createReactClass from 'create-react-class';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
@@ -26,6 +27,16 @@ function testKeys(slider, tests) {
     assert(slider.getNextPositionForKey(0, keyCode) === pos, `${key}: ${pos}%`);
   });
 }
+
+function CustomHandle({ handleRef, ...passProps }) {
+  return <button id={Math.random().toString(36).substring(7)} type="button" ref={handleRef} {...passProps} />;
+}
+CustomHandle.propTypes = {
+  handleRef: PropTypes.any,
+};
+CustomHandle.defaultProps = {
+  handleRef: '',
+};
 
 describeWithDOM('<Slider />', () => {
   describe('render', () => {
@@ -94,17 +105,17 @@ describeWithDOM('<Slider />', () => {
     });
 
     it('should set focus on handle if autoFocus prop is true', () => {
-      const wrapper = mount(<Slider autoFocus />);
-      const focusedElement = document.activeElement.outerHTML;
-      const elem = wrapper.find('button').html();
-      assert.equal(elem, focusedElement, 'Slider\'s handle is focused');
+      const wrapper = mount(<Slider handle={CustomHandle} autoFocus />);
+      const handleId = wrapper.find('button').prop('id');
+      const focusedElementId = document.activeElement.id;
+      assert.equal(handleId, focusedElementId, 'Slider\'s handle is focused');
     });
 
     it('should set focus on first handle when multiple handles are available', () => {
-      const wrapper = mount(<Slider values={[0, 50, 100]} autoFocus />);
-      const focusedElement = document.activeElement.outerHTML;
-      const elem = wrapper.find('button').first().html();
-      assert.equal(elem, focusedElement, 'Slider\'s first handle is focused');
+      const wrapper = mount(<Slider handle={CustomHandle} values={[0, 50, 100]} autoFocus />);
+      const handleId = wrapper.find('button').first().prop('id');
+      const focusedElementId = document.activeElement.id;
+      assert.equal(handleId, focusedElementId, 'Slider\'s first handle is focused');
     });
 
     it('should not throw react errors on disabled', () => {
