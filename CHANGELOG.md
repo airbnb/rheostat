@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.1.1] - 2020-01-16
+- [fix][Slider] Fix "TypeError: Cannot read 'getBoundingClientRect' of null"
+
 ## [4.1.0] - 2019-10-21
 - [new][Deps] Update `react-with-styles` ^4.0.1 -> ^4.1.0
 
