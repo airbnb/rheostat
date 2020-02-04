@@ -48,7 +48,7 @@
     "@storybook/addon-actions": "^5.3.11",
     "@storybook/addon-links": "^5.3.11",
     "@storybook/addons": "^5.3.11",
-    "@storybook/react": "^5.1.11",
+    "@storybook/react": "^5.3.11",
     "airbnb-browser-shims": "^3.2.1",
     "aphrodite": "^2.4.0",
     "babel-eslint": "^10.0.3",
