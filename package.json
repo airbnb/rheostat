@@ -101,7 +101,7 @@
   },
   "jest": {
     "testMatch": [
-      "<rootDir>/test/*-test.*"
+      "<rootDir>/test/**/*-test.*"
     ],
     "setupFiles": [
       "<rootDir>/test/_helpers/setupFiles.js"
