@@ -66,6 +66,9 @@ storiesOf('Slider', module)
   .add('A Simple Slider', () => (
     <LabeledSlider />
   ))
+  .add('Handle autoFocus', () => (
+    <LabeledSlider autoFocus />
+  ))
   .add('Custom Handle', () => {
     function MyHandle({ style, handleRef, ...passProps }) {
       return (
