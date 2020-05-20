@@ -22,6 +22,7 @@ const has = Object.prototype.hasOwnProperty;
 
 const PropTypeArrOfNumber = PropTypes.arrayOf(PropTypes.number);
 const PropTypeReactComponent = PropTypes.oneOfType([PropTypes.func, PropTypes.string]);
+const PASSIVE_CONFIG = { passive: false };
 
 function getHandleFor(ev) {
   return Number(ev.currentTarget.getAttribute('data-handle-key'));
@@ -472,14 +473,14 @@ class Rheostat extends React.Component {
     this.setStartSlide(ev, ev.clientX, ev.clientY);
 
     if (typeof document.addEventListener === 'function') {
-      document.addEventListener('mousemove', this.handleMouseSlide, false);
-      document.addEventListener('mouseup', this.endSlide, false);
+      document.addEventListener('mousemove', this.handleMouseSlide, PASSIVE_CONFIG);
+      document.addEventListener('mouseup', this.endSlide, PASSIVE_CONFIG);
     } else {
       document.attachEvent('onmousemove', this.handleMouseSlide);
       document.attachEvent('onmouseup', this.endSlide);
     }
 
-    if (onSliderDragStart) onSliderDragStart();
+    if (onSliderDragStart) onSliderDragStart(ev);
 
     killEvent(ev);
   }
@@ -493,10 +494,10 @@ class Rheostat extends React.Component {
 
     this.setStartSlide(ev, touch.clientX, touch.clientY);
 
-    document.addEventListener('touchmove', this.handleTouchSlide, false);
-    document.addEventListener('touchend', this.endSlide, false);
+    document.addEventListener('touchmove', this.handleTouchSlide, PASSIVE_CONFIG);
+    document.addEventListener('touchend', this.endSlide, PASSIVE_CONFIG);
 
-    if (onSliderDragStart) onSliderDragStart();
+    if (onSliderDragStart) onSliderDragStart(ev);
 
     killEvent(ev);
   }
@@ -505,7 +506,7 @@ class Rheostat extends React.Component {
     const { slidingIndex } = this.state;
 
     if (slidingIndex === null) return;
-    this.handleSlide(ev.clientX, ev.clientY);
+    this.handleSlide(ev.clientX, ev.clientY, ev);
     killEvent(ev);
   }
 
@@ -521,7 +522,7 @@ class Rheostat extends React.Component {
 
     const touch = ev.changedTouches[0];
 
-    this.handleSlide(touch.clientX, touch.clientY);
+    this.handleSlide(touch.clientX, touch.clientY, ev);
     killEvent(ev);
   }
 
@@ -537,7 +538,7 @@ class Rheostat extends React.Component {
     return horizontalPercentage;
   }
 
-  handleSlide(x, y) {
+  handleSlide(x, y, ev) {
     const { onSliderDragMove } = this.props;
     const { slidingIndex: idx } = this.state;
 
@@ -551,7 +552,7 @@ class Rheostat extends React.Component {
     this.slideTo(idx, positionPercent);
 
     if (this.canMove(idx, positionPercent)) {
-      if (onSliderDragMove) onSliderDragMove();
+      if (onSliderDragMove) onSliderDragMove(ev);
     }
   }
 
