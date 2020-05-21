@@ -1,9 +1,11 @@
+// y = x^2
+const POWER = 2;
 export default {
-  getPosition(x, min, max) {
-    return ((max / (max - min)) ** 0.5) * (((x - min) / max) ** 0.5) * 100;
+  getPosition(value, min, max) {
+    return ((value - min) / (max - min)) ** (1 / POWER) * 100;
   },
 
-  getValue(x, min, max) {
-    return (Math.round(((x / 100) ** 2) * (max - min)) + min);
+  getValue(positionPercent, min, max) {
+    return (Math.round(((positionPercent / 100) ** POWER) * (max - min)) + min);
   },
 };
