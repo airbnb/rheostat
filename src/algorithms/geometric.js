@@ -1,3 +1,4 @@
+// y = x^2
 const POWER = 2;
 export default {
   getPosition(value, min, max) {
