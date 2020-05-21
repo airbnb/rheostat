@@ -3,14 +3,14 @@ export default {
     return ((value - min) / (max - min)) * 100;
   },
 
-  getValue(pos, min, max) {
-    const decimal = pos / 100;
+  getValue(positionPercent, min, max) {
+    const decimal = positionPercent / 100;
 
-    if (pos === 0) {
+    if (positionPercent === 0) {
       return min;
     }
 
-    if (pos === 100) {
+    if (positionPercent === 100) {
       return max;
     }
 
