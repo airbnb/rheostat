@@ -45,7 +45,7 @@ function DefaultProgressBar({
             styles.DefaultProgressBar_background__horizontal,
           ]),
 
-        disabled && styles.progressBar_disabled,
+        disabled && styles.DefaultProgressBar__disabled,
         style,
       )}
       {...passProps}
@@ -80,5 +80,9 @@ export default withStyles(({ rheostat: { color, unit } }) => ({
   DefaultProgressBar_background__horizontal: {
     height: (2 * unit) - 3,
     top: 0,
+  },
+
+  DefaultProgressBar__disabled: {
+    borderColor: color.progressBar.defaultDisabledColor,
   },
 }))(DefaultProgressBar);
