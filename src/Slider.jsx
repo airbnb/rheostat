@@ -831,6 +831,7 @@ class Rheostat extends React.Component {
                 aria-valuemin={this.getMinValue(idx)}
                 aria-valuenow={values[idx]}
                 aria-disabled={disabled}
+                aria-label="slider-bar"
                 data-handle-key={idx}
                 key={idx /* eslint-disable-line react/no-array-index-key */}
                 orientation={orientation}

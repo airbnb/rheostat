@@ -27,6 +27,7 @@ export const handleDefaultProps = {
   'aria-valuemax': undefined,
   'aria-valuemin': undefined,
   'aria-disabled': undefined,
+  'aria-label': undefined,
   onClick: undefined,
   onKeyDown: undefined,
   onMouseDown: undefined,
