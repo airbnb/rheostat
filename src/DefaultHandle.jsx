@@ -117,5 +117,6 @@ export default withStyles(({ rheostat: { color, unit, constants } }) => ({
 
   DefaultHandle_handle__disabled: {
     borderColor: color.buttons.defaultDisabledColor,
+    cursor: 'not-allowed',
   },
 }))(DefaultHandle);
