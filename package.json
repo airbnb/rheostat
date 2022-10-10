@@ -1,6 +1,6 @@
 {
-  "name": "rheostat",
-  "version": "2.1.1",
+  "name": "@appbaseio/rheostat",
+  "version": "1.0.0-alpha.2",
   "description": "Rheostat is a www, mobile, and accessible slider component built with React",
   "main": "lib/Slider.js",
   "jsnext:main": "src/Slider.jsx",
@@ -27,7 +27,7 @@
     "type": "git",
     "url": "git@github.com:airbnb/rheostat.git"
   },
-  "author": "Josh Perez <josh.perez@airbnb.com>",
+  "author": "Josh Perez <josh.perez@airbnb.com> | Mohd Ashraf <mohdashraf010897@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "@kadira/storybook": "^2.35.3",
@@ -65,5 +65,9 @@
   "dependencies": {
     "object.assign": "^4.0.4",
     "prop-types": "^15.5.10"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
