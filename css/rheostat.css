@@ -1,0 +1,136 @@
+.DefaultProgressBar__vertical {
+  width: 24px;
+  height: 100%
+}
+.DefaultProgressBar_progressBar {
+  background-color: #abc4e8;
+  position: absolute
+}
+.DefaultProgressBar_progressBar__vertical {
+  height: 100%;
+  width: 24px
+}
+.DefaultProgressBar_background__vertical {
+  height: 100%;
+  top: 0px;
+  width: 15px
+}
+.DefaultProgressBar_background__horizontal {
+  height: 13px;
+  top: 0px
+}
+.DefaultHandle_handle {
+  width: 24px;
+  height: 24px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d8d8d8;
+  background-color: #fcfcfc;
+  border-radius: 20%;
+  outline: none;
+  z-index: 2;
+  box-shadow: 0 2px 2px #dbdbdb
+}
+.DefaultHandle_handle:focus {
+  box-shadow: #abc4e8 0 0 1px 1px
+}
+.DefaultHandle_handle:after {
+  content: "";
+  display: block;
+  position: absolute;
+  background-color: #dadfe8
+}
+.DefaultHandle_handle:before {
+  content: "";
+  display: block;
+  position: absolute;
+  background-color: #dadfe8
+}
+.DefaultHandle_handle__horizontal {
+  margin-left: -12px;
+  top: -5px
+}
+.DefaultHandle_handle__horizontal:before {
+  top: 7px;
+  height: 10px;
+  width: 1px;
+  left: 10px
+}
+.DefaultHandle_handle__horizontal:after {
+  top: 7px;
+  height: 10px;
+  width: 1px;
+  left: 13px
+}
+.DefaultHandle_handle__vertical {
+  margin-top: -12px;
+  left: -10px
+}
+.DefaultHandle_handle__vertical:before {
+  top: 10px
+}
+.DefaultHandle_handle__vertical:after {
+  top: 13px;
+  left: 8px;
+  height: 1px;
+  width: 10px
+}
+.DefaultHandle_handle__disabled {
+  border-color: #dbdbdb
+}
+.DefaultBackground {
+  background-color: #fcfcfc;
+  height: 15px;
+  width: 100%;
+  border: 1px solid #d8d8d8;
+  position: relative
+}
+.DefaultBackground_background__horizontal {
+  height: 15px;
+  top: -2px;
+  left: -2px;
+  bottom: 4px;
+  width: 100%
+}
+.DefaultBackground_background__vertical {
+  width: 15px;
+  top: 0px;
+  height: 100%
+}
+.rheostat {
+  position: relative;
+  overflow: visible
+}
+@media (min-width: 1128px) {
+  .autoAdjustVerticalPosition {
+    top: 12px
+  }
+}
+.rheostat__vertical {
+  height: 100%
+}
+.handleContainer {
+  height: 15px;
+  top: -2px;
+  left: -2px;
+  bottom: 4px;
+  width: 100%;
+  position: absolute
+}
+.rheostat_background {
+  background-color: #fcfcfc;
+  border: 1px solid #d8d8d8;
+  position: relative
+}
+.rheostat_background__horizontal {
+  height: 15px;
+  top: -2px;
+  left: -2px;
+  bottom: 4px;
+  width: 100%
+}
+.rheostat_background__vertical {
+  width: 15px;
+  top: 0px;
+  height: 100%
+} 
