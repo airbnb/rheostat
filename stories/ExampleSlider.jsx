@@ -321,6 +321,7 @@ storiesOf('Slider', module)
         border: '1px solid #890f00',
         borderRadius: '100%',
         cursor: 'ew-resize',
+        // TODO shouldn't this reverse to marginRight in the RTL context
         marginLeft: -13,
         height: 24,
         width: 24,

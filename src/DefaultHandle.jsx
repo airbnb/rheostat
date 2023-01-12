@@ -82,6 +82,7 @@ export default withStyles(({ rheostat: { color, unit, constants } }) => ({
   },
 
   DefaultHandle_handle__horizontal: {
+    // TODO this should reverse to marginRight: -12 in the RTL context?
     marginLeft: -12,
     top: -5,
     ':before': {
