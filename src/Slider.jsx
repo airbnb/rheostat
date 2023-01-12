@@ -274,15 +274,16 @@ class Rheostat extends React.Component {
   }
 
   getProgressStyle(idx) {
-    const { orientation } = this.props;
+    const { direction, orientation } = this.props;
     const { handlePos } = this.state;
 
     const value = handlePos[idx];
+    const leadingDirection = direction === DIRECTIONS.RTL ? 'right' : 'left';
 
     if (idx === 0) {
       return orientation === VERTICAL
         ? { height: `${value}%`, top: 0 }
-        : { left: 0, width: `${value}%` };
+        : { [leadingDirection]: 0, width: `${value}%` };
     }
 
     const prevValue = handlePos[idx - 1];
@@ -290,7 +291,7 @@ class Rheostat extends React.Component {
 
     return orientation === VERTICAL
       ? { height: `${diffValue}%`, top: `${prevValue}%` }
-      : { left: `${prevValue}%`, width: `${diffValue}%` };
+      : { [leadingDirection]: `${prevValue}%`, width: `${diffValue}%` };
   }
 
   getMinValue(idx) {
@@ -593,6 +594,7 @@ class Rheostat extends React.Component {
     }
 
     const {
+      direction,
       onClick,
       orientation,
     } = this.props;
@@ -604,9 +606,12 @@ class Rheostat extends React.Component {
       return;
     }
 
-    const positionDecimal = orientation === VERTICAL
+    let positionDecimal = orientation === VERTICAL
       ? (ev.clientY - sliderBox.top) / sliderBox.height
       : (ev.clientX - sliderBox.left) / sliderBox.width;
+    if (direction === DIRECTIONS.RTL && orientation === HORIZONTAL) {
+      positionDecimal = 1 - positionDecimal;
+    }
 
     const positionPercent = positionDecimal * PERCENT_FULL;
 
@@ -780,6 +785,7 @@ class Rheostat extends React.Component {
       autoAdjustVerticalPosition,
       algorithm,
       children,
+      direction,
       disabled,
       handle: Handle,
       max,
@@ -821,9 +827,10 @@ class Rheostat extends React.Component {
           )}
         >
           {handlePos.map((pos, idx) => {
+            const leadingDirection = direction === DIRECTIONS.RTL ? 'right' : 'left';
             const handleStyle = orientation === VERTICAL
               ? { top: `${pos}%`, position: 'absolute' }
-              : { left: `${pos}%`, position: 'absolute' };
+              : { [leadingDirection]: `${pos}%`, position: 'absolute' };
 
             return (
               <Handle
