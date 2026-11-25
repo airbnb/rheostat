@@ -739,7 +739,19 @@ class Rheostat extends React.Component {
   }
 
   fireChangeEvent() {
-    const { onChange } = this.props;
+    const { onChange, min, max, algorithm } = this.props;
+    const values = this.state.values.map((value) => Math.max(min, Math.min(max, value)));
+
+    if (values.some((value, idx) => value !== this.state.values[idx])) {
+      this.setState({
+        values,
+        handlePos: values.map((value) => algorithm.getPosition(value, min, max)),
+      }, () => {
+        if (onChange) onChange(this.getPublicState());
+      });
+      return;
+    }
+
     if (onChange) onChange(this.getPublicState());
   }
 
