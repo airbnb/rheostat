@@ -28,6 +28,17 @@ function testKeys(slider, tests) {
 }
 
 describeWithDOM('<Slider />', () => {
+  it('commits current bounds when max changes during a drag', () => {
+    const onChange = sinon.spy();
+    const wrapper = shallow(<Slider min={0} max={100} values={[80]} onChange={onChange} />).dive().dive();
+    wrapper.setState({ slidingIndex: 0 });
+    wrapper.setProps({ max: 60 });
+    wrapper.instance().endSlide();
+    assert.deepEqual(onChange.lastCall.args[0].values, [60]);
+    assert.deepEqual(wrapper.state('values'), [60]);
+    assert.deepEqual(wrapper.state('handlePos'), [100]);
+  });
+
   describe('render', () => {
     it('should render the slider with one handle by default', () => {
       const wrapper = shallow(<Slider />).dive().dive();
